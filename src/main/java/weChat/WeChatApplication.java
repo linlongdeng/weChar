@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource(value = { "jdbc.properites" }) 
+@PropertySource(value = { "classpath:/jdbc.properites" }) 
 public class WeChatApplication {
 
     public static void main(String[] args) {

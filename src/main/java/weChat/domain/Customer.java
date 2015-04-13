@@ -48,7 +48,7 @@ public class Customer {
 
 	private String lastName;
 
-	protected Customer() {
+	public Customer() {
 	}
 
 	public Customer(String firstName, String lastName) {
