@@ -6,7 +6,6 @@
 	<groupId>com.star-net</groupId>
 	<artifactId>weChat</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 
 	<name>weChat</name>
 	<description>WeChat project for Spring Boot</description>
@@ -80,4 +79,5 @@
 		</plugins>
 	</build>
 
+	<packaging>war</packaging>
 </project>
