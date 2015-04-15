@@ -9,7 +9,7 @@ public class Receiver {
 	 * 接收消息的方法
 	 * @param message
 	 */
-	public void receiveMessage(byte[] message) {
+	public void receiveMessage(String message) {
 		System.out.println("Received <" + new String(message) + ">");
 		latch.countDown();
 	}
