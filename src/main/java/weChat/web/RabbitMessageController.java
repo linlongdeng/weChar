@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -24,11 +25,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import weChat.core.RabbitConfiguration;
+import weChat.core.rabbit.RabbitClient;
+import weChat.core.rabbit.RabbitClientConfig;
 import weChat.domain.Customer;
 
 @Controller
@@ -36,20 +39,13 @@ import weChat.domain.Customer;
 public class RabbitMessageController {
 
 	@Autowired
-	RabbitTemplate rabbitTemplate;
-	@Autowired
-	RabbitConfiguration rebbitConfiguration;
-	@Autowired
-	AmqpAdmin amqpAdmin;
-	@Autowired
-	DirectExchange directExchange;
-	@Autowired
-	AbstractMessageListenerContainer messageListenerContainer;
+	private RabbitClient rabbitClient;
+
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/testRabbit")
-	public String testRabbit(Customer customer, Model model) {
-		String queueName = "queue" + customer.getId() ;
+	public String testRabbit(@RequestParam Map<String, String>  param, Model model) {
+	/*	String queueName = "queue" + customer.getId() ;
 		Queue queue = new Queue(queueName,false);
 		amqpAdmin.declareQueue(queue);
 		Binding binding = BindingBuilder.bind(queue).to(directExchange)
@@ -59,20 +55,10 @@ public class RabbitMessageController {
 		model.addAttribute("title", customer.getFirstName());
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("firstName", customer.getFirstName());
-
-		Map<String, Object> map = (Map<String, Object>) rabbitTemplate
-				.convertSendAndReceive(
-						queueName,
-						param,
-						(message) -> {
-							MessageProperties properities = message
-									.getMessageProperties();
-							String corrId = UUID.randomUUID().toString();
-							properities.setCorrelationId(corrId.getBytes());
-
-							return message;
-						});
-		System.out.println(map);
+*/
+		String queueName = (String) param.get("queueName");
+		Map<String, Object> resultMap = (Map<String, Object>) rabbitClient.convertSendAndReceive(queueName, param);
+		model.addAttribute("result", resultMap);
 		return "rabbit/testRabbitMessage";
 	}
 

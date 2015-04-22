@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import weChat.core.RabbitConfiguration;
+import weChat.core.rabbit.RabbitClientConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = WeChatApplication.class)
@@ -22,13 +22,8 @@ public class WeChatApplicationTests {
 	@Autowired
 	RabbitTemplate rabbitTemplate;
 	@Autowired
-	RabbitConfiguration rebbitConfiguration;
+	RabbitClientConfig rebbitConfiguration;
 
-	@Test
-	public void testSendMessage() throws InterruptedException {
-		rabbitTemplate.convertAndSend(rebbitConfiguration.getExchangeName(),
-				rebbitConfiguration.getQueueName(), "测试");
-		Thread.sleep(100000);
-	}
+
 
 }
