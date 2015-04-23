@@ -4,10 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
-public class PostJson {
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class PostJsonUtils {
 	// 设置代理
 	static{
 	/*	System.setProperty("http.proxyHost", "localhost");
@@ -23,7 +29,20 @@ public class PostJson {
 	 * @param params
 	 *            json字符串,例如: "{ \"id\":\"12345\" }" ;其中属性名必须带双引号<br/>
 	 * @return 成功:返回json字符串<br/>
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
 	 */
+	
+	public static Map<String, Object> postObject(String actionPath, Object params) throws JsonGenerationException, JsonMappingException, IOException{
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter stringWriter = new StringWriter();
+		mapper.writeValue(stringWriter, params);
+		String strParam = stringWriter.toString();
+		String strResult = post(actionPath, strParam);
+		Map<String, Object> resultParam = mapper.readValue(strResult, Map.class);
+		return resultParam;
+	}
 	public static String post(String actionPath, String params) {
 		String strURL = ip + actionPath;
 		System.out.println(strURL);
@@ -58,6 +77,7 @@ public class PostJson {
 			while ((line = in.readLine()) != null) {
 				result += line;
 			}
+			System.out.println("返回参数是" + result);
 			return result;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

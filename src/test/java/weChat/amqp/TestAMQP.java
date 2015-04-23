@@ -11,7 +11,6 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import weChat.domain.Customer;
 
 
 
@@ -33,9 +32,7 @@ public static void main(String[] args) {
 			.setMessageId("123")
 			.setHeader("bar", "baz")
 			.build();
-	template.receiveAndReply((String payload)->{
-	return new Customer("", "");
-	});
+
 	
 }
 }
