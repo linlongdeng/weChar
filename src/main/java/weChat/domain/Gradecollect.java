@@ -17,119 +17,126 @@ public class Gradecollect implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int gradeCollectID;
+	private int gradecollectid;
 
-	private int cardPicID;
+	private int cardpicid;
 
-	private int companyID;
+	@Column(name="companyID")
+	private int companyid;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createTime;
+	private Date createtime;
 
-	private String gradeCode;
+	private String gradecode;
 
-	private int gradeID;
+	private int gradeid;
 
-	private String gradeName;
+	private String gradename;
 
-	private String memberRights;
+	private String memberrights;
 
 	private byte status;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateTime;
+	private Date updatetime;
 
-	private int wechatPubInfoID;
+	private int wechatpubinfoid;
 
 	public Gradecollect() {
 	}
 
-	public int getGradeCollectID() {
-		return this.gradeCollectID;
+	public int getGradecollectid() {
+		return gradecollectid;
 	}
 
-	public void setGradeCollectID(int gradeCollectID) {
-		this.gradeCollectID = gradeCollectID;
+	public void setGradecollectid(int gradecollectid) {
+		this.gradecollectid = gradecollectid;
 	}
 
-	public int getCardPicID() {
-		return this.cardPicID;
+	public int getCardpicid() {
+		return cardpicid;
 	}
 
-	public void setCardPicID(int cardPicID) {
-		this.cardPicID = cardPicID;
+	public void setCardpicid(int cardpicid) {
+		this.cardpicid = cardpicid;
 	}
 
-	public int getCompanyID() {
-		return this.companyID;
+	public int getCompanyid() {
+		return companyid;
 	}
 
-	public void setCompanyID(int companyID) {
-		this.companyID = companyID;
+	public void setCompanyid(int companyid) {
+		this.companyid = companyid;
 	}
 
-	public Date getCreateTime() {
-		return this.createTime;
+	public Date getCreatetime() {
+		return createtime;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
 	}
 
-	public String getGradeCode() {
-		return this.gradeCode;
+	public String getGradecode() {
+		return gradecode;
 	}
 
-	public void setGradeCode(String gradeCode) {
-		this.gradeCode = gradeCode;
+	public void setGradecode(String gradecode) {
+		this.gradecode = gradecode;
 	}
 
-	public int getGradeID() {
-		return this.gradeID;
+	public int getGradeid() {
+		return gradeid;
 	}
 
-	public void setGradeID(int gradeID) {
-		this.gradeID = gradeID;
+	public void setGradeid(int gradeid) {
+		this.gradeid = gradeid;
 	}
 
-	public String getGradeName() {
-		return this.gradeName;
+	public String getGradename() {
+		return gradename;
 	}
 
-	public void setGradeName(String gradeName) {
-		this.gradeName = gradeName;
+	public void setGradename(String gradename) {
+		this.gradename = gradename;
 	}
 
-	public String getMemberRights() {
-		return this.memberRights;
+	public String getMemberrights() {
+		return memberrights;
 	}
 
-	public void setMemberRights(String memberRights) {
-		this.memberRights = memberRights;
+	public void setMemberrights(String memberrights) {
+		this.memberrights = memberrights;
 	}
 
 	public byte getStatus() {
-		return this.status;
+		return status;
 	}
 
 	public void setStatus(byte status) {
 		this.status = status;
 	}
 
-	public Date getUpdateTime() {
-		return this.updateTime;
+	public Date getUpdatetime() {
+		return updatetime;
 	}
 
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
 	}
 
-	public int getWechatPubInfoID() {
-		return this.wechatPubInfoID;
+	public int getWechatpubinfoid() {
+		return wechatpubinfoid;
 	}
 
-	public void setWechatPubInfoID(int wechatPubInfoID) {
-		this.wechatPubInfoID = wechatPubInfoID;
+	public void setWechatpubinfoid(int wechatpubinfoid) {
+		this.wechatpubinfoid = wechatpubinfoid;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	
 
 }

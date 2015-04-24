@@ -18,20 +18,20 @@ public class MemberCache implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String cacheID;
+	private String cacheid;
 
-	private BigDecimal accountBalance;
+	private BigDecimal accountbalance;
 
-	private BigDecimal accountCash;
+	private BigDecimal accountcash;
 
-	private BigDecimal accountPresent;
+	private BigDecimal accountpresent;
 
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
 
 	private String cardnum;
 
-	private int companyID;
+	private int companyid;
 
 	private int consumeTimes;
 
@@ -76,36 +76,36 @@ public class MemberCache implements Serializable {
 	public MemberCache() {
 	}
 
-	public String getCacheID() {
-		return this.cacheID;
+	public String getCacheid() {
+		return this.cacheid;
 	}
 
-	public void setCacheID(String cacheID) {
-		this.cacheID = cacheID;
+	public void setCacheid(String cacheid) {
+		this.cacheid = cacheid;
 	}
 
-	public BigDecimal getAccountBalance() {
-		return this.accountBalance;
+	public BigDecimal getAccountbalance() {
+		return this.accountbalance;
 	}
 
-	public void setAccountBalance(BigDecimal accountBalance) {
-		this.accountBalance = accountBalance;
+	public void setAccountbalance(BigDecimal accountbalance) {
+		this.accountbalance = accountbalance;
 	}
 
-	public BigDecimal getAccountCash() {
-		return this.accountCash;
+	public BigDecimal getAccountcash() {
+		return this.accountcash;
 	}
 
-	public void setAccountCash(BigDecimal accountCash) {
-		this.accountCash = accountCash;
+	public void setAccountcash(BigDecimal accountcash) {
+		this.accountcash = accountcash;
 	}
 
-	public BigDecimal getAccountPresent() {
-		return this.accountPresent;
+	public BigDecimal getAccountpresent() {
+		return this.accountpresent;
 	}
 
-	public void setAccountPresent(BigDecimal accountPresent) {
-		this.accountPresent = accountPresent;
+	public void setAccountpresent(BigDecimal accountpresent) {
+		this.accountpresent = accountpresent;
 	}
 
 	public Date getBirthday() {
@@ -124,12 +124,12 @@ public class MemberCache implements Serializable {
 		this.cardnum = cardnum;
 	}
 
-	public int getCompanyID() {
-		return this.companyID;
+	public int getCompanyid() {
+		return this.companyid;
 	}
 
-	public void setCompanyID(int companyID) {
-		this.companyID = companyID;
+	public void setCompanyid(int companyid) {
+		this.companyid = companyid;
 	}
 
 	public int getConsumeTimes() {

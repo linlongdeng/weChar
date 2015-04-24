@@ -1,5 +1,6 @@
 package weChat.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +33,9 @@ public class GradecollectServiceImpl implements GradecollectService {
 		if (data != null) {
 			for (Map<String, Object> map : data) {
 				Integer gradeid = (Integer) map.get("gradeid");
+				 gradecollectRepository.findAll();
 				Gradecollect gradecollect = gradecollectRepository
-						.findFirstByCompanyIDAndWechatPubInfoIDAndGradeID(
+						.findFirstByCompanyidAndWechatpubinfoidAndGradeid(
 								Integer.valueOf(companycode),
 								Integer.valueOf(wechatPubInfoID), gradeid);
 				String gradecode = (String) map.get("gradecode");
@@ -42,16 +44,18 @@ public class GradecollectServiceImpl implements GradecollectService {
 				if (gradecollect == null) {
 					gradecollect = new Gradecollect();
 					// 有问题
-					gradecollect.setCompanyID(Integer.valueOf(companycode));
+					gradecollect.setCompanyid(Integer.valueOf(companycode));
 					// 格式不对
-					gradecollect.setWechatPubInfoID(Integer
+					gradecollect.setWechatpubinfoid(Integer
 							.valueOf(wechatPubInfoID));
 					// 格式不对
-					gradecollect.setGradeCollectID(Integer.valueOf(gradeid));
+					gradecollect.setGradecollectid(Integer.valueOf(gradeid));
 				}
-				gradecollect.setGradeCode(gradecode);
-				gradecollect.setGradeName(gradename);
+				gradecollect.setGradecode(gradecode);
+				gradecollect.setGradename(gradename);
 				gradecollect.setStatus(status.byteValue());
+				gradecollect.setCreatetime(new Date());
+				gradecollect.setUpdatetime(new Date());
 				gradecollectRepository.save(gradecollect);
 			}
 		}

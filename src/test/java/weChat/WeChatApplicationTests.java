@@ -1,5 +1,13 @@
 package weChat;
 
+import java.util.Collections;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.hql.internal.ast.QueryTranslatorImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -15,14 +23,16 @@ import weChat.core.rabbit.RabbitClientConfig;
 @WebAppConfiguration
 public class WeChatApplicationTests {
 
+
+	public void testHql(){
+		String hql =" select m from MemberCache m ";
+	}
+	
 	@Test
 	public void contextLoads() {
 	}
 
-	@Autowired
-	RabbitTemplate rabbitTemplate;
-	@Autowired
-	RabbitClientConfig rebbitConfiguration;
+	
 
 
 
