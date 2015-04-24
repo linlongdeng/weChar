@@ -35,7 +35,7 @@ public class GradecollectServiceImpl implements GradecollectService {
 				Integer gradeid = (Integer) map.get("gradeid");
 				 gradecollectRepository.findAll();
 				Gradecollect gradecollect = gradecollectRepository
-						.findFirstByCompanyidAndWechatpubinfoidAndGradeid(
+						.findFirstByCompanyIDAndWechatPubInfoIDAndGradeID(
 								Integer.valueOf(companycode),
 								Integer.valueOf(wechatPubInfoID), gradeid);
 				String gradecode = (String) map.get("gradecode");
@@ -44,18 +44,18 @@ public class GradecollectServiceImpl implements GradecollectService {
 				if (gradecollect == null) {
 					gradecollect = new Gradecollect();
 					// 有问题
-					gradecollect.setCompanyid(Integer.valueOf(companycode));
+					gradecollect.setCompanyID(Integer.valueOf(companycode));
 					// 格式不对
-					gradecollect.setWechatpubinfoid(Integer
+					gradecollect.setWechatPubInfoID(Integer
 							.valueOf(wechatPubInfoID));
 					// 格式不对
-					gradecollect.setGradecollectid(Integer.valueOf(gradeid));
+					gradecollect.setGradeCollectID(Integer.valueOf(gradeid));
 				}
-				gradecollect.setGradecode(gradecode);
-				gradecollect.setGradename(gradename);
+				gradecollect.setGradeCode(gradecode);
+				gradecollect.setGradeName(gradename);
 				gradecollect.setStatus(status.byteValue());
-				gradecollect.setCreatetime(new Date());
-				gradecollect.setUpdatetime(new Date());
+				gradecollect.setCreateTime(new Date());
+				gradecollect.setUpdateTime(new Date());
 				gradecollectRepository.save(gradecollect);
 			}
 		}
