@@ -49,7 +49,7 @@ public class GradecollectServiceImpl implements GradecollectService {
 				String gradecode = (String) map.get("gradecode");
 				String gradename = (String) map.get("gradename");
 				Integer status = (Integer) map.get("status");
-				if (gradecollect == null || true) {
+				if (gradecollect == null) {
 					gradecollect = new Gradecollect();
 					// 有问题
 					gradecollect.setCompanyID(company.getCompanyID());
