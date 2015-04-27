@@ -20,7 +20,7 @@ public class TestGradecollectController {
 	public void testSyncGrade() throws JsonGenerationException, JsonMappingException, IOException{
 		String actionPath ="/Membersync/GradeCollect";
 		MRequestParam param = new MRequestParam();
-		param.setCompanycode("11342423");
+		param.setCompanycode("1");
 		param.setCompanypsw("432423432");
 		param.setWechatPubInfoID("43243243");
 		List<Map<String,Object>> list = new ArrayList<>();
