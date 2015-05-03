@@ -17,6 +17,7 @@ public class MemberCache implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String cacheID;
 
 	private BigDecimal accountBalance;

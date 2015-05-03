@@ -71,6 +71,9 @@ public class PostJsonUtils {
 
 			BufferedReader in = null;
 			String result = "";
+			System.out.println("response code" + connection.getResponseCode());
+			System.out.println("response message" + connection.getResponseMessage());
+			connection.getResponseMessage();
 			in = new BufferedReader(new InputStreamReader(
 					connection.getInputStream(), "utf-8"));
 			String line;
