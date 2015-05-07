@@ -24,7 +24,7 @@ public class PostFileUtils {
 	   System.setProperty("https.proxyPort", "8888");
 	  }
 
-	private final static String ip ="http://192.168.82.119:8080/FileService";
+	public  static String ip ="http://192.168.82.119:8080/FileService";
 	
 	private  final  static String  lineEnd = System.getProperty("line.separator");    // The value is "\r\n" in Windows.
 	
