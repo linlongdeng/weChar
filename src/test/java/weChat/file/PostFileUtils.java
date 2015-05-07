@@ -17,13 +17,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class PostFileUtils {
+	
+	// 设置代理
+	  static{
+	   System.setProperty("https.proxyHost", "localhost");
+	   System.setProperty("https.proxyPort", "8888");
+	  }
 
-	private String ip ="http://localhost:8080/weChat";
+	private final static String ip ="http://192.168.82.119:8080/FileService";
 	
-	private  final String  lineEnd = System.getProperty("line.separator");    // The value is "\r\n" in Windows.
+	private  final  static String  lineEnd = System.getProperty("line.separator");    // The value is "\r\n" in Windows.
 	
-	private  final  String twoHyphens = "--";  
-	private  final   String boundary="--------------abcdefaaaaaaaa";
+	private  final  static String twoHyphens = "--";  
+	private  final   static String boundary="-------------------------acebdf13572468";
 	/**
 	 * 上传文件
 	 * @param actionPath
@@ -32,7 +38,7 @@ public class PostFileUtils {
 	 * @return
 	 * @throws IOException 
 	 */
-	String postFile(String actionPath, Map<String, Object> params, String fileformname, String filePath) throws IOException{
+	public static String postFile(String actionPath, Map<String, Object> params, String fileformname, String filePath) throws IOException{
 		File file = new File(filePath);
         if (!file.exists() || !file.isFile()) {
             return "文件不存在";
@@ -47,6 +53,8 @@ public class PostFileUtils {
         // 设置请求头信息
         con.setRequestProperty("Connection", "Keep-Alive");
         con.setRequestProperty("Charset", "UTF-8");
+        con.setRequestProperty("user-agent",
+				"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
         con.setRequestProperty("Content-Type",
                 "multipart/form-data;boundary=" + boundary);
         DataOutputStream dos = new DataOutputStream(con.getOutputStream());
@@ -61,6 +69,7 @@ public class PostFileUtils {
                    sb.append(lineEnd);  
                    sb.append(entry.getValue() + lineEnd);  
         	 }
+        	 System.out.println("参数是:\n" + sb.toString());
         	 byte[] bytes = sb.toString().getBytes("utf-8");
         	 dos.write(bytes);
         }
@@ -94,6 +103,7 @@ public class PostFileUtils {
        while((oneline = br.readLine()) != null){
     	   sb.append(oneline);
        }
+       System.out.println("请求结果是："  + sb.toString());
        return sb.toString();
 	}
 }

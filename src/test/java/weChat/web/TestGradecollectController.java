@@ -25,7 +25,7 @@ public class TestGradecollectController {
 		param.setWechatPubInfoID("43243243");
 		List<Map<String,Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
-		map.put("gradeid", "123323");
+		map.put("gradeid", 123323);
 		map.put("gradecode", "4324343");
 		map.put("gradename", "测试3343");
 		map.put("status", 0);

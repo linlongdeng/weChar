@@ -5,6 +5,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
@@ -19,12 +24,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Controller
 public class CommonController {
 
+	 private Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private ErrorAttributes errorAttributes;
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Map<String, Object>> handleException(Exception ex,
 			HttpServletRequest request) {
+		logger.error("程序出错", ex);
 		Map<String, Object> body = getErrorAttributes(request,
 				getTraceParameter(request));
 		HttpStatus status = getStatus(request);
