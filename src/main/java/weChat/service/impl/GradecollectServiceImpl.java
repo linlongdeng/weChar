@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import weChat.core.metatype.BaseDto;
+import weChat.core.metatype.Dto;
 import weChat.domain.Company;
 import weChat.domain.Gradecollect;
 import weChat.parameter.manage.MRequestParam;
@@ -19,7 +21,7 @@ import weChat.parameter.manage.MResponseParam;
 import weChat.repository.CompanyRepository;
 import weChat.repository.GradecollectRepository;
 import weChat.service.GradecollectService;
-import weChat.utils.ResponseUtils;
+import weChat.utils.RespUtils;
 
 @Service
 public class GradecollectServiceImpl implements GradecollectService {
@@ -34,21 +36,21 @@ public class GradecollectServiceImpl implements GradecollectService {
 
 	@Override
 	public MResponseParam syncGrade(MRequestParam param) {
-		List<Map<String, Object>> data = param.getData();
+		List<BaseDto> data = param.getData();
 		String companycode = param.getCompanycode();
 		Company company = companyRepository.findFirstByCompanyCode(companycode);
 		Assert.notNull(company, "商家编码不存在");
 		String wechatPubInfoID = param.getWechatPubInfoID();
 		if (data != null) {
-			for (Map<String, Object> map : data) {
-				Integer gradeid = (Integer) map.get("gradeid");
+			for (BaseDto dto  : data) {
+				Integer gradeid = dto.getAsInteger("gradeid");
 				 Gradecollect  gradecollect = gradecollectRepository
 						.findFirstByCompanyCodeAndWechatPubInfoIDAndGradeID(
 								companycode,
 								Integer.valueOf(wechatPubInfoID), gradeid);
-				String gradecode = (String) map.get("gradecode");
-				String gradename = (String) map.get("gradename");
-				Integer status = (Integer) map.get("status");
+				String gradecode = dto.getAsString("gradecode");
+				String gradename = dto.getAsString("gradename");
+				Integer status = dto.getAsInteger("status");
 				if (gradecollect == null) {
 					gradecollect = new Gradecollect();
 					// 有问题
@@ -67,6 +69,6 @@ public class GradecollectServiceImpl implements GradecollectService {
 				gradecollectRepository.save(gradecollect);
 			}
 		}
-		return ResponseUtils.successMR();
+		return RespUtils.successMR();
 	}
 }

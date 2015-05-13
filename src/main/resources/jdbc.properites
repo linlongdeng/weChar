@@ -1,6 +1,6 @@
-spring.datasource.url=jdbc:mysql://localhost/wechat
+spring.datasource.url=jdbc:mysql://123.59.55.176/wjdbcenter
 spring.datasource.username=root
-spring.datasource.password=123456
+spring.datasource.password= root..admin
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 
 spring.jpa.show-sql=true

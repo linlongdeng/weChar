@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
+import weChat.core.metatype.BaseDto;
 import weChat.json.PostJsonUtils;
 import weChat.parameter.manage.MRequestParam;
 
@@ -20,11 +22,11 @@ public class TestGradecollectController {
 	public void testSyncGrade() throws JsonGenerationException, JsonMappingException, IOException{
 		String actionPath ="/Membersync/GradeCollect";
 		MRequestParam param = new MRequestParam();
-		param.setCompanycode("1");
-		param.setCompanypsw("432423432");
+		param.setCompanycode("00127");
+		param.setCompanypsw("123");
 		param.setWechatPubInfoID("43243243");
-		List<Map<String,Object>> list = new ArrayList<>();
-		Map<String, Object> map = new HashMap<>();
+		List<BaseDto> list = new ArrayList<>();
+		BaseDto map = new BaseDto();
 		map.put("gradeid", 123323);
 		map.put("gradecode", "4324343");
 		map.put("gradename", "测试3343");
