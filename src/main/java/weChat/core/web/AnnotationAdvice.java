@@ -2,6 +2,8 @@ package weChat.core.web;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,12 @@ import weChat.utils.RespMsgCode;
 @ControllerAdvice(annotations = RestController.class)
 public class AnnotationAdvice {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<Object> handlerRuntimeException(Exception ex,
 			WebRequest request) {
+		logger.error("系统出现错误", ex);
 		String message = ex.getMessage();
 		int code = RespMsgCode.SERVER_ERROR;
 		ErrorMsg errorMsg = new ErrorMsg(code, message);

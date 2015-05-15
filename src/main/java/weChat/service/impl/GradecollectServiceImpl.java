@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -31,8 +33,8 @@ public class GradecollectServiceImpl implements GradecollectService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
-	@Autowired
-	private EntityManager entityManager;
+
+
 
 	@Override
 	public MResponseParam syncGrade(MRequestParam param) {

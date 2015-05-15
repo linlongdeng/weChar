@@ -29,7 +29,7 @@ public class TestGradecollectController {
 		BaseDto map = new BaseDto();
 		map.put("gradeid", 123323);
 		map.put("gradecode", "4324343");
-		map.put("gradename", "测试3343");
+		map.put("gradename", "测试3343434234324");
 		map.put("status", 0);
 		list.add(map);
 		param.setData(list);
