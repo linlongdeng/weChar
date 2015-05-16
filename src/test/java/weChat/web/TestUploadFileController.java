@@ -13,14 +13,15 @@ public class TestUploadFileController {
 
 	@Test
 	public void testUploadfile() throws IOException{
+		PostFileUtils.ip ="http://123.59.55.176:5081/FileService";
 		String actionPath ="/uploadfile";
-		String filePath ="C:\\Users\\Administrator\\Documents\\settings.xml";
+		String filePath ="C:\\Users\\Administrator\\Pictures\\林龙灯照片-照相馆.JPG";
 		Map<String, Object> params = new HashMap<String, Object>();
-		/*params.put("fileext", "xml");
+		params.put("fileext", "jpg");
 		params.put("chunk", 0);
 		params.put("chunks", 1);
 		params.put("md5value", FileDigest.getFileMD5(filePath));
-		params.put("file_type", -1);*/
+		params.put("file_type", -1);
 		PostFileUtils.postFile(actionPath, params, "file", filePath);
 	}
 	@Test

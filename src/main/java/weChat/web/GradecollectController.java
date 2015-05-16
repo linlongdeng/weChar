@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import weChat.core.web.CommonController;
 import weChat.parameter.manage.MRequestParam;
 import weChat.parameter.manage.MResponseParam;
 import weChat.service.GradecollectService;
@@ -25,7 +25,7 @@ import weChat.service.GradecollectService;
  */
 @RestController
 @RequestMapping("/Membersync")
-public class GradecollectController extends CommonController {
+public class GradecollectController{
 
 	@Autowired
 	private GradecollectService gradecollectService;
@@ -37,7 +37,7 @@ public class GradecollectController extends CommonController {
 	 * @return
 	 */
 	@RequestMapping("/GradeCollect")
-	public MResponseParam syncGrade(@RequestBody MRequestParam param) {
+	public MResponseParam syncGrade(@Valid @RequestBody MRequestParam param) {
 		return gradecollectService.syncGrade(param);
 
 	}

@@ -5,7 +5,7 @@ package weChat.utils;
  * @date 2015年4月23日
  * @version 1.0.0
  */
-public class ResponseStatusCode {
+public class RespMsgCode {
 
 	/**成功编码**/
 	public static final int SUCCESS_CODE= 0;
@@ -15,6 +15,10 @@ public class ResponseStatusCode {
 	public static final int AUTHORIZATION_ERROR = 1003;
 	/**同步错误**/
 	public static final int SYNC_ERROR =1005;
+	/**服务器错误**/
+	public static final int SERVER_ERROR = 1006;
+	/**参数非法错误**/
+	public static final int ARGUMENT_NOT_VALID = 1007;
 	
 	
 	
