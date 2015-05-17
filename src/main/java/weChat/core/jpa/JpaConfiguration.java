@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
@@ -66,6 +67,23 @@ public class JpaConfiguration {
 
 	@Bean
 	@Primary
+	public EntityManager entityManager(
+			@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		return entityManager;
+	}
+	
+	@Bean
+	public EntityManager secordEntityManager(
+			@Qualifier("secordEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		return entityManager;
+	}
+	
+
+
+	@Bean
+	@Primary
 	public PlatformTransactionManager transactionManager(
 			@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
 		JpaTransactionManager transactionManager = new JpaTransactionManager(
@@ -81,14 +99,13 @@ public class JpaConfiguration {
 		return transactionManager;
 	}
 
-/*	@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", 
-			value = { "weChat.repository" }, transactionManagerRef = "transactionManager")
+	@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", value = { "weChat.repository" }, transactionManagerRef = "transactionManager")
 	private static class EnableJpaRepositoriesConfiguration {
 	}
-	@EnableJpaRepositories(entityManagerFactoryRef = "secordEntityManagerFactory", 
-			value = { "weChat.secordRepository" }, transactionManagerRef = "secordEntityManagerFactory")
-	private static class  EnableSecondJpaRepositoriesConfiguration{
-		
-	}*/
+
+	@EnableJpaRepositories(entityManagerFactoryRef = "secordEntityManagerFactory", value = { "weChat.secordRepository" }, transactionManagerRef = "secordTransactinManager")
+	private static class EnableSecondJpaRepositoriesConfiguration {
+
+	}
 
 }

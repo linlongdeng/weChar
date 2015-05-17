@@ -20,7 +20,7 @@ public class PostJsonUtils {
 		System.setProperty("http.proxyPort", "8888");
 	}
 	
-	private static String  ip ="http://192.168.82.119:8080/weChat";
+	private static String  ip ="http://127.0.0.1:8080/weChat";
 	/**
 	 * 发送HttpPost请求
 	 * 

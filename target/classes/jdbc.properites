@@ -4,9 +4,9 @@ spring.datasource.password= root..admin
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.datasource.package=weChat.domain
 
-spring.datasource2.url=jdbc:mysql://192.168.73.143/wjdbcenter
+spring.datasource2.url=jdbc:mysql://127.0.0.1/spring
 spring.datasource2.username=root
-spring.datasource2.password= root..admin
+spring.datasource2.password= 123456
 spring.datasource2.driver-class-name=com.mysql.jdbc.Driver
 spring.datasource2.package=weChat.secordDomain
 
