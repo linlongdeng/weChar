@@ -13,17 +13,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@EnableConfigurationProperties(SecondDataSourceProperites.class)
+// @EnableConfigurationProperties(SecondDataSourceProperites.class)
 public class DataSourceConfiguration {
 
-	
 	@Autowired
 	private DataSourceProperties properties;
-	
-	@Autowired
-	private SecondDataSourceProperites secondProperites;
 
-	@Bean(name="primaryDataSource")
+	@Bean
 	@Primary
 	public DataSource dataSource() {
 		DataSourceBuilder factory = DataSourceBuilder
@@ -35,22 +31,22 @@ public class DataSourceConfiguration {
 		DataSource dataSource = factory.build();
 		return dataSource;
 	}
-	
-	
-	
-	@Bean(name="secordDataSource")
-	@ConfigurationProperties(prefix = SecondDataSourceProperites.PREFIX)
-	public DataSource secondaryDataSource() {
-		
-		DataSourceBuilder factory = DataSourceBuilder
-				.create(this.secondProperites.getClassLoader())
-				.driverClassName(this.secondProperites.getDriverClassName())
-				.url(this.secondProperites.getUrl())
-				.username(this.secondProperites.getUsername())
-				.password(this.secondProperites.getPassword());
-		DataSource dataSource = factory.build();
-		return dataSource;
-	}
-	
-	
+
+	/*
+	 * @Autowired private SecondDataSourceProperites secondProperites;
+	 * 
+	 * @Bean(name="secordDataSource")
+	 * 
+	 * @ConfigurationProperties(prefix = SecondDataSourceProperites.PREFIX)
+	 * public DataSource secondaryDataSource() {
+	 * 
+	 * DataSourceBuilder factory = DataSourceBuilder
+	 * .create(this.secondProperites.getClassLoader())
+	 * .driverClassName(this.secondProperites.getDriverClassName())
+	 * .url(this.secondProperites.getUrl())
+	 * .username(this.secondProperites.getUsername())
+	 * .password(this.secondProperites.getPassword()); DataSource dataSource =
+	 * factory.build(); return dataSource; }
+	 */
+
 }

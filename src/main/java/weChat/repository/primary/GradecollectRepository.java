@@ -1,9 +1,9 @@
-package weChat.repository;
+package weChat.repository.primary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import weChat.domain.Gradecollect;
+import weChat.domain.primary.Gradecollect;
 
 public interface GradecollectRepository extends
 		JpaRepository<Gradecollect, Integer> {

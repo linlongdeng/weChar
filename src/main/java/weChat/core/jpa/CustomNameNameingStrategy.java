@@ -5,7 +5,7 @@ import org.hibernate.internal.util.StringHelper;
 import org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy;
 
 @SuppressWarnings("serial")
-public class MyNameNameingStrategy extends SpringNamingStrategy {
+public class CustomNameNameingStrategy extends SpringNamingStrategy {
 
 	@Override
 	public String propertyToColumnName(String propertyName) {

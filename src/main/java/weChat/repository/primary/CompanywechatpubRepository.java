@@ -1,8 +1,8 @@
-package weChat.repository;
+package weChat.repository.primary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import weChat.domain.Companywechatpub;
+import weChat.domain.primary.Companywechatpub;
 
 public interface CompanywechatpubRepository extends
 		JpaRepository<Companywechatpub, Integer> {

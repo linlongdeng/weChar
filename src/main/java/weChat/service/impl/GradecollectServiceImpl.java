@@ -16,12 +16,12 @@ import org.springframework.util.Assert;
 
 import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
-import weChat.domain.Company;
-import weChat.domain.Gradecollect;
+import weChat.domain.primary.Company;
+import weChat.domain.primary.Gradecollect;
 import weChat.parameter.manage.MRequestParam;
 import weChat.parameter.manage.MResponseParam;
-import weChat.repository.CompanyRepository;
-import weChat.repository.GradecollectRepository;
+import weChat.repository.primary.CompanyRepository;
+import weChat.repository.primary.GradecollectRepository;
 import weChat.service.GradecollectService;
 import weChat.utils.RespUtils;
 

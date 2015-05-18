@@ -1,4 +1,4 @@
-package weChat.domain;
+package weChat.domain.primary;
 
 import java.io.Serializable;
 import javax.persistence.*;
