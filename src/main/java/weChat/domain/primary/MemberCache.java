@@ -40,13 +40,14 @@ public class MemberCache implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createCardTime;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createTime;
+
 	private int gradeID;
 
 	private BigDecimal integralBalance;
 
 	private String kmid;
-
-	private int kmStatus;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastConsumeTime;
@@ -55,6 +56,8 @@ public class MemberCache implements Serializable {
 
 	private String memberName;
 
+	private String memberPsw;
+
 	private String mobile;
 
 	private String paperNumber;
@@ -62,6 +65,8 @@ public class MemberCache implements Serializable {
 	private String paperType;
 
 	private String sex;
+
+	private byte source;
 
 	private String status;
 
@@ -156,6 +161,14 @@ public class MemberCache implements Serializable {
 		this.createCardTime = createCardTime;
 	}
 
+	public Date getCreateTime() {
+		return this.createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
 	public int getGradeID() {
 		return this.gradeID;
 	}
@@ -180,14 +193,6 @@ public class MemberCache implements Serializable {
 		this.kmid = kmid;
 	}
 
-	public int getKmStatus() {
-		return this.kmStatus;
-	}
-
-	public void setKmStatus(int kmStatus) {
-		this.kmStatus = kmStatus;
-	}
-
 	public Date getLastConsumeTime() {
 		return this.lastConsumeTime;
 	}
@@ -210,6 +215,14 @@ public class MemberCache implements Serializable {
 
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
+	}
+
+	public String getMemberPsw() {
+		return this.memberPsw;
+	}
+
+	public void setMemberPsw(String memberPsw) {
+		this.memberPsw = memberPsw;
 	}
 
 	public String getMobile() {
@@ -242,6 +255,14 @@ public class MemberCache implements Serializable {
 
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	public byte getSource() {
+		return this.source;
+	}
+
+	public void setSource(byte source) {
+		this.source = source;
 	}
 
 	public String getStatus() {

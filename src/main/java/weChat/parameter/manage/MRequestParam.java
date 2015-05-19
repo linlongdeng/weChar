@@ -27,7 +27,7 @@ public class MRequestParam {
 	
 	/**场所服务号ID**/
 	  @NotNull
-	private String WechatPubInfoID;
+	private int wechatpubinfoid;
 	/**数据**/
 	private List<BaseDto> data;
 
@@ -47,13 +47,7 @@ public class MRequestParam {
 		this.companypsw = companypsw;
 	}
 
-	public String getWechatPubInfoID() {
-		return WechatPubInfoID;
-	}
 
-	public void setWechatPubInfoID(String wechatPubInfoID) {
-		WechatPubInfoID = wechatPubInfoID;
-	}
 
 	public List<BaseDto> getData() {
 		return data;
@@ -61,6 +55,14 @@ public class MRequestParam {
 
 	public void setData(List<BaseDto> data) {
 		this.data = data;
+	}
+
+	public int getWechatpubinfoid() {
+		return wechatpubinfoid;
+	}
+
+	public void setWechatpubinfoid(int wechatpubinfoid) {
+		this.wechatpubinfoid = wechatpubinfoid;
 	}
 
 

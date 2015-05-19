@@ -6,4 +6,11 @@ import weChat.domain.primary.MemberCache;
 
 public interface MemberCacheRepository extends JpaRepository<MemberCache, String> {
 
+	/**
+	 * 查找会员信息
+	 * @param companyID
+	 * @param memberid
+	 * @return
+	 */
+	public MemberCache findTopByCompanyIDAndMemberid(int companyID, String memberid);
 }

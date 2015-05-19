@@ -303,4 +303,15 @@ public class BaseDto extends HashMap implements Dto, Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+	@Override
+	public Date getAsDate(String key, String format) {
+		Object obj = TypeCaseHelper.convert(get(key), "Date",format);
+		if (obj != null)
+			return (Date) obj;
+		else
+			return null;
+	}
 }

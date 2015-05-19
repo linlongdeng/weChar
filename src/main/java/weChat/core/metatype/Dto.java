@@ -202,6 +202,14 @@ public interface Dto extends Map {
 	 */
 	public String getMsg();
 	
-	
+	/**
+	 * 取出属性值
+	 * 
+	 * @param pStr
+	 *            :属性Key
+	 *  @param format格式化信息
+	 * @return Integer
+	 */
+	public Date getAsDate(String pStr, String format);
 	
 }

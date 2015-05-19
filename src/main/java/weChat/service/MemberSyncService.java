@@ -10,12 +10,21 @@ import weChat.parameter.manage.MResponseParam;
  * @date 2015年4月23日
  * @version 1.0.0
  */
-public interface GradecollectService {
+public interface MemberSyncService {
 	/**
 	 * 同步会员等级
 	 * @param param
 	 * @return
 	 */
 	@Transactional
-	public MResponseParam syncGrade(MRequestParam param);
+	public MResponseParam memberLevel(MRequestParam param);
+	
+	
+	/**
+	 * 会员信息同步
+	 * @param param
+	 * @return
+	 */
+	@Transactional
+	public MResponseParam memberInfo(MRequestParam param);
 }

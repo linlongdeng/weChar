@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import weChat.parameter.manage.MRequestParam;
 import weChat.parameter.manage.MResponseParam;
-import weChat.service.GradecollectService;
+import weChat.service.MemberSyncService;
 
 /**
  * @author deng
@@ -25,10 +25,10 @@ import weChat.service.GradecollectService;
  */
 @RestController
 @RequestMapping("/Membersync")
-public class GradecollectController{
+public class MemberSyncController{
 
 	@Autowired
-	private GradecollectService gradecollectService;
+	private MemberSyncService memberSyncService;
 
 	/**
 	 * 会员等级同步
@@ -36,19 +36,21 @@ public class GradecollectController{
 	 * @param param
 	 * @return
 	 */
-	@RequestMapping("/GradeCollect")
-	public MResponseParam syncGrade(@Valid @RequestBody MRequestParam param) {
-		return gradecollectService.syncGrade(param);
+	@RequestMapping("/member_level")
+	public MResponseParam memberLevel(@Valid @RequestBody MRequestParam param) {
+		return memberSyncService.memberLevel(param);
 
 	}
-	
-/*	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Map<String, Object>> handleException(Exception ex,
-			HttpServletRequest request) {
-		Map<String, Object> body = new HashMap<String,Object>();
-		body.put("error", ex.getMessage());
-		HttpStatus status = HttpStatus.OK;
-		return new ResponseEntity<Map<String, Object>>(body, status);
-	}*/
+	/**
+	 * 会员信息同步
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping("/member_info")
+	public MResponseParam  memberInfo(@Valid @RequestBody MRequestParam param){
+		return memberSyncService.memberInfo(param);
+	}
+
+
 
 }
