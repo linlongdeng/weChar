@@ -1,7 +1,11 @@
 package weChat.domain.primary;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -29,6 +33,8 @@ public class MemberCache implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
 
+	@NotNull
+	@Size(max=20)
 	private String cardnum;
 
 	private int companyID;

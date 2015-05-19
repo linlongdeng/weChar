@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
@@ -38,8 +47,10 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 
 	@Autowired
 	private MemberCacheRepository memberCacheRepository;
-	
-	public static final String dateFormat ="yyyy-MM-dd HH:mm:ss";
+	@Autowired
+	private LocalValidatorFactoryBean validator;
+
+	public static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	@Override
 	public MResponseParam memberLevel(MRequestParam param) {
@@ -53,8 +64,7 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 				Integer gradeid = dto.getAsInteger("gradeid");
 				Gradecollect gradecollect = gradecollectRepository
 						.findFirstByCompanyCodeAndWechatPubInfoIDAndGradeID(
-								companycode, wechatpubinfoid,
-								gradeid);
+								companycode, wechatpubinfoid, gradeid);
 				String gradecode = dto.getAsString("gradecode");
 				String gradename = dto.getAsString("gradename");
 				Integer status = dto.getAsInteger("status");
@@ -94,7 +104,7 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 				String memberid = dto.getAsString("memberid");
 				MemberCache memberCache = memberCacheRepository
 						.findTopByCompanyIDAndMemberid(companyID, memberid);
-				if(memberCache== null){
+				if (memberCache == null) {
 					memberCache = new MemberCache();
 					memberCache.setCompanyID(companyID);
 					memberCache.setMemberid(dto.getAsString("memberid"));
@@ -108,27 +118,62 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 				memberCache.setSex(dto.getAsString("sex"));
 				memberCache.setPaperType(dto.getAsString("papertype"));
 				memberCache.setPaperNumber(dto.getAsString("papernumber"));
-				memberCache.setCreateCardTime(dto.getAsDate("createcardtime",dateFormat));
+				memberCache.setCreateCardTime(dto.getAsDate("createcardtime",
+						dateFormat));
 				memberCache.setMemberPsw(dto.getAsString("memberpsw"));
 				memberCache.setStatus(dto.getAsString("status"));
 				memberCache.setMobile(dto.getAsString("mobile"));
 				memberCache.setUseLimitDate(dto.getAsDate("useLimitdate"));
 				memberCache.setAccountCash(dto.getAsBigDecimal("accountcash"));
-				memberCache.setAccountPresent(dto.getAsBigDecimal("accountpresent"));
-				memberCache.setIntegralBalance(dto.getAsBigDecimal("integralbalance"));
-				memberCache.setConsumeTotal(dto.getAsBigDecimal("consumetotal"));
-				memberCache.setAccountBalance(dto.getAsBigDecimal("accountbalance"));
-				memberCache.setIntegralBalance(dto.getAsBigDecimal("integralbalance"));
+				memberCache.setAccountPresent(dto
+						.getAsBigDecimal("accountpresent"));
+				memberCache.setIntegralBalance(dto
+						.getAsBigDecimal("integralbalance"));
+				memberCache
+						.setConsumeTotal(dto.getAsBigDecimal("consumetotal"));
+				memberCache.setAccountBalance(dto
+						.getAsBigDecimal("accountbalance"));
+				memberCache.setIntegralBalance(dto
+						.getAsBigDecimal("integralbalance"));
 				memberCache.setConsumeTimes(dto.getAsInteger("consumetimes"));
-				memberCache.setLastConsumeTime(dto.getAsDate("lastconsumetime",dateFormat));
+				memberCache.setLastConsumeTime(dto.getAsDate("lastconsumetime",
+						dateFormat));
 				memberCache.setCreateTime(new Date());
 				memberCache.setUpdateTime(new Date());
-				list.add(memberCache);
+				String errorMsg = validate(memberCache, "data");
+				if (errorMsg == null) {
+					list.add(memberCache);
+				} else {
+					// 参数校验出错
+					return RespUtils.parameterError(errorMsg);
+				}
 			}
-			//保存信息
+			// 保存信息
 			memberCacheRepository.save(list);
 		}
 
 		return RespUtils.successMR();
+	}
+
+	public String validate(MemberCache target, String objectName) {
+		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(
+				target, objectName);
+		validator.validate(target, errors);
+		boolean hasErrors = errors.hasErrors();
+		if (hasErrors) {
+			ObjectError objectError = errors.getGlobalError();
+			if (objectError != null) {
+				String message = objectError.getDefaultMessage();
+				return message;
+			}
+			FieldError fieldError = errors.getFieldError();
+			if (fieldError != null) {
+				String message = objectName + "." + fieldError.getField() + ":"
+						+ fieldError.getDefaultMessage();
+				return message;
+			}
+
+		}
+		return null;
 	}
 }

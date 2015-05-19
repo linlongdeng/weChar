@@ -102,6 +102,8 @@ public class BaseDto extends HashMap implements Dto, Serializable {
 
 	/**
 	 * 以String类型返回键值
+	 * 如果key值对应的对象为空，直接返回空，不再返回""， 修改：林龙灯 2015-05-19
+	 * 
 	 * 
 	 * @param key
 	 *            键名
@@ -112,7 +114,7 @@ public class BaseDto extends HashMap implements Dto, Serializable {
 		if (obj != null)
 			return (String) obj;
 		else
-			return "";
+			return null;
 	}
 	
 	/**

@@ -19,5 +19,13 @@ public class RespUtils {
 	public static MResponseParam successMR() {
 		return new MResponseParam(SUCCESS_CODE, "");
 	}
+	/**
+	 * 管理系统数据同步接口数据错误
+	 * @param msg
+	 * @return
+	 */
+	public static MResponseParam parameterError(String msg){
+		return new MResponseParam(ARGUMENT_NOT_VALID,msg);
+	}
 
 }

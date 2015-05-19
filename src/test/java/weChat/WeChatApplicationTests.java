@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.validation.Validator;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +16,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 
 import weChat.core.rabbit.RabbitClientConfig;
 
@@ -23,13 +26,17 @@ import weChat.core.rabbit.RabbitClientConfig;
 @WebAppConfiguration
 public class WeChatApplicationTests {
 
+	@Autowired
+	private Validator validator;
 
-	public void testHql(){
-		String hql =" select m from MemberCache m ";
-	}
+	@Autowired
+	private OptionalValidatorFactoryBean optionalValidatorFactoryBean;
+	@Autowired
+	private LocalValidatorFactoryBean localValidatorFactoryBean;
 	
 	@Test
 	public void contextLoads() {
+		System.out.println(validator);
 	}
 
 	

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -46,10 +47,10 @@ public class TestGradecollectController {
 		param.setWechatpubinfoid(43243243);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();
-		map.put("kmid", "123456");
+		map.put("kmid", "1234567");
 		map.put("gradeid", 0	);
-		map.put("cardnum", "456");
-		map.put("memberid", "125422");
+		//map.put("cardnum", "456");
+		map.put("memberid", "123456789");
 		map.put("membername", "张三");
 		map.put("birthday", "1977-01-01");
 		map.put("sex", "男");
@@ -71,32 +72,7 @@ public class TestGradecollectController {
 		map.put("integralbalance", 33);
 		map.put("consumetotal", 33);
 		list.add(map);
-		map = new BaseDto();
-		map.put("kmid", "123456");
-		map.put("gradeid", 0	);
-		map.put("cardnum", "456");
-		map.put("memberid", "1254225");
-		map.put("membername", "张三1");
-		map.put("birthday", "1977-01-01");
-		map.put("sex", "男");
-		map.put("papertype", "身份证");
-		map.put("papernumber", "350101011001010");
-		map.put("createcardtime", "2010-01-01 11:00:00");
-		map.put("memberpsw", "");
-		map.put("status", "启用");
-		map.put("mobile", "13500001111");
-		map.put("useLimitdate", "2014-01-01");
-		map.put("accountbalance", 200.23);
-		map.put("integralbalance", 2512);
-		map.put("consumetotal", 541.2);
-		map.put("consumetimes", 909);
-		map.put("lastconsumetime", "2010-01-01 11:00:00");
-		map.put("accountcash", 20);
-		map.put("accountpresent", 343);
-		map.put("accountbalance", 33.44);
-		map.put("integralbalance", 33);
-		map.put("consumetotal", 33);
-		list.add(map);
+	
 		param.setData(list);
 		Map<String, Object> result = PostJsonUtils.postObject(actionPath, param);
 		System.out.println(result);
