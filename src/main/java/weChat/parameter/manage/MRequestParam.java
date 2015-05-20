@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import weChat.core.metatype.BaseDto;
 /**
  * 管理系统数据同步接口（管理系统发起）送上来的参数
@@ -29,6 +31,7 @@ public class MRequestParam {
 	  @NotNull
 	private int wechatpubinfoid;
 	/**数据**/
+	  @NotEmpty
 	private List<BaseDto> data;
 
 	public String getCompanycode() {

@@ -1,4 +1,4 @@
-package weChat.core.web;
+package weChat.web.advice;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import weChat.core.exception.ValidationErrorException;
+import weChat.core.web.ErrorMsg;
 import weChat.utils.RespMsgCode;
 
 //Target all Controllers annotated with @RestController

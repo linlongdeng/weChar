@@ -1,19 +1,30 @@
-package weChat.web;
+package weChat.web.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import weChat.core.metatype.BaseDto;
+import weChat.core.metatype.Dto;
+import weChat.domain.primary.Company;
 import weChat.parameter.manage.MRequestParam;
 import weChat.parameter.manage.MResponseParam;
 import weChat.service.MemberSyncService;
@@ -25,7 +36,7 @@ import weChat.service.MemberSyncService;
  */
 @RestController
 @RequestMapping("/Membersync")
-public class MemberSyncController{
+public class MemberSyncController {
 
 	@Autowired
 	private MemberSyncService memberSyncService;
@@ -37,20 +48,24 @@ public class MemberSyncController{
 	 * @return
 	 */
 	@RequestMapping("/member_level")
-	public MResponseParam memberLevel(@Valid @RequestBody MRequestParam param) {
-		return memberSyncService.memberLevel(param);
+	public MResponseParam memberLevel(@ModelAttribute Company company,
+			@ModelAttribute("wechatpubinfoid") int wechatpubinfoid,
+			@ModelAttribute("data") List<Dto> data) {
+		return memberSyncService.memberLevel(company, wechatpubinfoid, data);
 
 	}
+
 	/**
 	 * 会员信息同步
+	 * 
 	 * @param param
 	 * @return
 	 */
 	@RequestMapping("/member_info")
-	public MResponseParam  memberInfo(@Valid @RequestBody MRequestParam param){
-		return memberSyncService.memberInfo(param);
+	public MResponseParam memberInfo(@ModelAttribute Company company,
+			@ModelAttribute("wechatpubinfoid") int wechatpubinfoid,
+			@ModelAttribute("data") List<Dto> data) {
+		return memberSyncService.memberInfo(company, wechatpubinfoid, data);
 	}
-
-
 
 }

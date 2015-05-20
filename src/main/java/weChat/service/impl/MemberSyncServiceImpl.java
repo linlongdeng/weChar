@@ -56,18 +56,14 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 	public static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	@Override
-	public MResponseParam memberLevel(MRequestParam param) {
-		List<BaseDto> data = param.getData();
-		String companycode = param.getCompanycode();
-		Company company = companyRepository.findFirstByCompanyCode(companycode);
-		Assert.notNull(company, "商家编码不存在");
-		int wechatpubinfoid = param.getWechatpubinfoid();
+	public MResponseParam memberLevel(Company company, int wechatpubinfoid, List<Dto> data) {
+		String companyCode = company.getCompanyCode();
 		if (data != null) {
-			for (BaseDto dto : data) {
+			for (Dto dto : data) {
 				Integer gradeid = dto.getAsInteger("gradeid");
 				Gradecollect gradecollect = gradecollectRepository
 						.findFirstByCompanyCodeAndWechatPubInfoIDAndGradeID(
-								companycode, wechatpubinfoid, gradeid);
+								companyCode, wechatpubinfoid, gradeid);
 				String gradecode = dto.getAsString("gradecode");
 				String gradename = dto.getAsString("gradename");
 				Integer status = dto.getAsInteger("status");
@@ -76,8 +72,7 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 					// 有问题
 					gradecollect.setCompanyID(company.getCompanyID());
 					// 格式不对
-					gradecollect.setWechatPubInfoID(Integer
-							.valueOf(wechatpubinfoid));
+					gradecollect.setWechatPubInfoID(wechatpubinfoid);
 					// 格式不对
 					gradecollect.setGradeID(gradeid);
 					gradecollect.setCreateTime(new Date());
@@ -93,17 +88,13 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 	}
 
 	@Override
-	public MResponseParam memberInfo(MRequestParam param) {
-		String companycode = param.getCompanycode();
-		int wechatpubinfoid = param.getWechatpubinfoid();
-		Company company = companyRepository.findFirstByCompanyCode(companycode);
-		Assert.notNull(company, "商家编码不存在");
+	public MResponseParam memberInfo(Company company, int wechatpubinfoid, List<Dto> data) {
+
 		StringBuffer sb = new StringBuffer();
 		int companyID = company.getCompanyID();
-		List<BaseDto> data = param.getData();
 		if (data != null) {
 			List<MemberCache> list = new ArrayList<MemberCache>();
-			for (BaseDto dto : data) {
+			for (Dto dto : data) {
 				String kmid = dto.getAsString("kmid");
 				String memberid = dto.getAsString("memberid");
 				MemberCache memberCache = memberCacheRepository

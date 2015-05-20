@@ -1,7 +1,14 @@
 package weChat.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import weChat.core.metatype.BaseDto;
+import weChat.core.metatype.Dto;
+import weChat.domain.primary.Company;
 import weChat.parameter.manage.MRequestParam;
 import weChat.parameter.manage.MResponseParam;
 
@@ -17,7 +24,7 @@ public interface MemberSyncService {
 	 * @return
 	 */
 	@Transactional
-	public MResponseParam memberLevel(MRequestParam param);
+	public MResponseParam memberLevel(Company company, int wechatpubinfoid, List<Dto> data);
 	
 	
 	/**
@@ -26,5 +33,5 @@ public interface MemberSyncService {
 	 * @return
 	 */
 	@Transactional
-	public MResponseParam memberInfo(MRequestParam param);
+	public MResponseParam memberInfo(Company company, int wechatpubinfoid, List<Dto> data);
 }

@@ -21,10 +21,10 @@ public class TestGradecollectController {
 
 	@Test
 	public void testSyncGrade() throws JsonGenerationException, JsonMappingException, IOException{
-		String actionPath ="/Membersync/GradeCollect";
+		String actionPath ="/Membersync/member_level";
 		MRequestParam param = new MRequestParam();
 		param.setCompanycode("00127");
-		param.setCompanypsw("123");
+		param.setCompanypsw("25d55ad283aa400af464c76d713c07ad");
 		param.setWechatpubinfoid(43243243);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();
@@ -43,7 +43,7 @@ public class TestGradecollectController {
 		String actionPath ="/Membersync/member_info";
 		MRequestParam param = new MRequestParam();
 		param.setCompanycode("00127");
-		param.setCompanypsw("123");
+		param.setCompanypsw("25d55ad283aa400af464c76d713c07ad");
 		param.setWechatpubinfoid(43243243);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();
