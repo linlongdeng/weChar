@@ -11,12 +11,14 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -56,7 +58,7 @@ public class JpaConfiguration {
 		return vendorProperties;
 	}
 
-	@Bean
+	@Bean()
 	@Primary
 	public EntityManager entityManager(
 			@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
@@ -64,6 +66,7 @@ public class JpaConfiguration {
 				.createEntityManager();
 		return entityManager;
 	}
+	
 
 	@Bean
 	@Primary

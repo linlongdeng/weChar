@@ -11,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.hibernate.jpa.internal.EntityManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,7 @@ import weChat.repository.primary.CompanyRepository;
 import weChat.repository.primary.GradecollectRepository;
 import weChat.repository.primary.MemberCacheRepository;
 import weChat.service.MemberSyncService;
+import weChat.service.ValidationService;
 import weChat.utils.RespUtils;
 
 @Service
@@ -47,8 +49,9 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 
 	@Autowired
 	private MemberCacheRepository memberCacheRepository;
+
 	@Autowired
-	private LocalValidatorFactoryBean validator;
+	private ValidationService validationService;
 
 	public static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
@@ -95,6 +98,7 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 		int wechatpubinfoid = param.getWechatpubinfoid();
 		Company company = companyRepository.findFirstByCompanyCode(companycode);
 		Assert.notNull(company, "商家编码不存在");
+		StringBuffer sb = new StringBuffer();
 		int companyID = company.getCompanyID();
 		List<BaseDto> data = param.getData();
 		if (data != null) {
@@ -140,40 +144,14 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 						dateFormat));
 				memberCache.setCreateTime(new Date());
 				memberCache.setUpdateTime(new Date());
-				String errorMsg = validate(memberCache, "data");
-				if (errorMsg == null) {
-					list.add(memberCache);
-				} else {
-					// 参数校验出错
-					return RespUtils.parameterError(errorMsg);
-				}
+				//校验数据，如果出错的话，自动抛出异常，中止数据同步
+				validationService.validate(memberCache, "data");
+				list.add(memberCache);
 			}
 			// 保存信息
 			memberCacheRepository.save(list);
 		}
-
 		return RespUtils.successMR();
 	}
 
-	public String validate(MemberCache target, String objectName) {
-		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(
-				target, objectName);
-		validator.validate(target, errors);
-		boolean hasErrors = errors.hasErrors();
-		if (hasErrors) {
-			ObjectError objectError = errors.getGlobalError();
-			if (objectError != null) {
-				String message = objectError.getDefaultMessage();
-				return message;
-			}
-			FieldError fieldError = errors.getFieldError();
-			if (fieldError != null) {
-				String message = objectName + "." + fieldError.getField() + ":"
-						+ fieldError.getDefaultMessage();
-				return message;
-			}
-
-		}
-		return null;
-	}
 }

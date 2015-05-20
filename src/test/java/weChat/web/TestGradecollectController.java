@@ -49,8 +49,8 @@ public class TestGradecollectController {
 		BaseDto map = new BaseDto();
 		map.put("kmid", "1234567");
 		map.put("gradeid", 0	);
-		//map.put("cardnum", "456");
-		map.put("memberid", "123456789");
+		map.put("cardnum", "456");
+		map.put("memberid", "123456790");
 		map.put("membername", "张三");
 		map.put("birthday", "1977-01-01");
 		map.put("sex", "男");

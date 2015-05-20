@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import weChat.core.exception.ValidationErrorException;
 import weChat.utils.RespMsgCode;
 
 //Target all Controllers annotated with @RestController
@@ -57,7 +58,19 @@ public class AnnotationAdvice {
 		return handleExceptionInternal(errorMsg);
 		
 	}
-	
+	/**
+	 * 参数校验不通过
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(value={ValidationErrorException.class})
+	public ResponseEntity<Object> handlerValidationErrorException(ValidationErrorException ex, WebRequest request){
+		int code = RespMsgCode.ARGUMENT_NOT_VALID;
+		String msg = ex.toString();
+		ErrorMsg errorMsg = new ErrorMsg(code, msg);
+		return handleExceptionInternal(errorMsg);
+	}
 	protected ResponseEntity<Object> handleExceptionInternal(Object body) {
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<Object>(body, headers, HttpStatus.OK);

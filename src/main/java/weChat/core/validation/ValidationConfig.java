@@ -14,7 +14,6 @@ public class ValidationConfig {
 	@Bean
 	public LocalValidatorFactoryBean localValidatorFactoryBean(){
 		LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
-		//validatorFactoryBean.afterPropertiesSet();
 		return validatorFactoryBean;
 	}
 
