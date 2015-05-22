@@ -17,7 +17,7 @@ import weChat.core.metatype.BaseDto;
 import weChat.json.PostJsonUtils;
 import weChat.parameter.impl.MReqParam;
 
-public class TestGradecollectController {
+public class GradecollectControllerTest {
 
 	@Test
 	public void testSyncGrade() throws JsonGenerationException, JsonMappingException, IOException{

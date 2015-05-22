@@ -13,12 +13,16 @@ public class RespMsgCode {
 	public static final int PARAMETER_ERROR= 1001;
 	/**授权错误**/
 	public static final int AUTHORIZATION_ERROR = 1003;
+	/**查询结果为空**/
+	public static final int NO_EXIST = 1004;
 	/**同步错误**/
 	public static final int SYNC_ERROR =1005;
 	/**服务器错误**/
 	public static final int SERVER_ERROR = 1006;
 	/**参数非法错误**/
 	public static final int ARGUMENT_NOT_VALID = 1007;
+	
+	
 	
 	
 	

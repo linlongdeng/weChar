@@ -1,32 +1,15 @@
 package weChat.web.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
 import weChat.domain.primary.Company;
-import weChat.parameter.impl.MReqParam;
-import weChat.parameter.impl.MRespParam;
+import weChat.parameter.IRespParam;
 import weChat.service.MemberSyncService;
 import weChat.utils.AppConstants;
 
@@ -49,7 +32,7 @@ public class MemberSyncController {
 	 * @return
 	 */
 	@RequestMapping("/member_level")
-	public MRespParam memberLevel(@ModelAttribute Company company,
+	public IRespParam memberLevel(@ModelAttribute Company company,
 			@ModelAttribute(AppConstants.WECHATPUBINFOID) int wechatpubinfoid,
 			@ModelAttribute(AppConstants.DATA) List<Dto> data) {
 		return memberSyncService.memberLevel(company, wechatpubinfoid, data);
@@ -63,7 +46,7 @@ public class MemberSyncController {
 	 * @return
 	 */
 	@RequestMapping("/member_info")
-	public MRespParam memberInfo(@ModelAttribute Company company,
+	public IRespParam memberInfo(@ModelAttribute Company company,
 			@ModelAttribute(AppConstants.WECHATPUBINFOID) int wechatpubinfoid,
 			@ModelAttribute(AppConstants.DATA) List<Dto> data) {
 		return memberSyncService.memberInfo(company, wechatpubinfoid, data);

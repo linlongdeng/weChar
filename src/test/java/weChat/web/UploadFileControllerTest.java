@@ -9,7 +9,7 @@ import org.junit.Test;
 import weChat.file.FileDigest;
 import weChat.file.PostFileUtils;
 
-public class TestUploadFileController {
+public class UploadFileControllerTest {
 
 	@Test
 	public void testUploadfile() throws IOException{

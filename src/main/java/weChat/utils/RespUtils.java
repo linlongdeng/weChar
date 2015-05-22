@@ -1,6 +1,7 @@
 package weChat.utils;
 
 import static weChat.utils.RespMsgCode.*;
+import weChat.parameter.IRespParam;
 import weChat.parameter.impl.MRespParam;
 
 /**
@@ -16,7 +17,7 @@ public class RespUtils {
 	 * 
 	 * @return
 	 */
-	public static MRespParam successMR() {
+	public static IRespParam successMR() {
 		return new MRespParam(SUCCESS_CODE, "");
 	}
 	/**
@@ -24,8 +25,15 @@ public class RespUtils {
 	 * @param msg
 	 * @return
 	 */
-	public static MRespParam parameterError(String msg){
+	public static IRespParam parameterError(String msg){
 		return new MRespParam(ARGUMENT_NOT_VALID,msg);
+	}
+	/**
+	 * 查询结果为空
+	 * @return
+	 */
+	public static IRespParam notExist(){
+		return new MRespParam(NO_EXIST,"查询结果为空");
 	}
 
 }

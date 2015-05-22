@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
 import weChat.domain.primary.Company;
+import weChat.parameter.IRespParam;
 import weChat.parameter.impl.MReqParam;
 import weChat.parameter.impl.MRespParam;
 
@@ -24,7 +25,7 @@ public interface MemberSyncService {
 	 * @return
 	 */
 	@Transactional
-	public MRespParam memberLevel(Company company, int wechatpubinfoid, List<Dto> data);
+	public IRespParam memberLevel(Company company, int wechatpubinfoid, List<Dto> data);
 	
 	
 	/**
@@ -33,5 +34,5 @@ public interface MemberSyncService {
 	 * @return
 	 */
 	@Transactional
-	public MRespParam memberInfo(Company company, int wechatpubinfoid, List<Dto> data);
+	public IRespParam memberInfo(Company company, int wechatpubinfoid, List<Dto> data);
 }

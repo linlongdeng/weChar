@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
 import weChat.parameter.IRespParam;
+import weChat.utils.RespMsgCode;
 /**
  * 具有动态属性的参数对象
  * @author deng
@@ -30,7 +31,10 @@ public class DynamicRespParam implements IRespParam {
 
 	private Dto otherProperties = new BaseDto();
 
-	
+	public DynamicRespParam(){
+		this.ret = RespMsgCode.SUCCESS_CODE;
+		this.msg ="";
+	}
 	
 	public DynamicRespParam(int ret, String msg) {
 		super();
@@ -38,9 +42,6 @@ public class DynamicRespParam implements IRespParam {
 		this.msg = msg;
 	}
 
-	public DynamicRespParam() {
-		super();
-	}
 
 	public int getRet() {
 		return ret;

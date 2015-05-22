@@ -12,19 +12,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import weChat.parameter.impl.MInfoReqParam;
 import weChat.service.CompanyService;
+import weChat.web.controller.CompanyController;
 import weChat.web.controller.RabbitmqController;
 
-@ControllerAdvice(assignableTypes = { RabbitmqController.class })
-public class RabbitmqControllerAdvice {
+@ControllerAdvice(assignableTypes = { RabbitmqController.class,
+		CompanyController.class })
+public class RabbitmqAndCompanyControllerAdvice {
 	@Autowired
 	private CompanyService companyService;
+
 	@ModelAttribute
 	public void populateModel(@RequestBody @Valid MInfoReqParam param,
 			HttpServletRequest request, Model model) {
 		String companycode = param.getCompanycode();
 		String companypsw = param.getCompanypsw();
 		int wechatpubinfoid = param.getWechatpubinfoid();
-		companyService.validateCompany(companycode, companypsw, wechatpubinfoid, model);
+		companyService.validateCompany(companycode, companypsw,
+				wechatpubinfoid, model);
 	}
 
 }

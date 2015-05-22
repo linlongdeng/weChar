@@ -30,6 +30,7 @@ import weChat.core.metatype.Dto;
 import weChat.domain.primary.Company;
 import weChat.domain.primary.Gradecollect;
 import weChat.domain.primary.MemberCache;
+import weChat.parameter.IRespParam;
 import weChat.parameter.impl.MReqParam;
 import weChat.parameter.impl.MRespParam;
 import weChat.repository.primary.CompanyRepository;
@@ -56,7 +57,7 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 	public static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	@Override
-	public MRespParam memberLevel(Company company, int wechatpubinfoid, List<Dto> data) {
+	public IRespParam memberLevel(Company company, int wechatpubinfoid, List<Dto> data) {
 		String companyCode = company.getCompanyCode();
 		if (data != null) {
 			for (Dto dto : data) {
@@ -88,7 +89,7 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 	}
 
 	@Override
-	public MRespParam memberInfo(Company company, int wechatpubinfoid, List<Dto> data) {
+	public IRespParam memberInfo(Company company, int wechatpubinfoid, List<Dto> data) {
 
 		StringBuffer sb = new StringBuffer();
 		int companyID = company.getCompanyID();
