@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import org.springframework.web.context.request.WebRequest;
 
 import weChat.core.exception.ValidationErrorException;
 import weChat.core.web.ErrorMsg;
+import weChat.parameter.IRespParam;
+import weChat.service.RespService;
 import weChat.utils.RespMsgCode;
 
 //Target all Controllers annotated with @RestController
@@ -26,14 +29,16 @@ public class AnnotationAdvice {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	@Autowired
+	private RespService respService;
+	
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<Object> handlerRuntimeException(Exception ex,
 			WebRequest request) {
 		logger.error("系统出现错误", ex);
 		String message = ex.getMessage();
-		int code = RespMsgCode.SERVER_ERROR;
-		ErrorMsg errorMsg = new ErrorMsg(code, message);
-		return handleExceptionInternal(errorMsg);
+		IRespParam error = respService.serverError(message);
+		return handleExceptionInternal(error);
 	}
 	/**
 	 * 参数校验出错
@@ -54,9 +59,8 @@ public class AnnotationAdvice {
 				msg = objectError.getObjectName() +":" +  objectError.getDefaultMessage();
 			}
 		}
-		int code = RespMsgCode.ARGUMENT_NOT_VALID;
-		ErrorMsg errorMsg = new ErrorMsg(code, msg);
-		return handleExceptionInternal(errorMsg);
+		IRespParam parameterError = respService.parameterError(msg);
+		return handleExceptionInternal(parameterError);
 		
 	}
 	/**
@@ -67,10 +71,9 @@ public class AnnotationAdvice {
 	 */
 	@ExceptionHandler(value={ValidationErrorException.class})
 	public ResponseEntity<Object> handlerValidationErrorException(ValidationErrorException ex, WebRequest request){
-		int code = RespMsgCode.ARGUMENT_NOT_VALID;
 		String msg = ex.toString();
-		ErrorMsg errorMsg = new ErrorMsg(code, msg);
-		return handleExceptionInternal(errorMsg);
+		IRespParam parameterError = respService.parameterError(msg);
+		return handleExceptionInternal(parameterError);
 	}
 	protected ResponseEntity<Object> handleExceptionInternal(Object body) {
 		HttpHeaders headers = new HttpHeaders();

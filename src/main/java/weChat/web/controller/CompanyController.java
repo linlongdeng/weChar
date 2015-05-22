@@ -1,6 +1,9 @@
 package weChat.web.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +14,7 @@ import weChat.domain.primary.Parameter;
 import weChat.parameter.IRespParam;
 import weChat.parameter.impl.DynamicRespParam;
 import weChat.repository.primary.ParameterRepository;
+import weChat.service.RespService;
 import weChat.utils.AppConstants;
 import weChat.utils.RespUtils;
 
@@ -21,6 +25,9 @@ public class CompanyController {
 
 	@Autowired
 	private ParameterRepository parameterRepository;
+	@Autowired
+	private RespService respService;
+
 	/**
 	 * 获取场所服务是否开启
 	 * @param company
@@ -41,7 +48,7 @@ public class CompanyController {
 			respParam.set("ismessagemodel", 0);
 			return respParam;
 		}else{
-			return RespUtils.notExist();
+			return respService.notExist();
 		}
 		
 	}

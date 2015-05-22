@@ -128,7 +128,14 @@ public class RabbitClientConfig {
 		this.replyTimeout = replyTimeout;
 	}
 
-	@Bean
+
+	 @Bean
+	MessageConverter messageConverter() {
+		// return new JsonMessageConverter();
+		return new Jackson2JsonMessageConverter();
+
+	}
+	 @Bean
 	public ConnectionFactory connectionFactory() {
 		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
 				getHost(), getPort());
@@ -187,12 +194,7 @@ public class RabbitClientConfig {
 	 * listenerAdapter; }
 	 */
 
-	@Bean
-	MessageConverter messageConverter() {
-		// return new JsonMessageConverter();
-		return new Jackson2JsonMessageConverter();
-
-	}
+	
 
 	public String getQueuedot() {
 		return queuedot;

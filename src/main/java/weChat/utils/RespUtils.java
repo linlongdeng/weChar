@@ -20,20 +20,6 @@ public class RespUtils {
 	public static IRespParam successMR() {
 		return new MRespParam(SUCCESS_CODE, "");
 	}
-	/**
-	 * 管理系统数据同步接口数据错误
-	 * @param msg
-	 * @return
-	 */
-	public static IRespParam parameterError(String msg){
-		return new MRespParam(ARGUMENT_NOT_VALID,msg);
-	}
-	/**
-	 * 查询结果为空
-	 * @return
-	 */
-	public static IRespParam notExist(){
-		return new MRespParam(NO_EXIST,"查询结果为空");
-	}
+	
 
 }
