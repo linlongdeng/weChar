@@ -1,7 +1,7 @@
 package weChat.utils;
 
 import static weChat.utils.RespMsgCode.*;
-import weChat.parameter.manage.MResponseParam;
+import weChat.parameter.impl.MRespParam;
 
 /**
  * 返回消息工具类
@@ -16,16 +16,16 @@ public class RespUtils {
 	 * 
 	 * @return
 	 */
-	public static MResponseParam successMR() {
-		return new MResponseParam(SUCCESS_CODE, "");
+	public static MRespParam successMR() {
+		return new MRespParam(SUCCESS_CODE, "");
 	}
 	/**
 	 * 管理系统数据同步接口数据错误
 	 * @param msg
 	 * @return
 	 */
-	public static MResponseParam parameterError(String msg){
-		return new MResponseParam(ARGUMENT_NOT_VALID,msg);
+	public static MRespParam parameterError(String msg){
+		return new MRespParam(ARGUMENT_NOT_VALID,msg);
 	}
 
 }

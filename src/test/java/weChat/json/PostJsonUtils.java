@@ -39,6 +39,7 @@ public class PostJsonUtils {
 		StringWriter stringWriter = new StringWriter();
 		mapper.writeValue(stringWriter, params);
 		String strParam = stringWriter.toString();
+		System.out.println("请求参数：" + strParam);
 		String strResult = post(actionPath, strParam);
 		Map<String, Object> resultParam = mapper.readValue(strResult, Map.class);
 		return resultParam;

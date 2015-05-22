@@ -25,9 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
 import weChat.domain.primary.Company;
-import weChat.parameter.manage.MRequestParam;
-import weChat.parameter.manage.MResponseParam;
+import weChat.parameter.impl.MReqParam;
+import weChat.parameter.impl.MRespParam;
 import weChat.service.MemberSyncService;
+import weChat.utils.AppConstants;
 
 /**
  * @author deng
@@ -48,9 +49,9 @@ public class MemberSyncController {
 	 * @return
 	 */
 	@RequestMapping("/member_level")
-	public MResponseParam memberLevel(@ModelAttribute Company company,
-			@ModelAttribute("wechatpubinfoid") int wechatpubinfoid,
-			@ModelAttribute("data") List<Dto> data) {
+	public MRespParam memberLevel(@ModelAttribute Company company,
+			@ModelAttribute(AppConstants.WECHATPUBINFOID) int wechatpubinfoid,
+			@ModelAttribute(AppConstants.DATA) List<Dto> data) {
 		return memberSyncService.memberLevel(company, wechatpubinfoid, data);
 
 	}
@@ -62,9 +63,9 @@ public class MemberSyncController {
 	 * @return
 	 */
 	@RequestMapping("/member_info")
-	public MResponseParam memberInfo(@ModelAttribute Company company,
-			@ModelAttribute("wechatpubinfoid") int wechatpubinfoid,
-			@ModelAttribute("data") List<Dto> data) {
+	public MRespParam memberInfo(@ModelAttribute Company company,
+			@ModelAttribute(AppConstants.WECHATPUBINFOID) int wechatpubinfoid,
+			@ModelAttribute(AppConstants.DATA) List<Dto> data) {
 		return memberSyncService.memberInfo(company, wechatpubinfoid, data);
 	}
 

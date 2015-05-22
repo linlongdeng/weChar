@@ -4,6 +4,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -30,36 +31,109 @@ import org.springframework.context.annotation.Configuration;
 import com.rabbitmq.client.AMQP.Exchange;
 
 @Configuration
-@ConfigurationProperties(prefix = "rebbitmq")
+@ConfigurationProperties(prefix = "rabbitmq")
 public class RabbitClientConfig {
-
+	@NotNull
+	private String scheme;
+	@NotNull
 	private String host;
-
+	@NotNull
 	private Integer port;
-
-	private String username;
-
+	@NotNull
+	private String login;
+	@NotNull
 	private String password;
-
+	@NotNull
 	private Integer connectionTimeOut;
-
-	private String exchangeName;
-
+	@NotNull
+	private String excharge;
+	@NotNull
 	private long replyTimeout;
-
-
-
-	
-
+	@NotNull
 	private String vhost;
+	@NotNull
+	private String queuedot;
 
+	public String getScheme() {
+		return scheme;
+	}
+
+	public void setScheme(String scheme) {
+		this.scheme = scheme;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public Integer getPort() {
+		return port;
+	}
+
+	public void setPort(Integer port) {
+		this.port = port;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Integer getConnectionTimeOut() {
+		return connectionTimeOut;
+	}
+
+	public void setConnectionTimeOut(Integer connectionTimeOut) {
+		this.connectionTimeOut = connectionTimeOut;
+	}
+
+
+
+	public String getExcharge() {
+		return excharge;
+	}
+
+	public void setExcharge(String excharge) {
+		this.excharge = excharge;
+	}
+
+	public String getVhost() {
+		return vhost;
+	}
+
+	public void setVhost(String vhost) {
+		this.vhost = vhost;
+	}
+
+	public long getReplyTimeout() {
+		return replyTimeout;
+	}
+
+	public void setReplyTimeout(long replyTimeout) {
+		this.replyTimeout = replyTimeout;
+	}
 
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
 				getHost(), getPort());
 		connectionFactory.setConnectionTimeout(getConnectionTimeOut());
-		connectionFactory.setUsername(getUsername());
+		connectionFactory.setUsername(getLogin());
 		connectionFactory.setPassword(getPassword());
 		connectionFactory.setVirtualHost(getVhost());
 		return connectionFactory;
@@ -74,19 +148,18 @@ public class RabbitClientConfig {
 	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
 			MessageConverter messageConverter) {
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-		rabbitTemplate.setExchange(getExchangeName());
+		rabbitTemplate.setExchange(getExcharge());
 		rabbitTemplate.setMessageConverter(messageConverter);
 		rabbitTemplate.setReplyTimeout(getReplyTimeout());
 		return rabbitTemplate;
 
 	}
-/*
-	@Bean
-	DirectExchange exchange() {
-		return new DirectExchange(getExchangeName());
-	}
 
-	
+	/*
+	 * @Bean DirectExchange exchange() { return new
+	 * DirectExchange(getExchangeName()); }
+	 * 
+	 * 
 	 * @Bean(name = "myQueue") public Queue myQueue() { return new
 	 * Queue(getQueueName()); }
 	 * 
@@ -121,6 +194,14 @@ public class RabbitClientConfig {
 
 	}
 
+	public String getQueuedot() {
+		return queuedot;
+	}
+
+	public void setQueuedot(String queuedot) {
+		this.queuedot = queuedot;
+	}
+
 	/*
 	 * @Bean public SimpleMessageListenerContainer
 	 * replyListenerContainer(RabbitTemplate rabbitTemplate) {
@@ -132,69 +213,5 @@ public class RabbitClientConfig {
 	 * 
 	 * @Bean public Queue replyQueue() { return new Queue("my.reply.queue"); }
 	 */
-	
-	
-	public String getHost() {
-		return host;
-	}
 
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public Integer getPort() {
-		return port;
-	}
-
-	public void setPort(Integer port) {
-		this.port = port;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Integer getConnectionTimeOut() {
-		return connectionTimeOut;
-	}
-
-	public void setConnectionTimeOut(Integer connectionTimeOut) {
-		this.connectionTimeOut = connectionTimeOut;
-	}
-
-	public String getExchangeName() {
-		return exchangeName;
-	}
-
-	public void setExchangeName(String exchangeName) {
-		this.exchangeName = exchangeName;
-	}
-
-	public String getVhost() {
-		return vhost;
-	}
-
-	public void setVhost(String vhost) {
-		this.vhost = vhost;
-	}
-
-	public long getReplyTimeout() {
-		return replyTimeout;
-	}
-
-	public void setReplyTimeout(long replyTimeout) {
-		this.replyTimeout = replyTimeout;
-	}
 }

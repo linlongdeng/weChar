@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 2008-07-06
  * @see java.util.Map
  */
-public interface Dto extends Map {
+public interface Dto extends Map<String, Object> {
 
 	/**
 	 * 以Integer类型返回键值

@@ -15,14 +15,14 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import weChat.core.metatype.BaseDto;
 import weChat.json.PostJsonUtils;
-import weChat.parameter.manage.MRequestParam;
+import weChat.parameter.impl.MReqParam;
 
 public class TestGradecollectController {
 
 	@Test
 	public void testSyncGrade() throws JsonGenerationException, JsonMappingException, IOException{
 		String actionPath ="/Membersync/member_level";
-		MRequestParam param = new MRequestParam();
+		MReqParam param = new MReqParam();
 		param.setCompanycode("00127");
 		param.setCompanypsw("25d55ad283aa400af464c76d713c07ad");
 		param.setWechatpubinfoid(43243243);
@@ -41,7 +41,7 @@ public class TestGradecollectController {
 	@Test
 	public void testMemberInfo() throws JsonGenerationException, JsonMappingException, IOException{
 		String actionPath ="/Membersync/member_info";
-		MRequestParam param = new MRequestParam();
+		MReqParam param = new MReqParam();
 		param.setCompanycode("00127");
 		param.setCompanypsw("25d55ad283aa400af464c76d713c07ad");
 		param.setWechatpubinfoid(43243243);

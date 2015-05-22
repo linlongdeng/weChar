@@ -20,8 +20,8 @@ import weChat.core.utils.TypeCaseHelper;
  * @see Dto
  * @see java.io.Serializable
  */
-@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
-public class BaseDto extends HashMap implements Dto, Serializable {
+@SuppressWarnings({ "serial","rawtypes" })
+public class BaseDto extends HashMap<String, Object> implements Dto, Serializable {
 	
 	public BaseDto(){}
 	
@@ -277,11 +277,7 @@ public class BaseDto extends HashMap implements Dto, Serializable {
 	}
 
 	
-	@Override
-	public Object put(Object key, Object value) {
-		// TODO Auto-generated method stub
-		return super.put(key, value);
-	}
+
 	@Override
 	public String toXml(String pStyle) {
 		// TODO Auto-generated method stub
