@@ -26,17 +26,10 @@ import weChat.core.rabbit.RabbitClientConfig;
 @WebAppConfiguration
 public class WeChatApplicationTests {
 
-	@Autowired
-	private Validator validator;
 
-	@Autowired
-	private OptionalValidatorFactoryBean optionalValidatorFactoryBean;
-	@Autowired
-	private LocalValidatorFactoryBean localValidatorFactoryBean;
 	
 	@Test
 	public void contextLoads() {
-		System.out.println(validator);
 	}
 
 	

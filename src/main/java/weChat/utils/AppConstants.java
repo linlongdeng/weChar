@@ -14,4 +14,14 @@ public class AppConstants {
 	public static final String WECHATPUBINFOID = "wechatpubinfoid";
 	/**数据**/
 	public static final String DATA= "data";
+	/**
+	 * 后缀
+	 */
+	public static final String WJMQ_SUFFIX="wj_service";
+	/**
+	 * wj mq服务cmdid
+	 */
+	public static final String WJMQ_CMDID ="cmdid";
+	/**wj mq服务的具体参数名称 **/
+	public static final String WJMQ_PARAM = "param";
 }
