@@ -1,4 +1,4 @@
-spring.datasource.url=jdbc:mysql://192.168.82.69/wjdbcenter
+spring.datasource.url=jdbc:mysql://123.59.55.176/wjdbcenter
 spring.datasource.username=root
 spring.datasource.password= root..admin
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014-2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package weChat.amqp;
 
 import static org.junit.Assert.assertEquals;
@@ -18,6 +33,8 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,144 +43,182 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import weChat.amqp.JavaConfigFixedReplyQueueTests.FixedReplyQueueConfig;
+import weChat.amqp.JavaConfigFixedReplyQueueTests.FixedReplyQueueConfig.PojoListener;
+import weChat.core.metatype.BaseDto;
+import weChat.parameter.impl.RReqParam;
+import weChat.parameter.impl.RRespParam;
 
+/**
+ * <b>NOTE:</b> This class is referenced in the reference documentation; if it
+ * is changed/moved, be sure to update that documentation.
+ *
+ * @author Gary Russell
+ * @since 1.3
+ */
 
-/** 
- * <b>NOTE:</b> This class is referenced in the reference documentation; if it is changed/moved, be 
- * sure to update that documentation. 
- * 
- * @author Gary Russell 
- * @since . 
- */ 
+@ContextConfiguration(classes = FixedReplyQueueConfig.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext
+public class JavaConfigFixedReplyQueueTests {
 
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 
-@ContextConfiguration(classes=FixedReplyQueueConfig.class) 
-@RunWith(SpringJUnit4ClassRunner.class) 
-@DirtiesContext 
-public class JavaConfigFixedReplyQueueTests { 
+	/**
+	 * Sends a message to a service that upcases the String and returns as a
+	 * reply using a {@link RabbitTemplate} configured with a fixed reply queue
+	 * and reply listener, configured with JavaConfig.
+	 */
+	@Test
+	public void test() {
+		RReqParam param = new RReqParam();
+		param.setCmdid("WJ007");
+		param.setCompanycode("01103");
+		param.setWechatpubinfoid(1);
+		BaseDto dto = new BaseDto();
+		dto.put("cardnum", "5000028");
+		param.setParams(dto);
+		RRespParam resp = (RRespParam) rabbitTemplate.convertSendAndReceive(param);
+		System.out.println(resp);
+	}
 
+	@Configuration
+	public static class FixedReplyQueueConfig {
+		String host ="127.0.0.1";
+		int port=5672;
+		String user="openrpc";
+		String password ="openrpc";
+		String exchage ="excharge_jtrpc";
+		String vhost="/openrpc";
+		String routing ="request_company_01103";
+		String requestQueue ="request_company_01103";
+		String responseQueue ="response_company_01103";
+		String replyRouting ="response_company_01103";
+		@Bean
+		public ConnectionFactory rabbitConnectionFactory() {
 
-	@Autowired 
-	private RabbitTemplate rabbitTemplate; 
+			CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
+					host, port);
+			connectionFactory.setConnectionTimeout(5000);
+			connectionFactory.setUsername(user);
+			connectionFactory.setPassword(password);
+			connectionFactory.setVirtualHost(vhost);
+			return connectionFactory;
+		}
 
+		/**
+		 * @return Rabbit template with fixed reply queue.
+		 */
+		@Bean
+		public RabbitTemplate fixedReplyQRabbitTemplate() {
+			RabbitTemplate template = new RabbitTemplate(
+					rabbitConnectionFactory());
+			template.setExchange(ex().getName());
+			template.setRoutingKey(routing);
+			template.setReplyQueue(replyQueue());
+			template.setReplyTimeout(100000);
+			template.setMessageConverter(messageConverter());
+			return template;
+		}
 
+		/**
+		 * @return The reply listener container - the rabbit template is the
+		 *         listener.
+		 */
+		@Bean
+		public SimpleMessageListenerContainer replyListenerContainer() {
+			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+			container.setConnectionFactory(rabbitConnectionFactory());
+			container.setQueues(replyQueue());
+			container.setMessageListener(fixedReplyQRabbitTemplate());
+			return container;
+		}
 
+		/**
+		 * @return The listener container that handles the request and returns
+		 *         the reply.
+		 */
+		@Bean
+		public SimpleMessageListenerContainer serviceListenerContainer() {
+			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+			container.setConnectionFactory(rabbitConnectionFactory());
+			container.setQueues(requestQueue());
+			container.setMessageListener(listenerAdapter());
+			return container;
+		}
 
-	/** 
-	 * Sends a message to a service that upcases the String and returns as a reply 
-	 * using a {@link RabbitTemplate} configured with a fixed reply queue and 
-	 * reply listener, configured with JavaConfig. 
-	 */ 
-	@Test 
-	public void test() { 
-		assertEquals("FOO", rabbitTemplate.convertSendAndReceive("foo")); 
-	} 
+		/**
+		 * @return a non-durable auto-delete exchange.
+		 */
+		@Bean
+		public DirectExchange ex() {
+			return new DirectExchange(exchage, true, false);
+		}
 
+		@Bean
+		public Binding binding() {
+			return BindingBuilder.bind(requestQueue()).to(ex()).with(routing);
+		}
 
-	@Configuration 
-	public static class FixedReplyQueueConfig { 
+		/**
+		 * @return an anonymous (auto-delete) queue.
+		 */
+		@Bean
+		public Queue requestQueue() {
+			return new Queue(requestQueue,false, false,false);
+		}
 
+		/**
+		 * @return an anonymous (auto-delete) queue.
+		 */
+		@Bean
+		public Queue replyQueue() {
+			return new Queue(responseQueue,false, false,false);
+		}
+		
+		@Bean
+		public Binding bindingReply() {
+			return BindingBuilder.bind(replyQueue()).to(ex()).with(replyRouting);
+		}
 
-		@Bean 
-		public ConnectionFactory rabbitConnectionFactory() { 
-			CachingConnectionFactory connectionFactory = new CachingConnectionFactory(); 
-			connectionFactory.setHost("localhost"); 
-			return connectionFactory; 
-		} 
+		/**
+		 * @return an admin to handle the declarations.
+		 */
+		@Bean
+		public RabbitAdmin admin() {
+			return new RabbitAdmin(rabbitConnectionFactory());
+		}
 
+		@Bean
+		MessageListenerAdapter listenerAdapter() {
+			PojoListener pojoListener = new PojoListener();
+			MessageListenerAdapter listenerAdapter = new MessageListenerAdapter(
+					pojoListener, "handleMessage");
+			listenerAdapter.setMessageConverter(messageConverter());
+			return listenerAdapter;
+		}
+		/**
+		 * Listener that upcases the request.
+		 */
+		public static class PojoListener {
 
-		/** 
-		 * @return Rabbit template with fixed reply queue. 
-		 */ 
-		@Bean 
-		public RabbitTemplate fixedReplyQRabbitTemplate() { 
-			RabbitTemplate template = new RabbitTemplate(rabbitConnectionFactory()); 
-			template.setExchange(ex().getName()); 
-			template.setRoutingKey("test"); 
-			template.setReplyQueue(replyQueue()); 
-			return template; 
-		} 
+			public RRespParam handleMessage(RReqParam param)
+					throws InterruptedException {
+				// Thread.sleep(100000);
+				RRespParam resp = new RRespParam();
+				resp.setCmdid("1111");
+				resp.setMsg("测试");
+				resp.setRet(0);
+				return resp;
+			}
+		}
 
+		@Bean
+		public MessageConverter messageConverter() {
+			// return new JsonMessageConverter();
+			return new Jackson2JsonMessageConverter();
 
-		/** 
-		 * @return The reply listener container - the rabbit template is the listener. 
-		 */ 
-		@Bean 
-		public SimpleMessageListenerContainer replyListenerContainer() { 
-			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(); 
-			container.setConnectionFactory(rabbitConnectionFactory()); 
-			container.setQueues(replyQueue()); 
-			container.setMessageListener(fixedReplyQRabbitTemplate()); 
-			return container; 
-		} 
+		}
+	}
 
-
-		/** 
-		 * @return The listener container that handles the request and returns the reply. 
-		 */ 
-		@Bean 
-		public SimpleMessageListenerContainer serviceListenerContainer() { 
-			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(); 
-			container.setConnectionFactory(rabbitConnectionFactory()); 
-			container.setQueues(requestQueue()); 
-			container.setMessageListener(new MessageListenerAdapter(new PojoListener())); 
-			return container; 
-		} 
-
-
-		/** 
-		 * @return a non-durable auto-delete exchange. 
-		 */ 
-		@Bean 
-		public DirectExchange ex() { 
-			return new DirectExchange(UUID.randomUUID().toString(), false, true); 
-		} 
-
-
-		@Bean 
-		public Binding binding() { 
-			return BindingBuilder.bind(requestQueue()).to(ex()).with("test"); 
-		} 
-
-
-		/** 
-		 * @return an anonymous (auto-delete) queue. 
-		 */ 
-		@Bean 
-		public Queue requestQueue() { 
-			return new AnonymousQueue(); 
-		} 
-
-
-		/** 
-		 * @return an anonymous (auto-delete) queue. 
-		 */ 
-		@Bean 
-		public Queue replyQueue() { 
-			return new AnonymousQueue(); 
-		} 
-
-
-		/** 
-		 * @return an admin to handle the declarations. 
-		 */ 
-		@Bean 
-		public RabbitAdmin admin() { 
-			return new RabbitAdmin(rabbitConnectionFactory()); 
-		} 
-
-
-		/** 
-		 * Listener that upcases the request. 
-		 */ 
-		public static class PojoListener { 
-
-
-			public String handleMessage(String foo) { 
-				return foo.toUpperCase(); 
-			} 
-		} 
-	} 
-
-
-} 
+}

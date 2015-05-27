@@ -58,8 +58,8 @@ public class PostJsonUtils {
 			connection.setInstanceFollowRedirects(true);
 			connection.setRequestMethod("POST"); // 设置请求方式
 			connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
-			connection.setRequestProperty("Content-Type",
-					"application/json;charset=UTF-8"); // 设置发送数据的格式
+			connection.setRequestProperty("Content-Type","application/json;charset=UTF-8"); 
+			//connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8"); 
 			connection.setRequestProperty("user-agent",
 					"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
 			// 设置通用的请求属性
