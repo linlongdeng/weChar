@@ -15,6 +15,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class HttpClientUtils {
 
+	private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
 	private static ObjectMapper mapper = new ObjectMapper();;
 
 	/**
@@ -59,10 +62,12 @@ public class HttpClientUtils {
 	public static <T> T post(String url, Object requestParam, Class<T> valueType)
 			throws Exception {
 		// 设置超时时间
-		RequestConfig config = RequestConfig.custom()
+/*		RequestConfig config = RequestConfig.custom()
 				.setConnectTimeout(1000 * 10).setSocketTimeout(1000 * 10)
 				.build();
 		return post(url, requestParam, valueType, config);
+		*/
+		return post(url, requestParam, valueType, null);
 	}
 
 	/**
@@ -84,6 +89,7 @@ public class HttpClientUtils {
 			// 设置自定义请求配置
 			httpPost.setConfig(config);
 			String sParam = mapper.writeValueAsString(requestParam);
+			logger.debug("发送http请求，url:{} ,参数: {}", url , sParam);
 			HttpEntity entity = new StringEntity(sParam,
 					ContentType.APPLICATION_JSON);
 			httpPost.setEntity(entity);
@@ -98,6 +104,7 @@ public class HttpClientUtils {
 					InputStream inputStream = respEntity.getContent();
 					T value = mapper.readValue(inputStream, valueType);
 					EntityUtils.consume(respEntity);
+					logger.debug("发送HTTP请求成功,返回参数是：{}",value);
 					return value;
 				}
 			} finally {

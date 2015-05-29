@@ -37,6 +37,9 @@
 		<appender-ref ref="RFILE" />
 		<appender-ref ref="STDOUT" />
 	</logger>
+	<logger name="weChat" level="DEBUG" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="RFILE" />

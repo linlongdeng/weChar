@@ -33,6 +33,22 @@ public class CommonUtils {
 		}
 		return false;
 	}
+	/**
+	 * 判断任意对象是否为空
+	 * @param pObj
+	 * @return
+	 */
+	public static boolean isEmpty(Object... pObj){
+		if(pObj != null){
+			for(int i = 0; i < pObj.length; i++){
+				//一个有空，立即返回
+				if(isEmpty(pObj[i])){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * 判断对象是否为NotEmpty(!null或元素>0)<br>

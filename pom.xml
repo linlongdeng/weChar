@@ -21,6 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>weChat.WeChatApplication</start-class>
 		<java.version>1.8</java.version>
+		<ext.ehcacheVersion>2.9.1</ext.ehcacheVersion>
 	</properties>
 
 	<dependencies>
@@ -72,6 +73,10 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -82,5 +87,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

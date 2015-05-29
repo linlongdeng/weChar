@@ -1,6 +1,11 @@
 package weChat.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import weChat.core.metatype.Dto;
+import weChat.parameter.IRespParam;
+import weChat.parameter.impl.DynamicRespParam;
+import weChat.parameter.impl.RRespParam;
 
 /**
  * 调用KM的服务
@@ -16,14 +21,21 @@ public interface InvokeKmService {
 	 * 
 	 * @return
 	 */
-	public Dto getKmAuth();
+	public String getKmAccessToken()  throws Exception;
+	/**
+	 * 获取授权码
+	 * @return
+	 * @throws Exception
+	 */
+	public DynamicRespParam getKmAuthDirect() throws Exception;
 
 	/**
-	 * 获取所有商家信息
+	 * 获取所有商家信息,并保存到数据库
 	 * 
 	 * @return
 	 */
-	public Dto getAllCompanyFromKm();
+	@Transactional
+	public IRespParam saveAllCompanyFromKm() throws Exception;
 
 	/**
 	 * 根据商家ID，获取KM商家信息
@@ -53,5 +65,7 @@ public interface InvokeKmService {
 	 * @return
 	 */
 	public Dto  sendsms(Dto pDto);
+	
+
 
 }

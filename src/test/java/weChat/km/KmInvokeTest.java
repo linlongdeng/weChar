@@ -13,22 +13,28 @@ import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
 import weChat.core.utils.HttpClientUtils;
 import weChat.json.PostJsonUtils;
+import weChat.parameter.impl.DynamicRespParam;
 
 public class KmInvokeTest {
 
-	final String ip = "http://192.168.84.176:8103";
+	final String ip = "http://127.0.0.1:8080/weChat";
 
 	@Test
 	public void testAccess_token() throws JsonGenerationException,
 			JsonMappingException, IOException {
-		String actionPath = "/Auth/access_token";
+		PostJsonUtils.ip = ip;
+		String actionPath = "/getKmAuth";
 		Dto dto = new BaseDto();
-		dto.put("granttype", "clientcredentials");
-		dto.put("appid", "11");
-		dto.put("appkey", "8930ec48a3fed32047a9fcda127db378");
-		dto.put("scope", "");
 		Map<String, Object> map = PostJsonUtils.postObject(actionPath, dto);
 		System.out.println(map);
+	}
+	@Test
+	public void testGetKmAuth() throws Exception{
+		String ip ="http://127.0.0.1:8080/weChat";
+		String actionPath="/getKmAuth";
+		Dto dto = new BaseDto();
+		DynamicRespParam resp = HttpClientUtils.post(ip + actionPath, dto, DynamicRespParam.class);
+		System.out.println("返回结果是" + resp);
 	}
 
 	@Test
@@ -53,6 +59,17 @@ public class KmInvokeTest {
 		System.out.println("list 大小是" + list.size());
 		long endTime = System.currentTimeMillis();
 		System.out.println("花费的时间是" + (endTime - startTime) / 1000 + "s");
+	}
+	@Test
+	public void testSaveAllCompanyFromKm() throws Exception{
+		long startTime = System.currentTimeMillis();
+		String actionPath = "/saveAllCompanyFromKm";
+		String url = ip + actionPath;
+		Dto param = new BaseDto();
+		Map result = HttpClientUtils.post(url, param, Map.class);
+		long endTime = System.currentTimeMillis();
+		System.out.println("花费的时间是" + (endTime - startTime) / 1000 + "s");
+		System.out.println(result);
 	}
 
 }

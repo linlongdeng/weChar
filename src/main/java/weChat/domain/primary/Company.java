@@ -15,7 +15,6 @@ public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int companyID;
 
 	private String artificialPersonName;
@@ -39,6 +38,10 @@ public class Company implements Serializable {
 	private String companyType;
 
 	private String companyURL;
+
+	private String mapPositionX;
+
+	private String mapPositionY;
 
 	private String regionCode;
 
@@ -145,6 +148,22 @@ public class Company implements Serializable {
 
 	public void setCompanyURL(String companyURL) {
 		this.companyURL = companyURL;
+	}
+
+	public String getMapPositionX() {
+		return this.mapPositionX;
+	}
+
+	public void setMapPositionX(String mapPositionX) {
+		this.mapPositionX = mapPositionX;
+	}
+
+	public String getMapPositionY() {
+		return this.mapPositionY;
+	}
+
+	public void setMapPositionY(String mapPositionY) {
+		this.mapPositionY = mapPositionY;
 	}
 
 	public String getRegionCode() {

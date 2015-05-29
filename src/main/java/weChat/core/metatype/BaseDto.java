@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import weChat.core.utils.TypeCaseHelper;
 
@@ -25,7 +26,9 @@ public class BaseDto extends HashMap<String, Object> implements Dto, Serializabl
 	
 	public BaseDto(){}
 	
-
+	public BaseDto(Map<String, Object> map){
+		super(map);
+	}
 
 	public BaseDto(String key, Object value){
 		put(key, value);

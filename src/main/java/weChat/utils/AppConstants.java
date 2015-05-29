@@ -8,6 +8,8 @@ package weChat.utils;
  * @version 1.0.0
  */
 public class AppConstants {
+	/**斜杠**/
+	public static final String SLASH="/";
 	/** 商家 **/
 	public static final String COMPANY = "company";
 	/** 公众号ID **/

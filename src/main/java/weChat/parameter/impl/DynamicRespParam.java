@@ -12,6 +12,8 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
@@ -24,13 +26,13 @@ import weChat.utils.RespMsgCode;
  * @version 1.0.0
  */
 public class DynamicRespParam implements IRespParam {
-
+	private static ObjectMapper mapper = new ObjectMapper();;
 	private int ret;
 
 	private String msg;
 
 	private Dto otherProperties = new BaseDto();
-
+	
 	public DynamicRespParam(){
 		this.ret = RespMsgCode.SUCCESS_CODE;
 		this.msg ="";
@@ -103,5 +105,15 @@ public class DynamicRespParam implements IRespParam {
 	}
 	public Date getAsDate(String pStr, String format) {
 		return otherProperties.getAsDate(pStr, format);
+	}
+
+	@Override
+	public String toString() {
+		try {
+			String string = mapper.writeValueAsString(this);
+			return string;
+		} catch (JsonProcessingException e) {
+		}
+		return super.toString();
 	}
 }
