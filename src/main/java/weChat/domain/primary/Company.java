@@ -15,7 +15,7 @@ public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int companyID;
+	private Integer companyID;
 
 	private String artificialPersonName;
 
@@ -54,11 +54,11 @@ public class Company implements Serializable {
 	public Company() {
 	}
 
-	public int getCompanyID() {
+	public Integer getCompanyID() {
 		return this.companyID;
 	}
 
-	public void setCompanyID(int companyID) {
+	public void setCompanyID(Integer companyID) {
 		this.companyID = companyID;
 	}
 

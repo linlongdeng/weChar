@@ -3,8 +3,9 @@ package weChat.parameter.impl;
 import java.util.List;
 
 import weChat.core.metatype.BaseDto;
+import weChat.parameter.IRespParam;
 
-public class KRespResParam {
+public class KRespResParam implements IRespParam {
 	private int ret;
 
 	private String msg;

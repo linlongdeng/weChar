@@ -42,8 +42,8 @@
     <cache name="myCache1"
         maxElementsInMemory="300"
         eternal="false"
-        timeToIdleSeconds="500"
-        timeToLiveSeconds="500"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="120"
         overflowToDisk="true"
         />
         

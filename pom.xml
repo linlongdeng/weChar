@@ -77,6 +77,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${ext.ehcacheVersion}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

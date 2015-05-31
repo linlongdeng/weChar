@@ -4,9 +4,6 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="jackson-databind-2.4.5.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jackson-databind/jackson-databind">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="weChat"/>
         <property name="java-output-path" value="/weChat/target/classes"/>
     </wb-module>

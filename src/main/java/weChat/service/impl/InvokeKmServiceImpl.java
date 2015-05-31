@@ -78,7 +78,7 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 		return resp;
 	}
 
-	@Cacheable("testCache")
+	@Cacheable("myCache1")
 	@Override
 	public String getKmAccessToken() throws Exception {
 		DynamicRespParam resp = getKmAuthDirect();

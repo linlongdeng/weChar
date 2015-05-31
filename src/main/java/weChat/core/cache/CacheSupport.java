@@ -17,8 +17,8 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class CacheSupport extends CachingConfigurerSupport {
 
 	@Override
