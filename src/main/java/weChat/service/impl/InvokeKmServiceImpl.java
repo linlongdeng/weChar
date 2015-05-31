@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -88,7 +89,8 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	}
 
 	@Override
-	public IRespParam saveAllCompanyFromKm() throws Exception {
+	@Scheduled(cron="0 37 0 * * *")
+	public void saveAllCompanyFromKm() throws Exception {
 		Dto param = new BaseDto();
 		param.put(TOKEN_NAME, getKmAccessToken());
 		KRespResParam resp = HttpClientUtils.post(getUrl(getAllCompany_path),
@@ -118,7 +120,6 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 			companyRepository.save(companyList);
 		}
 
-		return RespUtils.successMR();
 	}
 
 	/**

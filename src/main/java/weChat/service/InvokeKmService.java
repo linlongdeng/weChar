@@ -35,7 +35,7 @@ public interface InvokeKmService {
 	 * @return
 	 */
 	@Transactional
-	public IRespParam saveAllCompanyFromKm() throws Exception;
+	public void saveAllCompanyFromKm() throws Exception;
 
 	/**
 	 * 根据商家ID，获取KM商家信息

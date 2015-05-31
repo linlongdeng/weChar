@@ -13,6 +13,7 @@ import weChat.parameter.IRespParam;
 import weChat.parameter.impl.DynamicRespParam;
 import weChat.parameter.impl.KRespResParam;
 import weChat.service.InvokeKmService;
+import weChat.utils.RespUtils;
 
 @RestController
 public class InvokeKmController {
@@ -28,22 +29,22 @@ public class InvokeKmController {
 		return resp;
 
 	}
-	
 
 	@RequestMapping("/saveAllCompanyFromKm")
 	public IRespParam saveAllCompanyFromKm() throws Exception {
-		IRespParam resp = invokeKmService.saveAllCompanyFromKm();
-		return resp;
+		invokeKmService.saveAllCompanyFromKm();
+		return RespUtils.successMR();
 	}
+
 	@RequestMapping("/Company/lists")
 	public IRespParam testgetCompany() {
 		KRespResParam resp = new KRespResParam();
 		List<BaseDto> list = new ArrayList<BaseDto>();
 		Random random = new Random();
 		BaseDto dto = null;
-		int companyid  = 0;
+		int companyid = 0;
 		dto = new BaseDto();
-		companyid= Math.abs(random.nextInt() % 3);
+		companyid = Math.abs(random.nextInt() % 3);
 		dto.put("companyid", 0);
 		dto.put("companycode", "3");
 		dto.put("pass", "3");
@@ -58,7 +59,7 @@ public class InvokeKmController {
 		dto.put("mappositiony", "43243");
 		list.add(dto);
 		dto = new BaseDto();
-		companyid= Math.abs(random.nextInt() % 3) + 5;
+		companyid = Math.abs(random.nextInt() % 3) + 5;
 		dto.put("companyid", companyid);
 		dto.put("companycode", "3");
 		dto.put("pass", "3");
@@ -75,8 +76,9 @@ public class InvokeKmController {
 		resp.setRes(list);
 		return resp;
 	}
+
 	@RequestMapping("/Auth/access_token")
-	public IRespParam getToken(){
+	public IRespParam getToken() {
 		DynamicRespParam resp = new DynamicRespParam();
 		resp.set("access_token", "32132131");
 		return resp;
