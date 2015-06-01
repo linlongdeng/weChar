@@ -1,8 +1,11 @@
 package weChat.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,6 +31,7 @@ import static weChat.core.utils.CommonUtils.*;
 @ConfigurationProperties(prefix = InvokeKmServiceImpl.KM_PREFIX)
 public class InvokeKmServiceImpl implements InvokeKmService {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public static final String KM_PREFIX = "km";
 
@@ -91,6 +95,8 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	@Override
 	@Scheduled(cron="0 37 0 * * *")
 	public void saveAllCompanyFromKm() throws Exception {
+		logger.info("开始同步所有K米商家信息");
+		long startTime = System.currentTimeMillis();
 		Dto param = new BaseDto();
 		param.put(TOKEN_NAME, getKmAccessToken());
 		KRespResParam resp = HttpClientUtils.post(getUrl(getAllCompany_path),
@@ -119,7 +125,8 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 			}
 			companyRepository.save(companyList);
 		}
-
+		long endtime = System.currentTimeMillis();
+		logger.info("结束同步所有K米商家信息，花费时间是{} S" , (endtime - startTime)/1000);
 	}
 
 	/**
@@ -129,15 +136,16 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	 */
 	public void fiterIllegalData(List<BaseDto> list) {
 		if (!isEmpty(list)) {
-			for (int i = 0; i < list.size(); i++) {
-				BaseDto dto = list.get(i);
-				// 关键属性任意一个为空，作删除
+			Iterator<BaseDto> it = list.iterator();
+			while(it.hasNext()){
+				BaseDto dto = it.next();
+				//删除要用迭代器， 这样才不会有问题
+				//关键属性任意一个为空，作删除
 				if (isEmpty(dto.get("companyid"), dto.get("pass"),
 						dto.get("status"), dto.get("companytype"),
 						dto.get("companycode"), dto.get("companyname"))) {
-					list.remove(i);
+					it.remove();
 				}
-
 			}
 
 		}

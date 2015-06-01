@@ -17,6 +17,7 @@ package weChat.amqp;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.junit.Rule;
@@ -26,6 +27,8 @@ import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -73,12 +76,22 @@ public class JavaConfigFixedReplyQueueTests {
 	public void test() {
 		RReqParam param = new RReqParam();
 		param.setCmdid("WJ007");
-		param.setCompanycode("01103");
+		param.setCompanycode("00111");
 		param.setWechatpubinfoid(1);
 		BaseDto dto = new BaseDto();
 		dto.put("cardnum", "5000028");
 		param.setParams(dto);
-		RRespParam resp = (RRespParam) rabbitTemplate.convertSendAndReceive(param);
+		RRespParam resp = (RRespParam) rabbitTemplate.convertSendAndReceive(param,(message) -> {
+			MessageProperties properities = message.getMessageProperties();
+			String corrId = UUID.randomUUID().toString();
+			properities.setCorrelationId(corrId.getBytes());
+			properities.setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT);
+			properities.setTimestamp(new Date());
+			long currentTimeMillis = System.currentTimeMillis();
+			properities.setMessageId(String.valueOf(currentTimeMillis));
+
+			return message;
+		});
 		System.out.println(resp);
 	}
 
@@ -138,7 +151,7 @@ public class JavaConfigFixedReplyQueueTests {
 		 * @return The listener container that handles the request and returns
 		 *         the reply.
 		 */
-		@Bean
+		//@Bean
 		public SimpleMessageListenerContainer serviceListenerContainer() {
 			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 			container.setConnectionFactory(rabbitConnectionFactory());
@@ -152,7 +165,7 @@ public class JavaConfigFixedReplyQueueTests {
 		 */
 		@Bean
 		public DirectExchange ex() {
-			return new DirectExchange(exchage, true, false);
+			return new DirectExchange(exchage, false, false);
 		}
 
 		@Bean

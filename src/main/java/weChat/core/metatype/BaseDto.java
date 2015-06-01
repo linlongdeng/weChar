@@ -117,7 +117,7 @@ public class BaseDto extends HashMap<String, Object> implements Dto, Serializabl
 		if (obj != null)
 			return (String) obj;
 		else
-			return null;
+			return "";
 	}
 	
 	/**

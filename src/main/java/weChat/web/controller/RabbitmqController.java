@@ -32,7 +32,7 @@ public class RabbitmqController {
 		BaseDto data = new BaseDto();
 		data.put("scheme", config.getScheme());
 		data.put("host", config.getHost());
-		data.put("port", config.getPort());
+		data.put("port", String.valueOf(config.getPort()));
 		data.put("login", config.getLogin());
 		data.put("password", config.getPassword());
 		data.put("vhost", config.getVhost());

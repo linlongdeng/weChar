@@ -18,6 +18,7 @@ package weChat.amqp;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.junit.Rule;
@@ -27,6 +28,8 @@ import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -34,6 +37,7 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,22 +82,34 @@ public class RpcTest {
 		BaseDto dto = new BaseDto();
 		dto.put("cardnum", "5000028");
 		param.setParams(dto);
-		RRespParam resp = (RRespParam) rabbitTemplate.convertSendAndReceive(param);
-		System.out.println(resp);
+	 Object resp = rabbitTemplate.convertSendAndReceive(param,  (message) -> {
+			MessageProperties properities = message.getMessageProperties();
+			String corrId = UUID.randomUUID().toString();
+			System.out.println("corrId:" + corrId );
+			properities.setCorrelationId(corrId.getBytes());
+			properities.setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT);
+			properities.setTimestamp(new Date());
+			long currentTimeMillis = System.currentTimeMillis();
+			properities.setMessageId(String.valueOf(currentTimeMillis));
+			properities.setExpiration(String.valueOf(50000));
+
+			return message;
+		});
+		System.out.println("返回消息是" + resp);
 	}
 
 	@Configuration
 	public static class FixedReplyQueueConfig {
-		String host ="123.59.55.176";
+		String host ="127.0.0.1";
 		int port=5672;
 		String user="openrpc";
 		String password ="openrpc";
 		String exchage ="excharge_jtrpc";
 		String vhost="/openrpc";
-		String routing ="request_company_01103";
-		String replyRouting ="response_company_01103";
-		String requestQueue ="request_company_01103";
-		String responseQueue ="response_company_01103";
+		String routing ="request_company_00111";
+		String replyRouting ="reply_company_00111_12345";
+		//String requestQueue ="request_company_00111";
+		String responseQueue ="reply_company_00111_12345";
 		@Bean
 		public ConnectionFactory rabbitConnectionFactory() {
 
@@ -147,7 +163,7 @@ public class RpcTest {
 		 */
 		@Bean
 		public Queue replyQueue() {
-			return new Queue(responseQueue,false, false,false);
+			return new Queue(responseQueue,false, false,true);
 		}
 		@Bean
 		public Binding bindingReply() {
@@ -171,7 +187,11 @@ public class RpcTest {
 		@Bean
 		public MessageConverter messageConverter() {
 			// return new JsonMessageConverter();
-			return new Jackson2JsonMessageConverter();
+			Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+			DefaultClassMapper mapper = new DefaultClassMapper();
+			mapper.setDefaultType(RRespParam.class);
+			converter.setClassMapper(mapper);
+			return converter;
 
 		}
 	}
