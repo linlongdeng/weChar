@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
@@ -30,6 +31,15 @@ public class ValidationServiceImpl implements ValidationService {
 			throws ValidationErrorException {
 		validate(target, objectName, true);
 		
+	}
+	@Override
+	public void validate(Object target, String objectName,Validator validator) {
+		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(
+				target,objectName);
+		validator.validate(target, errors);
+		if(errors.hasErrors()){
+			throw new ValidationErrorException(errors);
+	}
 	}
 
 }

@@ -161,6 +161,11 @@ public class RabbitClientConfig {
 		return rabbitTemplate;
 
 	}
+	
+	@Bean
+	public DirectExchange ex() {
+		return new DirectExchange(excharge, false, false);
+	}
 
 	/*
 	 * @Bean DirectExchange exchange() { return new

@@ -4,12 +4,16 @@ import static weChat.utils.RespMsgCode.ARGUMENT_NOT_VALID;
 import static weChat.utils.RespMsgCode.NO_EXIST;
 import static weChat.utils.RespMsgCode.SUCCESS_CODE;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 
+import weChat.core.exception.ValidationErrorException;
 import weChat.parameter.IRespParam;
 import weChat.parameter.impl.MRespParam;
 import static weChat.core.utils.TypeCaseHelper.*;
@@ -103,6 +107,19 @@ public class RespService {
 	public IRespParam parameterError(String arg) {
 		return newRespParam("ARGUMENT_NOT_VALID", "ARGUMENT_NOT_VALID_INFO",
 				arg);
+	}
+	/**
+	 * 处理参数异常错误
+	 * @param ex
+	 * @return
+	 */
+	public IRespParam parameterError(ValidationErrorException ex){
+		Errors errors = ex.getErrors();
+		List<ObjectError> allErrors = errors.getAllErrors();
+		ObjectError objectError = allErrors.get(0);
+		String message = messageSource.getMessage(objectError, defaultLocal);
+		MRespParam resp = new MRespParam(getAsInt("ARGUMENT_NOT_VALID"), message);
+		return resp;
 	}
 
 	/**

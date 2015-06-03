@@ -1,6 +1,7 @@
 package weChat.service;
 
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 import weChat.core.exception.ValidationErrorException;
 
@@ -22,4 +23,10 @@ public interface ValidationService {
 	 * @throws ValidationErrorException
 	 */
 	public void validate(Object target, String objectName)throws ValidationErrorException;
+	/**
+	 * 使用外部Validator验证对象
+	 * @param target
+	 * @param validator
+	 */
+	public void validate(Object target,String objectName,Validator validator);
 }

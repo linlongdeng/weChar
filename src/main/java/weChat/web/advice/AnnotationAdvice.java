@@ -1,14 +1,18 @@
 package weChat.web.advice;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DefaultMessageCodesResolver;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +35,9 @@ public class AnnotationAdvice {
 	
 	@Autowired
 	private RespService respService;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<Object> handlerRuntimeException(Exception ex,
@@ -71,8 +78,7 @@ public class AnnotationAdvice {
 	 */
 	@ExceptionHandler(value={ValidationErrorException.class})
 	public ResponseEntity<Object> handlerValidationErrorException(ValidationErrorException ex, WebRequest request){
-		String msg = ex.toString();
-		IRespParam parameterError = respService.parameterError(msg);
+		IRespParam parameterError = respService.parameterError(ex);
 		return handleExceptionInternal(parameterError);
 	}
 	protected ResponseEntity<Object> handleExceptionInternal(Object body) {

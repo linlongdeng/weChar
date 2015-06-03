@@ -24,6 +24,7 @@ import java.util.UUID;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -80,36 +81,46 @@ public class RpcTest {
 		param.setCompanycode("01103");
 		param.setWechatpubinfoid(1);
 		BaseDto dto = new BaseDto();
-		dto.put("cardnum", "5000028");
+		dto.put("cardnum", "5000011");
 		param.setParams(dto);
-	 Object resp = rabbitTemplate.convertSendAndReceive(param,  (message) -> {
-			MessageProperties properities = message.getMessageProperties();
-			String corrId = UUID.randomUUID().toString();
-			System.out.println("corrId:" + corrId );
-			properities.setCorrelationId(corrId.getBytes());
-			properities.setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT);
-			properities.setTimestamp(new Date());
-			long currentTimeMillis = System.currentTimeMillis();
-			properities.setMessageId(String.valueOf(currentTimeMillis));
-			properities.setExpiration(String.valueOf(50000));
+		//String corrId = UUID.randomUUID().toString();
+		 String corrId =FixedReplyQueueConfig.responseQueue;
+		Object resp = rabbitTemplate
+				.convertSendAndReceive(
+						FixedReplyQueueConfig.routing,
+						param,
+						(message) -> {
+							MessageProperties properities = message
+									.getMessageProperties();
+					
+							System.out.println("corrId:" + corrId);
+							properities.setCorrelationId(corrId.getBytes());
+							properities
+									.setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT);
+							properities.setTimestamp(new Date());
+							long currentTimeMillis = System.currentTimeMillis();
+							properities.setMessageId(String
+									.valueOf(currentTimeMillis));
+							properities.setExpiration(String.valueOf(50000));
+							properities.setContentEncoding(corrId);
 
-			return message;
-		});
+							return message;
+						});
 		System.out.println("返回消息是" + resp);
 	}
 
 	@Configuration
 	public static class FixedReplyQueueConfig {
-		String host ="127.0.0.1";
-		int port=5672;
-		String user="openrpc";
-		String password ="openrpc";
-		String exchage ="excharge_jtrpc";
-		String vhost="/openrpc";
-		String routing ="request_company_00111";
-		String replyRouting ="reply_company_00111_12345";
-		//String requestQueue ="request_company_00111";
-		String responseQueue ="reply_company_00111_12345";
+		String host = "192.168.73.158";
+		int port = 5672;
+		String user = "openrpc";
+		String password = "openrpc";
+		String exchage = "excharge_jtrpc";
+		String vhost = "/openrpc";
+		public static String routing = "request_company_01103";
+		// String requestQueue ="request_company_00111";
+		public static String responseQueue = "reply_company_01103_123458999999999999999";
+
 		@Bean
 		public ConnectionFactory rabbitConnectionFactory() {
 
@@ -121,13 +132,15 @@ public class RpcTest {
 			connectionFactory.setVirtualHost(vhost);
 			return connectionFactory;
 		}
-		
+
 		@Bean
-		public SimpleMessageListenerContainer replyListenerContainer() {
+		public SimpleMessageListenerContainer replyListenerContainer(
+				RabbitTemplate rabbitTemplate) {
 			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+			container.setAcknowledgeMode(AcknowledgeMode.NONE);
 			container.setConnectionFactory(rabbitConnectionFactory());
 			container.setQueues(replyQueue());
-			container.setMessageListener(fixedReplyQRabbitTemplate());
+			container.setMessageListener(rabbitTemplate);
 			return container;
 		}
 
@@ -135,12 +148,12 @@ public class RpcTest {
 		 * @return Rabbit template with fixed reply queue.
 		 */
 		@Bean
-		public RabbitTemplate fixedReplyQRabbitTemplate() {
+		public RabbitTemplate fixedReplyQRabbitTemplate(Queue replyQueue) {
 			RabbitTemplate template = new RabbitTemplate(
 					rabbitConnectionFactory());
 			template.setExchange(exchage);
 			template.setRoutingKey(routing);
-			template.setReplyQueue(replyQueue());
+			template.setReplyQueue(replyQueue);
 			template.setReplyTimeout(10000);
 			template.setMessageConverter(messageConverter());
 			return template;
@@ -149,31 +162,33 @@ public class RpcTest {
 		/**
 		 * @return an anonymous (auto-delete) queue.
 		 */
-/*		@Bean
-		public Queue requestQueue() {
-			return new Queue(requestQueue,false, false,false);
-		}
-		@Bean
-		public Binding binding() {
-			return BindingBuilder.bind(requestQueue()).to(ex()).with(routing);
-		}*/
+		/*
+		 * @Bean public Queue requestQueue() { return new
+		 * Queue(requestQueue,false, false,false); }
+		 * 
+		 * @Bean public Binding binding() { return
+		 * BindingBuilder.bind(requestQueue()).to(ex()).with(routing); }
+		 */
 
 		/**
 		 * @return an anonymous (auto-delete) queue.
 		 */
 		@Bean
 		public Queue replyQueue() {
-			return new Queue(responseQueue,false, false,true);
+			return new Queue(responseQueue, false, false, true);
 		}
+
 		@Bean
 		public Binding bindingReply() {
-			return BindingBuilder.bind(replyQueue()).to(ex()).with(replyRouting);
+			return BindingBuilder.bind(replyQueue()).to(ex())
+					.with(responseQueue);
 		}
-		
+
 		@Bean
 		public DirectExchange ex() {
 			return new DirectExchange(exchage, false, false);
 		}
+
 		/**
 		 * @return an admin to handle the declarations.
 		 */
@@ -181,8 +196,6 @@ public class RpcTest {
 		public RabbitAdmin admin() {
 			return new RabbitAdmin(rabbitConnectionFactory());
 		}
-
-		
 
 		@Bean
 		public MessageConverter messageConverter() {

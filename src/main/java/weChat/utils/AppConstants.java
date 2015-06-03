@@ -26,4 +26,8 @@ public class AppConstants {
 	public static final String WJMQ_CMDID ="cmdid";
 	/**wj mq服务的具体参数名称 **/
 	public static final String WJMQ_PARAM = "param";
+	/**参数错误**/
+	public static final String ARGUMENT_NOT_VALID="ARGUMENT_NOT_VALID_INFO";
+	/**参数不能为空**/
+	public static final String ARGUMENT_NOT_EMPTY_INFO ="ARGUMENT_NOT_EMPTY_INFO";
 }

@@ -24,7 +24,7 @@ public class WechatMqController {
 
 	@RequestMapping
 	public IRespParam loadAction(@ModelAttribute(WJMQ_CMDID) String cmdid,
-			@ModelAttribute(WJMQ_PARAM) RReqParam param) {
+			@ModelAttribute(WJMQ_PARAM) RReqParam param) throws Exception {
 		String beanName = cmdid + WJMQ_SUFFIX;
 		// 动态获取消息
 		Object bean = beanFactory.getBean(beanName);

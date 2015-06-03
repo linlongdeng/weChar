@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 
 public class CommonUtils {
+	/**UTF-8**/
+	public static final String UTF_8="utf-8";
 
 	/**
 	 * 判断对象是否Empty(null或元素为0)<br>

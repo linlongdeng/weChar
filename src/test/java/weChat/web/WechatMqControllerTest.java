@@ -26,22 +26,22 @@ public class WechatMqControllerTest {
 		param.setWechatpubinfoid(1);
 		BaseDto dto = new BaseDto();
 		dto.put("cardnum", "5000028");
+		dto.put("cardnum", "");
 		param.setParams(dto);
 		Map<String, Object> result = PostJsonUtils.postObject(actionPath, param);
 		System.out.println(result);
 	}
 	@Test
 	public void testHttp() throws JsonGenerationException, JsonMappingException, IOException{
-		PostJsonUtils.ip ="http://123.59.55.176:3002";
+		PostJsonUtils.ip ="http://192.168.82.67:3002";
 		String actionPath ="";
 		RReqParam param = new RReqParam();
 		param.setCmdid("WJ007");
-		//param.setCompanycode("06375"); 
-		param.setCompanycode("01103");
+		param.setCompanycode("06375"); 
 		//param.setCompanycode("01197");
 		param.setWechatpubinfoid(1);
 		BaseDto dto = new BaseDto();
-		dto.put("cardnum", "5000028");
+		dto.put("cardnum", "5000011");
 		param.setParams(dto);
 		Map<String, Object> result = PostJsonUtils.postObject(actionPath, param);
 		System.out.println(result);
