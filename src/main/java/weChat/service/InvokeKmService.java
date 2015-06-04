@@ -43,7 +43,7 @@ public interface InvokeKmService {
 	 * @param companyid
 	 * @return
 	 */
-	public Dto getKmCompanyById(int companyid);
+	public IRespParam getKmCompanyById(int companyid);
 
 	/**
 	 * 根据手机号码生成K米会员
@@ -51,20 +51,20 @@ public interface InvokeKmService {
 	 * @param pDto
 	 * @return
 	 */
-	public Dto registerByPhone(Dto pDto);
+	public IRespParam registerByPhone(Dto pDto);
 
 	/**
 	 * 完善K米会员资料
 	 * 
 	 * @param pDto
 	 */
-	public Dto fillCustomerInfo(Dto pDto);
+	public IRespParam fillCustomerInfo(Dto pDto) throws Exception;
 	/**
 	 * 发送短信
 	 * @param pDto
 	 * @return
 	 */
-	public Dto  sendsms(Dto pDto);
+	public IRespParam  sendsms(Dto pDto);
 	
 
 

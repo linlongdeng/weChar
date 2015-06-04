@@ -152,25 +152,27 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	}
 
 	@Override
-	public Dto getKmCompanyById(int companyid) {
+	public IRespParam getKmCompanyById(int companyid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Dto registerByPhone(Dto pDto) {
+	public IRespParam registerByPhone(Dto pDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Dto fillCustomerInfo(Dto pDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public IRespParam fillCustomerInfo(Dto pDto) throws Exception {
+		pDto.put(TOKEN_NAME, getKmAccessToken());
+		KRespResParam resp = HttpClientUtils.post(getUrl(fillinfoMember_path),
+				pDto, KRespResParam.class);
+		return resp;
 	}
 
 	@Override
-	public Dto sendsms(Dto pDto) {
+	public IRespParam sendsms(Dto pDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

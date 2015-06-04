@@ -1,5 +1,8 @@
 package weChat.parameter.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import weChat.core.metatype.BaseDto;
 import weChat.parameter.IRespParam;
 /**
@@ -9,7 +12,7 @@ import weChat.parameter.IRespParam;
  * @version 1.0.0
  */
 public class RRespParam implements IRespParam {
-
+	private static ObjectMapper mapper = new ObjectMapper();
 	private int ret;
 
 	private String msg;
@@ -48,6 +51,16 @@ public class RRespParam implements IRespParam {
 
 	public void setData(BaseDto data) {
 		this.data = data;
+	}
+	
+	@Override
+	public String toString() {
+		try {
+			String string = mapper.writeValueAsString(this);
+			return string;
+		} catch (JsonProcessingException e) {
+		}
+		return super.toString();
 	}
 
 }

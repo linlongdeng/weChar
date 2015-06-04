@@ -2,6 +2,8 @@ package weChat.web.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import weChat.utils.AppConstants;
 @RequestMapping("/Membersync")
 public class MemberSyncController {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MemberSyncService memberSyncService;
 
@@ -49,7 +52,11 @@ public class MemberSyncController {
 	public IRespParam memberInfo(@ModelAttribute Company company,
 			@ModelAttribute(AppConstants.WECHATPUBINFOID) int wechatpubinfoid,
 			@ModelAttribute(AppConstants.DATA) List<Dto> data) {
-		return memberSyncService.memberInfo(company, wechatpubinfoid, data);
+		logger.debug("开始同步会员信息");
+		IRespParam memberInfo = memberSyncService.memberInfo(company,
+				wechatpubinfoid, data);
+		logger.debug("结束同步会员信息");
+		return memberInfo;
 	}
 
 }

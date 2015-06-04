@@ -30,4 +30,6 @@ public class AppConstants {
 	public static final String ARGUMENT_NOT_VALID="ARGUMENT_NOT_VALID_INFO";
 	/**参数不能为空**/
 	public static final String ARGUMENT_NOT_EMPTY_INFO ="ARGUMENT_NOT_EMPTY_INFO";
+	/**会员状态：启用**/
+	public static final String MEMBER_STATUS_USER="启用";
 }

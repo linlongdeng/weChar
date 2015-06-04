@@ -10,6 +10,7 @@ import org.springframework.validation.Validator;
 import weChat.core.rabbit.RabbitClient;
 import weChat.core.rabbit.RabbitClientConfig;
 import weChat.parameter.IRespParam;
+import weChat.parameter.impl.CommonParam;
 import weChat.parameter.impl.RReqParam;
 import weChat.parameter.impl.RRespParam;
 
@@ -40,8 +41,8 @@ public  abstract class WechatMqService implements Validator {
 				+ param.getCompanycode();
 		// TODO  返回消息队列，这所以用uuid，是因为和线下系统调试出现了BUG，待解决
 		String replyQueueName = uuid;
-		RRespParam resp = (RRespParam) rabbitClient.convertSendAndReceiver(
-				routingKey, replyQueueName, param, uuid,RRespParam.class);
+		CommonParam resp = (CommonParam) rabbitClient.convertSendAndReceiver(
+				routingKey, replyQueueName, param, uuid,CommonParam.class);
 		if(resp != null){
 			return resp;
 		}
