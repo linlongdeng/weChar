@@ -102,4 +102,21 @@ public class WechatMqControllerTest {
 		CommonParam resp = HttpClientUtils.post(ip + actionPath,param, CommonParam.class);
 		 System.out.println("返回参数是： "  + resp);
 	}
+	
+	@Test
+	public void testWJ008() throws Exception{
+		String actionPath ="/RabbitmqRpc";
+		RReqParam param = new RReqParam();
+		param.setCmdid("WJ008");
+		param.setCompanycode("01103");
+		param.setWechatpubinfoid(1);
+		BaseDto dto = new BaseDto();
+		dto.put("cardnum", "5000028");
+		dto.put("kmid", "");
+		dto.put("validatetype", "1");
+		dto.put("mobile", "15359137245");
+		param.setParams(dto);
+		CommonParam resp = HttpClientUtils.post(ip + actionPath,param, CommonParam.class);
+		 System.out.println("返回参数是： "  + resp);
+	}
 }

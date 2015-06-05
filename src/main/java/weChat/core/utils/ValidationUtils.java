@@ -1,7 +1,7 @@
 package weChat.core.utils;
 
 import static weChat.core.utils.CommonUtils.isEmpty;
-import static weChat.utils.AppConstants.ARGUMENT_NOT_EMPTY_INFO;
+import static weChat.utils.AppConstants.*;
 
 import java.util.Map;
 
@@ -50,5 +50,13 @@ public abstract class ValidationUtils {
 		}
 		return true;
 
+	}
+	/**
+	 * 参数非法错误
+	 * @param paramName
+	 * @param e
+	 */
+	public static void rejectParamError(String paramName, Errors e){
+		e.reject(ARGUMENT_NOT_VALID, new Object[] { paramName }, null);
 	}
 }

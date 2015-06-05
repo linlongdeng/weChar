@@ -106,7 +106,8 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 					memberCache.setMemberid(dto.getAsString("memberid"));
 				}
 				memberCache.setWechatPubInfoID(wechatpubinfoid);
-				memberCache.setKmid(dto.getAsString("kmid"));
+				//TODO KM id 有问题
+				memberCache.setKmid(dto.getAsString("KmID"));
 				memberCache.setGradeID(dto.getAsInteger("gradeid"));
 				memberCache.setCardnum(dto.getAsString("cardnum"));
 				memberCache.setMemberName(dto.getAsString("membername"));
