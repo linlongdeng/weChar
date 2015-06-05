@@ -3,6 +3,7 @@ package weChat.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
@@ -28,6 +29,8 @@ import weChat.service.WechatMqService;
 import weChat.utils.AppConstants;
 import weChat.utils.AppUtils;
 
+import weChat.service.AsyncService;
+
 @Service("WJ005" + AppConstants.WJMQ_SUFFIX)
 public class WechatMqWJ005ServiceImpl extends WechatMqService {
 
@@ -41,6 +44,8 @@ public class WechatMqWJ005ServiceImpl extends WechatMqService {
 
 	@Autowired
 	private InvokeKmService invokeKmService;
+	@Autowired
+	private AsyncService asyncService;
 
 	@Autowired
 	public WechatMqWJ005ServiceImpl(RabbitClient rabbitClient,
@@ -50,49 +55,17 @@ public class WechatMqWJ005ServiceImpl extends WechatMqService {
 
 	@Override
 	public IRespParam handle(RReqParam param) throws Exception {
+		logger.debug("开始同步会员修改同步线下系统({}:{})", param.getCompanycode(), param
+				.getParams().get("memberid"));
 		CommonParam resp = (CommonParam) super.handle(param);
 		Integer ret = resp.getAsInteger("ret");
 		// 判断MQ结果是否成功
 		if (AppUtils.checkSuccess(ret)) {
-			String companycode = param.getCompanycode();
-			Company company = companyRepository
-					.findFirstByCompanyCode(companycode);
-			Assert.notNull(company, "商家不存在");
-			BaseDto pDto = param.getParams();
-			String memberid = pDto.getAsString("memberid");
-			String kmid = pDto.getAsString("kmid");
-			// K米不能为空
-			if (CommonUtils.isNotEmpty(kmid)) {
-				MemberCache member = memberCacheRepository
-						.findTopByCompanyIDAndMemberid(company.getCompanyID(),
-								memberid);
-				if (member != null) {
-					// 会员状态，必须为启用
-					if (AppConstants.MEMBER_STATUS_USER.equals(member
-							.getStatus())) {
-						Kmbindcard kmbindcard = kmbindcardRepository
-								.findFirstByKmid(kmid);
-						if (kmbindcard != null) {
-							// K米APP用户ID
-							int customerid = kmbindcard.getCustomerID();
-							pDto.put("customerid", customerid);
-							KRespResParam kRespResParam = (KRespResParam) invokeKmService
-									.fillCustomerInfo(pDto);
-							ret = kRespResParam.getRet();
-							if (AppUtils.checkSuccess(ret)) {
-								logger.info("会员资料( {}:{} )同步到K米成功",
-										companycode, memberid);
-							} else {
-								logger.warn("会员资料( {}:{} )同步到K米失败",
-										companycode, memberid);
-							}
-						}
-
-					}
-				}
-			}
-
+			// 会员信息同步到K米
+			asyncService.syncKM(param);
 		}
+		logger.debug("完成同步会员修改同步线下系统({}:{})", param.getCompanycode(), param
+				.getParams().get("memberid"));
 		return resp;
 
 	}

@@ -2,10 +2,15 @@ package weChat.parameter.impl;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import weChat.core.metatype.BaseDto;
 import weChat.parameter.IRespParam;
 
 public class KRespResParam implements IRespParam {
+	
+	private static ObjectMapper mapper = new ObjectMapper();
 	private int ret;
 
 	private String msg;
@@ -35,5 +40,14 @@ public class KRespResParam implements IRespParam {
 	public void setRes(List<BaseDto> res) {
 		this.res = res;
 	}
-	
+
+	@Override
+	public String toString() {
+		try {
+			String string = mapper.writeValueAsString(this);
+			return string;
+		} catch (JsonProcessingException e) {
+		}
+		return super.toString();
+	}
 }
