@@ -32,4 +32,16 @@ public class AppConstants {
 	public static final String ARGUMENT_NOT_EMPTY_INFO ="ARGUMENT_NOT_EMPTY_INFO";
 	/**会员状态：启用**/
 	public static final String MEMBER_STATUS_USER="启用";
+	/**微信用户绑定绑卡状态**/
+	public static final byte WEIXIN_USER_BIND_STATUS_BIND=1;
+	/**K米APP绑卡关系表, 状态 1绑卡 2取消绑卡**/
+	public static final byte  KM_BIND_CARD_STATUS_BIND=1;
+	/**取消绑卡**/
+	public static final byte KM_BIND_CARD_STATUS_UNBIND=2;
+	/**K米APP绑卡关系表的绑卡来源，微信绑卡**/
+	public static final byte KM_BIND_CARD_SOURCE_WEIXIN =1;
+	/**微信绑卡进程休息时间**/
+	public static final long SLEEP_MILLIS= 3000;
+	
+	
 }

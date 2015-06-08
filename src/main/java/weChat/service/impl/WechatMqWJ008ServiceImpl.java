@@ -16,11 +16,14 @@ import weChat.core.utils.StringUtils;
 import weChat.domain.primary.Cardnum;
 import static weChat.core.utils.ValidationUtils.*;
 import weChat.parameter.IRespParam;
+import weChat.parameter.impl.CommonParam;
 import weChat.parameter.impl.RReqParam;
 import weChat.repository.primary.CardnumRepository;
+import weChat.service.AsyncService;
 import weChat.service.ValidationService;
 import weChat.service.WechatMqService;
 import weChat.utils.AppConstants;
+import weChat.utils.AppUtils;
 
 /**
  * 会员卡绑定
@@ -33,6 +36,8 @@ import weChat.utils.AppConstants;
 public class WechatMqWJ008ServiceImpl extends WechatMqService {
 	@Autowired
 	private CardnumRepository cardnumRepository;
+	@Autowired
+	private AsyncService asyncService;
 
 	@Autowired
 	public WechatMqWJ008ServiceImpl(RabbitClient rabbitClient,
@@ -51,7 +56,14 @@ public class WechatMqWJ008ServiceImpl extends WechatMqService {
 			pDto.put("kmid", cardNumID);
 		}
 		//发送MQ消息
-		return sendMQ(param);
+		CommonParam commonParam = (CommonParam) sendMQ(param);
+		Integer ret = commonParam.getAsInteger("ret");
+		//判断线下系统绑定会员卡是否成功
+		if(AppUtils.checkSuccess(ret)){
+			//通知K米，并维护K米关系绑定表
+			asyncService.bindKM(param);
+		}
+		return commonParam;
 
 
 	}

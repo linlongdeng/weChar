@@ -1,5 +1,7 @@
 package weChat.service.impl;
 
+import static weChat.utils.AppUtils.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -18,8 +20,11 @@ public class CompanyServiceImpl implements CompanyService {
 	public void validateCompany(String companycode, String companypsw, int wechatpubinfoid,
 			Model model) {
 		Company company = companyRepository.findFirstByCompanyCode(companycode);
-		Assert.notNull(company, "商家不存在");
-		Assert.isTrue(company.getCompanyPsw().equals(companypsw),"商家密码错误");
+		//商家不能为空
+		assertCompanyNotNull(company);
+		//判断商家密码
+		assertCompanyPassError(companypsw, company);
+
 		model.addAttribute(AppConstants.COMPANY, company);
 		model.addAttribute(AppConstants.WECHATPUBINFOID, wechatpubinfoid);
 	}

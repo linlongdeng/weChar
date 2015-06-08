@@ -51,7 +51,7 @@ public interface InvokeKmService {
 	 * @param pDto
 	 * @return
 	 */
-	public IRespParam registerByPhone(Dto pDto);
+	public IRespParam registerByPhone(Dto pDto) throws Exception;
 
 	/**
 	 * 完善K米会员资料

@@ -36,7 +36,7 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	public static final String KM_PREFIX = "km";
 
 	public static final String TOKEN_NAME = "access_token";
-	
+
 	private String center_url;
 	private String appkey;
 	/** 获取受权码 **/
@@ -54,6 +54,7 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
+
 	/**
 	 * 获取URL
 	 * 
@@ -93,7 +94,7 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	}
 
 	@Override
-	@Scheduled(cron="0 37 0 * * *")
+	@Scheduled(cron = "0 37 0 * * *")
 	public void saveAllCompanyFromKm() throws Exception {
 		logger.info("开始同步所有K米商家信息");
 		long startTime = System.currentTimeMillis();
@@ -126,7 +127,7 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 			companyRepository.save(companyList);
 		}
 		long endtime = System.currentTimeMillis();
-		logger.info("结束同步所有K米商家信息，花费时间是{} S" , (endtime - startTime)/1000);
+		logger.info("结束同步所有K米商家信息，花费时间是{} S", (endtime - startTime) / 1000);
 	}
 
 	/**
@@ -137,10 +138,10 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	public void fiterIllegalData(List<BaseDto> list) {
 		if (!isEmpty(list)) {
 			Iterator<BaseDto> it = list.iterator();
-			while(it.hasNext()){
+			while (it.hasNext()) {
 				BaseDto dto = it.next();
-				//删除要用迭代器， 这样才不会有问题
-				//关键属性任意一个为空，作删除
+				// 删除要用迭代器， 这样才不会有问题
+				// 关键属性任意一个为空，作删除
 				if (isEmpty(dto.get("companyid"), dto.get("pass"),
 						dto.get("status"), dto.get("companytype"),
 						dto.get("companycode"), dto.get("companyname"))) {
@@ -158,9 +159,14 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	}
 
 	@Override
-	public IRespParam registerByPhone(Dto pDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public IRespParam registerByPhone(Dto pDto) throws Exception {
+		logger.info("开始根据手机号码生成K米会员: 手机号{}", pDto.get("phoneno"));
+		pDto.put(TOKEN_NAME, getKmAccessToken());
+		DynamicRespParam resp = HttpClientUtils.postProxy(
+				getUrl(registerMember_path), pDto, DynamicRespParam.class);
+		logger.info("完成根据手机号码生成K米会员,手机号{}，返回参数", pDto.get("phoneno"), resp);
+		return resp;
+
 	}
 
 	@Override

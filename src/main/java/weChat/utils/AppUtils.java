@@ -1,4 +1,9 @@
 package weChat.utils;
+
+import org.springframework.util.Assert;
+
+import weChat.domain.primary.Company;
+
 /**
  * 一些方法集合
  * @author deng
@@ -13,6 +18,18 @@ public abstract class AppUtils {
 	 */
 	public static  boolean checkSuccess(int code){
 		return RespMsgCode.SUCCESS_CODE == code;
+	}
+	
+	public static void assertCompanyNotNull(Company company){
+		Assert.notNull(company, "商家信息不能为空");
+	}
+	/**
+	 * 商家密码是否正确
+	 * @param companypsw
+	 * @param company
+	 */
+	public static void assertCompanyPassError( String companypsw, Company company){
+		Assert.isTrue(company.getCompanyPsw().equals(companypsw),"商家密码错误");
 	}
 
 }

@@ -18,7 +18,7 @@ import weChat.parameter.impl.DynamicRespParam;
 public class KmInvokeTest {
 
 	final String ip = "http://127.0.0.1:8080/weChat";
-
+	public static final String TOKEN_NAME = "access_token";
 	@Test
 	public void testAccess_token() throws JsonGenerationException,
 			JsonMappingException, IOException {
@@ -70,6 +70,18 @@ public class KmInvokeTest {
 		long endTime = System.currentTimeMillis();
 		System.out.println("花费的时间是" + (endTime - startTime) / 1000 + "s");
 		System.out.println(result);
+	}
+	@Test
+	public void testRegisterByPhone() throws Exception{
+		String actionPath="Customer/register";
+		String ip ="http://192.168.84.176:8103/";
+		Dto pDto = new BaseDto();
+		pDto.put("phoneno", "18960863890");
+		//pDto.put("kmid", "123456789");
+		pDto.put(TOKEN_NAME, "efa810814017980d0c1fb2f968423152");
+		DynamicRespParam resp = HttpClientUtils.postProxy(
+				ip + actionPath, pDto, DynamicRespParam.class);
+		System.out.println(resp);
 	}
 
 }

@@ -18,4 +18,11 @@ public interface AsyncService {
 	 */
 	@Async
 	public void syncKM(RReqParam param) throws Exception;
+	/**
+	 * 绑定K米会员，并维护K米关系绑定表
+	 * @param param
+	 * @throws Exception
+	 */
+	@Async
+	public void bindKM(RReqParam param) throws Exception;
 }

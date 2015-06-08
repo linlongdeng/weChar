@@ -1,5 +1,6 @@
 package weChat.core.utils;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
 
@@ -79,6 +80,13 @@ public class CommonUtils {
 			}
 		}
 		return true;
+	}
+	/**
+	 * 获取当前时间戳
+	 * @return
+	 */
+	public static Timestamp  currentTimestamp(){
+		return new Timestamp(System.currentTimeMillis()); 
 	}
 
 }
