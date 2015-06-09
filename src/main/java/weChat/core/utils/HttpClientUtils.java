@@ -1,15 +1,23 @@
 package weChat.core.utils;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -17,6 +25,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import weChat.core.metatype.Dto;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +40,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class HttpClientUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(HttpClientUtils.class);
 	private static ObjectMapper mapper = new ObjectMapper();;
 
 	/**
@@ -62,11 +73,11 @@ public class HttpClientUtils {
 	public static <T> T post(String url, Object requestParam, Class<T> valueType)
 			throws Exception {
 		// 设置超时时间
-/*		RequestConfig config = RequestConfig.custom()
-				.setConnectTimeout(1000 * 10).setSocketTimeout(1000 * 10)
-				.build();
-		return post(url, requestParam, valueType, config);
-		*/
+		/*
+		 * RequestConfig config = RequestConfig.custom() .setConnectTimeout(1000
+		 * * 10).setSocketTimeout(1000 * 10) .build(); return post(url,
+		 * requestParam, valueType, config);
+		 */
 		return post(url, requestParam, valueType, null);
 	}
 
@@ -89,7 +100,7 @@ public class HttpClientUtils {
 			// 设置自定义请求配置
 			httpPost.setConfig(config);
 			String sParam = mapper.writeValueAsString(requestParam);
-			logger.debug("发送http请求，url:{} ,参数: {}", url , sParam);
+			logger.debug("发送http请求，url:{} ,参数: {}", url, sParam);
 			HttpEntity entity = new StringEntity(sParam,
 					ContentType.APPLICATION_JSON);
 			httpPost.setEntity(entity);
@@ -104,11 +115,51 @@ public class HttpClientUtils {
 					InputStream inputStream = respEntity.getContent();
 					T value = mapper.readValue(inputStream, valueType);
 					EntityUtils.consume(respEntity);
-					logger.debug("发送HTTP请求成功,返回参数是：{}",value);
+					logger.debug("发送HTTP请求成功,返回参数是：{}", value);
 					return value;
 				}
 			} finally {
 				response.close();
+			}
+
+		} finally {
+			httpclient.close();
+		}
+		return null;
+	}
+
+	public static <T> T get(String url, Dto dto, Class<T> valueType,
+			RequestConfig config) throws Exception {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			URIBuilder uriBuilder = new URIBuilder(url);
+			if (CommonUtils.isNotEmpty(dto)) {
+				Set<String> keySet = dto.keySet();
+				for (String name : keySet) {
+					String value = dto.getAsString(name);
+					uriBuilder.setParameter(name, value);
+				}
+			}
+			URI uri = uriBuilder.build();
+			logger.debug("发送http请求，url:{} ", uri);
+			HttpGet httpGet = new HttpGet(uri);
+			httpGet.setConfig(config);
+			CloseableHttpResponse httpResponse = httpclient.execute(httpGet);
+			try {
+				StatusLine statusLine = httpResponse.getStatusLine();
+				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+					HttpEntity respEntity = httpResponse.getEntity();
+					ContentType contentType = ContentType
+							.getOrDefault(respEntity);
+					Charset charset = contentType.getCharset();
+					InputStream inputStream = respEntity.getContent();
+					T value = mapper.readValue(inputStream, valueType);
+					EntityUtils.consume(respEntity);
+					logger.debug("发送HTTP请求成功,返回参数是：{}", value);
+					return value;
+				}
+			} finally {
+				httpResponse.close();
 			}
 
 		} finally {

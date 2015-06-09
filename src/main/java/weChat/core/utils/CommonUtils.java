@@ -3,6 +3,7 @@ package weChat.core.utils;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Random;
 
 public class CommonUtils {
 	/**UTF-8**/
@@ -88,5 +89,14 @@ public class CommonUtils {
 	public static Timestamp  currentTimestamp(){
 		return new Timestamp(System.currentTimeMillis()); 
 	}
-
+/**
+ * 生成指定范围的随机数
+ * @param maxNum
+ * @return
+ */
+	public static int randomnum(int maxNum, int minNum){
+		Random random = new Random();
+		return random.nextInt(minNum) %(maxNum-minNum+1) + minNum;
+		
+	}
 }

@@ -18,9 +18,17 @@ public class Wechatpubinfo implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int wechatPubInfoID;
 
+	private String access_token;
+
 	private String appID;
 
 	private String appSecret;
+
+	private byte appType;
+
+	private int expiretokentime;
+
+	private String jsTicket;
 
 	private String wechatPubID;
 
@@ -37,6 +45,14 @@ public class Wechatpubinfo implements Serializable {
 		this.wechatPubInfoID = wechatPubInfoID;
 	}
 
+	public String getAccess_token() {
+		return this.access_token;
+	}
+
+	public void setAccess_token(String access_token) {
+		this.access_token = access_token;
+	}
+
 	public String getAppID() {
 		return this.appID;
 	}
@@ -51,6 +67,30 @@ public class Wechatpubinfo implements Serializable {
 
 	public void setAppSecret(String appSecret) {
 		this.appSecret = appSecret;
+	}
+
+	public byte getAppType() {
+		return this.appType;
+	}
+
+	public void setAppType(byte appType) {
+		this.appType = appType;
+	}
+
+	public int getExpiretokentime() {
+		return this.expiretokentime;
+	}
+
+	public void setExpiretokentime(int expiretokentime) {
+		this.expiretokentime = expiretokentime;
+	}
+
+	public String getJsTicket() {
+		return this.jsTicket;
+	}
+
+	public void setJsTicket(String jsTicket) {
+		this.jsTicket = jsTicket;
 	}
 
 	public String getWechatPubID() {

@@ -3,6 +3,7 @@ package weChat.utils;
 import org.springframework.util.Assert;
 
 import weChat.domain.primary.Company;
+import weChat.domain.primary.Wechatpubinfo;
 
 /**
  * 一些方法集合
@@ -30,6 +31,13 @@ public abstract class AppUtils {
 	 */
 	public static void assertCompanyPassError( String companypsw, Company company){
 		Assert.isTrue(company.getCompanyPsw().equals(companypsw),"商家密码错误");
+	}
+	/**
+	 * 微信公众号是否存在
+	 * @param wechatpubinfo
+	 */
+	public static void assertWechatpubinfoNotNull(Wechatpubinfo wechatpubinfo){
+		Assert.notNull(wechatpubinfo, "微信公众号不存在");
 	}
 
 }

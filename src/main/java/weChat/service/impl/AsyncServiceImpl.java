@@ -83,6 +83,17 @@ public class AsyncServiceImpl implements AsyncService {
 		}
 
 	}
+	/**
+	 * 模拟调用K米的根据手机号码生成K米会员
+	 * @return
+	 */
+	private DynamicRespParam simulateKmRegisterByPhoneService(){
+		DynamicRespParam respParam = new DynamicRespParam();
+		respParam.setRet(0);
+		int customerid = CommonUtils.randomnum(10000, 1);
+		respParam.set("customerid",customerid );
+		return respParam;
+	}
 
 	@Override
 	public void bindKM(RReqParam param) throws Exception {
@@ -96,11 +107,12 @@ public class AsyncServiceImpl implements AsyncService {
 		 String phoneno = pDto.getAsString("mobile");
 		kmDto.put("phoneno",phoneno);
 		logger.debug("开始处理微信绑定会员卡同步K米应用, phoneno={}", phoneno);
+	
 		DynamicRespParam respParam = (DynamicRespParam) invokeKmService
 				.registerByPhone(kmDto);
 		// 判断调用是否成功
 		if (AppUtils.checkSuccess(respParam.getRet())) {
-			String customerid = respParam.getAsString("customerid");
+			int customerid = respParam.getAsInteger("customerid");
 			kmDto.put("customerid", customerid);
 			MRespParam kmBindResp = (MRespParam) kmbindcardService
 					.kmbindcard(kmDto);

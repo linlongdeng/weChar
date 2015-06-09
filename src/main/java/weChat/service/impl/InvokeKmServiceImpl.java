@@ -162,7 +162,7 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	public IRespParam registerByPhone(Dto pDto) throws Exception {
 		logger.info("开始根据手机号码生成K米会员: 手机号{}", pDto.get("phoneno"));
 		pDto.put(TOKEN_NAME, getKmAccessToken());
-		DynamicRespParam resp = HttpClientUtils.postProxy(
+		DynamicRespParam resp = HttpClientUtils.post(
 				getUrl(registerMember_path), pDto, DynamicRespParam.class);
 		logger.info("完成根据手机号码生成K米会员,手机号{}，返回参数", pDto.get("phoneno"), resp);
 		return resp;
