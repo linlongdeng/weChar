@@ -10,7 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 		"classpath:weixin.properties" })
 public class WeChatApplication {
 
-	private String center_url;
 
 	public static void main(String[] args) {
 		SpringApplication.run(WeChatApplication.class, args);

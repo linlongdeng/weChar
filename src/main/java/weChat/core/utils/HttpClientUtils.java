@@ -44,6 +44,8 @@ public class HttpClientUtils {
 			.getLogger(HttpClientUtils.class);
 	private static ObjectMapper mapper = new ObjectMapper();;
 
+	private static RequestConfig requestConfig;
+
 	/**
 	 * 把请求发送fiddler代理服务器
 	 * 
@@ -79,6 +81,18 @@ public class HttpClientUtils {
 		 * requestParam, valueType, config);
 		 */
 		return post(url, requestParam, valueType, null);
+	}
+/**
+ * 简单的生成RequestConfig实例
+ * @return
+ */
+	public static synchronized RequestConfig getSimleRequestConfig() {
+		if (requestConfig == null) {
+			requestConfig = RequestConfig.custom()
+					.setConnectionRequestTimeout(6000).setSocketTimeout(6000)
+					.build();
+		}
+		return requestConfig;
 	}
 
 	/**
@@ -128,15 +142,15 @@ public class HttpClientUtils {
 		return null;
 	}
 
-	public static <T> T get(String url, Dto dto, Class<T> valueType,
+	public static <T> T get(String url, Dto pDto, Class<T> valueType,
 			RequestConfig config) throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
 			URIBuilder uriBuilder = new URIBuilder(url);
-			if (CommonUtils.isNotEmpty(dto)) {
-				Set<String> keySet = dto.keySet();
+			if (CommonUtils.isNotEmpty(pDto)) {
+				Set<String> keySet = pDto.keySet();
 				for (String name : keySet) {
-					String value = dto.getAsString(name);
+					String value = pDto.getAsString(name);
 					uriBuilder.setParameter(name, value);
 				}
 			}

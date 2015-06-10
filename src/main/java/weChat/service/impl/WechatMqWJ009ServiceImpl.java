@@ -1,5 +1,6 @@
 package weChat.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -14,7 +15,7 @@ import weChat.utils.AppConstants;
 
 @Service("WJ009" + AppConstants.WJMQ_SUFFIX)
 public class WechatMqWJ009ServiceImpl extends WechatMqService {
-
+	@Autowired
 	public WechatMqWJ009ServiceImpl(RabbitClient rabbitClient,
 			RabbitClientConfig config, ValidationService validationService) {
 		super(rabbitClient, config, validationService);

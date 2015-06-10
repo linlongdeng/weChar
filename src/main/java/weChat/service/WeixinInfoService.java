@@ -13,7 +13,7 @@ public interface WeixinInfoService {
 	 * @param param
 	 * @return
 	 */
-	public IRespParam getAccessToken(Wechatpubinfo wechatpubinfo);
+	public IRespParam getAccessToken(Wechatpubinfo wechatpubinfo)  throws Exception;
 
 	/**
 	 * 通过Https协议向微信接口请求access_token
@@ -22,7 +22,7 @@ public interface WeixinInfoService {
 	 * @param secret
 	 * @return
 	 */
-	public Dto getAccessToken(String appid, String secret);
+	public Dto getAccessToken(String appid, String secret) throws Exception;
 
 	/**
 	 * 通过https协议向微信请求请求jsapi_ticket
@@ -30,5 +30,5 @@ public interface WeixinInfoService {
 	 * @param accessToken
 	 * @return
 	 */
-	public Dto getApiTicket(String accessToken);
+	public Dto getApiTicket(String accessToken) throws Exception;
 }

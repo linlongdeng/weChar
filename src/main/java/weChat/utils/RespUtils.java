@@ -21,5 +21,9 @@ public class RespUtils {
 		return new MRespParam(SUCCESS_CODE, "");
 	}
 	
+	public static IRespParam errorMR(int ret , String msg){
+		return new MRespParam(ret, msg);
+	}
+	
 
 }

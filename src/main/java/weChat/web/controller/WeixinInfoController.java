@@ -2,6 +2,8 @@ package weChat.web.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,15 +12,28 @@ import org.springframework.web.bind.annotation.RestController;
 import weChat.domain.primary.Wechatpubinfo;
 import weChat.parameter.IRespParam;
 import weChat.parameter.impl.WReqParam;
+import weChat.repository.primary.WechatpubinfoRepository;
+import weChat.service.WeixinInfoService;
+import weChat.utils.AppUtils;
 import static weChat.utils.AppConstants.*;
 
 @RestController
 @RequestMapping("/WeixinInfo")
 public class WeixinInfoController {
+	@Autowired
+	private WeixinInfoService weixinInfoService;
+	@Autowired
+	private WechatpubinfoRepository wechatpubinfoRepository;
 
-	public IRespParam getAccessToken(
-			@ModelAttribute(WECHATPUBINFOID) Wechatpubinfo wechatpubinfo) {
-		return null;
-
+	@RequestMapping("/getAccessToken")
+	@Cacheable(value = "weixinCache", key = "#param.wechatpubinfoid")
+	public IRespParam getAccessToken(@RequestBody @Valid WReqParam param)
+			throws Exception {
+		Wechatpubinfo wechatpubinfo = wechatpubinfoRepository.findOne(param
+				.getWechatpubinfoid());
+		// 判断微信公众号是否存在
+		AppUtils.assertWechatpubinfoNotNull(wechatpubinfo);
+		IRespParam resp = weixinInfoService.getAccessToken(wechatpubinfo);
+		return resp;
 	}
 }

@@ -42,6 +42,12 @@ public class AppConstants {
 	public static final byte KM_BIND_CARD_SOURCE_WEIXIN =1;
 	/**微信绑卡进程休息时间**/
 	public static final long SLEEP_MILLIS= 3000;
+	/**微信接口调用成功标识**/
+	public static final int WEIXIN_SUCCESS=0;
+	/**微信接口错误码名称**/
+	public static final String WEIXIN_ERRCODE="errcode";
+	/**微信接口错误消息名称**/
+	public static final String WEXIN_ERRMSG="errmsg";
 	
 	
 	
