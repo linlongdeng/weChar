@@ -41,4 +41,11 @@ public class MRespParam implements IRespParam {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+
+	@Override
+	public String toString() {
+		return "{ ret :" + ret + ", msg:" + msg +"}";
+	}
+	
+	
 }

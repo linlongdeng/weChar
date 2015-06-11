@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import weChat.core.metatype.Dto;
 import weChat.parameter.IRespParam;
 import weChat.parameter.impl.DynamicRespParam;
+import weChat.parameter.impl.KSmsReqParam;
 import weChat.parameter.impl.RRespParam;
 
 /**
@@ -21,9 +22,11 @@ public interface InvokeKmService {
 	 * 
 	 * @return
 	 */
-	public String getKmAccessToken()  throws Exception;
+	public String getKmAccessToken() throws Exception;
+
 	/**
 	 * 获取授权码
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
@@ -59,13 +62,13 @@ public interface InvokeKmService {
 	 * @param pDto
 	 */
 	public IRespParam fillCustomerInfo(Dto pDto) throws Exception;
+
 	/**
 	 * 发送短信
+	 * 
 	 * @param pDto
 	 * @return
 	 */
-	public IRespParam  sendsms(Dto pDto);
-	
-
+	public IRespParam sendsms(KSmsReqParam param) throws Exception;
 
 }

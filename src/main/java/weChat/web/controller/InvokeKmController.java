@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,10 +15,12 @@ import weChat.core.metatype.BaseDto;
 import weChat.parameter.IRespParam;
 import weChat.parameter.impl.DynamicRespParam;
 import weChat.parameter.impl.KRespResParam;
+import weChat.parameter.impl.KSmsReqParam;
 import weChat.service.InvokeKmService;
 import weChat.utils.RespUtils;
 
 @RestController
+@RequestMapping("/InvokeKm")
 public class InvokeKmController {
 
 	@Autowired
@@ -82,5 +87,17 @@ public class InvokeKmController {
 		DynamicRespParam resp = new DynamicRespParam();
 		resp.set("access_token", "32132131");
 		return resp;
+	}
+/**
+ * 发送短信
+ * @param param
+ * @return
+ * @throws Exception
+ */
+	@RequestMapping("/sendsms")
+	public IRespParam sendsms(@RequestBody @Valid KSmsReqParam param)
+			throws Exception {
+		return invokeKmService.sendsms(param);
+
 	}
 }

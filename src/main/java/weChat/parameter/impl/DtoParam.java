@@ -13,4 +13,9 @@ import weChat.parameter.IRespParam;
  */
 public class DtoParam extends BaseDto implements IReqParam, IRespParam {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 }

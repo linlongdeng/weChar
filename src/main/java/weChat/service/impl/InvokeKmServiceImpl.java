@@ -1,8 +1,10 @@
 package weChat.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +22,13 @@ import weChat.domain.primary.Company;
 import weChat.parameter.IRespParam;
 import weChat.parameter.impl.DynamicRespParam;
 import weChat.parameter.impl.KRespResParam;
+import weChat.parameter.impl.KSmsReqParam;
+import weChat.parameter.impl.MRespParam;
 import weChat.parameter.impl.RRespParam;
 import weChat.repository.primary.CompanyRepository;
 import weChat.service.InvokeKmService;
 import weChat.utils.AppConstants;
+import weChat.utils.AppUtils;
 import weChat.utils.RespUtils;
 import static weChat.core.utils.CommonUtils.*;
 
@@ -178,9 +183,21 @@ public class InvokeKmServiceImpl implements InvokeKmService {
 	}
 
 	@Override
-	public IRespParam sendsms(Dto pDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public IRespParam sendsms(KSmsReqParam param) throws Exception {
+		Dto pDto = new BaseDto();
+		pDto.put(TOKEN_NAME, getKmAccessToken());
+		pDto.put("phoneno", param.getPhoneno());
+		Dto nestedDto = new BaseDto();
+		nestedDto.put("validcode", param.getValidcode());
+		pDto.put("sms_content", nestedDto);
+		MRespParam resp = HttpClientUtils.post(getUrl(sendSMS_path), pDto,
+				MRespParam.class);
+		if(AppUtils.checkSuccess(resp.getRet())){
+			logger.debug("发送短信成功，手机号是{}", param.getPhoneno());
+		}else{
+			logger.error("发送短信失败，手机号是{}", param.getPhoneno(), "返回消息是：", resp );
+		}
+		return resp;
 	}
 
 	public String getCenter_url() {
