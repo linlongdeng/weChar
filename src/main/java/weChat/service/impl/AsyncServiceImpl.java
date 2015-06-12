@@ -90,7 +90,7 @@ public class AsyncServiceImpl implements AsyncService {
 	private DynamicRespParam simulateKmRegisterByPhoneService(){
 		DynamicRespParam respParam = new DynamicRespParam();
 		respParam.setRet(0);
-		int customerid = CommonUtils.randomnum(10000, 1);
+		int customerid = CommonUtils.getRandomnum(10000, 1);
 		respParam.set("customerid",customerid );
 		return respParam;
 	}

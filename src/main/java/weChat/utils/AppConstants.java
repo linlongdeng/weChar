@@ -49,6 +49,14 @@ public class AppConstants {
 	/**微信接口错误消息名称**/
 	public static final String WEXIN_ERRMSG="errmsg";
 	
+	/**默认cache**/
+	public static final String CACHE_DEFAULT="APP_CACHE";
+	/**微信cache**/
+	public static final String CACHE_WEIXIN ="WEIXIN_CACHE";
+	/**微+与K米的token 专用 cache**/
+	public static final String CACHE_WJ_TOKEN="WJ_TOKEN_CACHE";
+	/**微+与K米其他的cache**/
+	public static final String CACHE_WJ_KM="WJ_KM_CACHE";
 	
 	
 }

@@ -18,7 +18,7 @@ public class AccessTokenTest {
 		Dto pDto = new BaseDto();
 		pDto.put("grant_type", "client_credential");
 		pDto.put("appid", "wx3f9686ecfb0ae084");
-		pDto.put("secret", "995de6ecd18727d7d6d0e7fb8afc32e4");
+		pDto.put("secret", "995de6ecd18727d7d6d0e7fb8afc32e1");
 		BaseDto respDto = HttpClientUtils.get(ip, pDto, BaseDto.class, null);
 		System.out.println("返回参数是" + respDto);
 	}

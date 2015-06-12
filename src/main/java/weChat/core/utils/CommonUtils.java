@@ -1,6 +1,7 @@
 package weChat.core.utils;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
@@ -89,14 +90,39 @@ public class CommonUtils {
 	public static Timestamp  currentTimestamp(){
 		return new Timestamp(System.currentTimeMillis()); 
 	}
+	/**
+	 * 根据当前时间增加指定小时数
+	 * @param hour
+	 * @return
+	 */
+	public static Timestamp getTimestampAddHour(int hour){
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.HOUR_OF_DAY, hour);
+		return new Timestamp(calendar.getTimeInMillis());
+	}
 /**
  * 生成指定范围的随机数
  * @param maxNum
  * @return
  */
-	public static int randomnum(int maxNum, int minNum){
+	public static int getRandomnum(int maxNum, int minNum){
 		Random random = new Random();
 		return random.nextInt(minNum) %(maxNum-minNum+1) + minNum;
 		
 	}
+	/**
+	 * 生成指定长度的字符串
+	 * @param length
+	 * @return
+	 */
+	public static String getRandomString(int length) { //length表示生成字符串的长度
+	    String base = "abcdefghijklmnopqrstuvwxyz0123456789";   
+	    Random random = new Random();   
+	    StringBuffer sb = new StringBuffer();   
+	    for (int i = 0; i < length; i++) {   
+	        int number = random.nextInt(base.length());   
+	        sb.append(base.charAt(number));   
+	    }   
+	    return sb.toString();   
+	 }  
 }

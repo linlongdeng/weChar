@@ -26,6 +26,10 @@ import weChat.utils.RespMsgCode;
  * @version 1.0.0
  */
 public class DynamicRespParam implements IRespParam {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static ObjectMapper mapper = new ObjectMapper();
 	private int ret;
 

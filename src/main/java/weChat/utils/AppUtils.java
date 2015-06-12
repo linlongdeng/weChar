@@ -5,8 +5,8 @@ import org.springframework.util.Assert;
 import weChat.core.metatype.Dto;
 import weChat.core.utils.CommonUtils;
 import weChat.domain.primary.Company;
+import weChat.domain.primary.Interfacecheck;
 import weChat.domain.primary.Wechatpubinfo;
-
 import static weChat.utils.AppConstants.*;
 /**
  * 一些方法集合
@@ -68,6 +68,10 @@ public abstract class AppUtils {
 				return false;
 			}
 		}
+	}
+	
+	public static void assertInterfacecheckNotNull(Interfacecheck interfacecheck){
+		Assert.notNull(interfacecheck, "K米应用授权失败");
 	}
 	
 

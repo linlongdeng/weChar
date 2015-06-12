@@ -14,6 +14,7 @@ import weChat.parameter.IRespParam;
 import weChat.parameter.impl.WReqParam;
 import weChat.repository.primary.WechatpubinfoRepository;
 import weChat.service.WeixinInfoService;
+import weChat.utils.AppConstants;
 import weChat.utils.AppUtils;
 import static weChat.utils.AppConstants.*;
 
@@ -26,7 +27,7 @@ public class WeixinInfoController {
 	private WechatpubinfoRepository wechatpubinfoRepository;
 
 	@RequestMapping("/getAccessToken")
-	@Cacheable(value = "weixinCache", key = "#param.wechatpubinfoid")
+	@Cacheable(value = AppConstants.CACHE_WEIXIN, key = "#param.wechatpubinfoid")
 	public IRespParam getAccessToken(@RequestBody @Valid WReqParam param)
 			throws Exception {
 		Wechatpubinfo wechatpubinfo = wechatpubinfoRepository.findOne(param
