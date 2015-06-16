@@ -2,7 +2,7 @@ package weChat.utils;
 
 import static weChat.utils.RespMsgCode.*;
 import weChat.parameter.IRespParam;
-import weChat.parameter.impl.MRespParam;
+import weChat.parameter.manager.MRespParam;
 
 /**
  * 返回消息工具类

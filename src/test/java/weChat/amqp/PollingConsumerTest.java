@@ -34,8 +34,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import weChat.core.metatype.BaseDto;
-import weChat.parameter.impl.RReqParam;
-import weChat.parameter.impl.RRespParam;
+import weChat.parameter.amqp.AmqpReqParam;
+import weChat.parameter.amqp.AmqpRespParam;
 import weChat.amqp.PollingConsumerTest.QueueConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,7 +66,7 @@ public class PollingConsumerTest {
 	@Test
 	public void test() throws JsonParseException, JsonMappingException,
 			IOException {
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ007");
 		param.setCompanycode("01103");
 		param.setWechatpubinfoid(1);
@@ -117,8 +117,8 @@ public class PollingConsumerTest {
 			String correlationId = new String(messageProperties.getCorrelationId(),"utf-8");
 			System.out.println("correlationId:" + correlationId);
 			System.out.println("correlationId:" + correlationId);
-			RRespParam resp = jsonObjectMapper.readValue(
-					receiveMessage.getBody(), RRespParam.class);
+			AmqpRespParam resp = jsonObjectMapper.readValue(
+					receiveMessage.getBody(), AmqpRespParam.class);
 			BaseDto data = resp.getData();
 			System.out.println("data" + data);
 			System.out.println(resp);
@@ -157,7 +157,7 @@ public class PollingConsumerTest {
 			// return new JsonMessageConverter();
 			Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
 			DefaultClassMapper mapper = new DefaultClassMapper();
-			mapper.setDefaultType(RRespParam.class);
+			mapper.setDefaultType(AmqpRespParam.class);
 			converter.setClassMapper(mapper);
 			return converter;
 

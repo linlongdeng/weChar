@@ -13,7 +13,7 @@ import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
 import weChat.core.utils.HttpClientUtils;
 import weChat.json.PostJsonUtils;
-import weChat.parameter.impl.DynamicRespParam;
+import weChat.parameter.common.DynamicRespParam;
 
 public class KmInvokeTest {
 

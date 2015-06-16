@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import weChat.json.PostJsonUtils;
-import weChat.parameter.impl.MInfoReqParam;
+import weChat.parameter.manager.MInfoReqParam;
 
 public class CompanyControllerTest {
 

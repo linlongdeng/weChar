@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import weChat.core.metatype.BaseDto;
 import weChat.core.utils.HttpClientUtils;
-import weChat.parameter.impl.WReqParam;
+import weChat.parameter.weixin.WReqParam;
 
 public class WeixinInfoControllerTest {
 

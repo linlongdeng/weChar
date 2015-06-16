@@ -50,8 +50,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import weChat.amqp.RpcTest.FixedReplyQueueConfig;
 import weChat.core.metatype.BaseDto;
-import weChat.parameter.impl.RReqParam;
-import weChat.parameter.impl.RRespParam;
+import weChat.parameter.amqp.AmqpReqParam;
+import weChat.parameter.amqp.AmqpRespParam;
 
 /**
  * <b>NOTE:</b> This class is referenced in the reference documentation; if it
@@ -76,7 +76,7 @@ public class RpcTest {
 	 */
 	@Test
 	public void test() {
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ007");
 		param.setCompanycode("01103");
 		param.setWechatpubinfoid(1);
@@ -202,7 +202,7 @@ public class RpcTest {
 			// return new JsonMessageConverter();
 			Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
 			DefaultClassMapper mapper = new DefaultClassMapper();
-			mapper.setDefaultType(RRespParam.class);
+			mapper.setDefaultType(AmqpRespParam.class);
 			converter.setClassMapper(mapper);
 			return converter;
 

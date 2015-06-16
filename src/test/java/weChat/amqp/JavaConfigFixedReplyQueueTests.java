@@ -48,8 +48,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import weChat.amqp.JavaConfigFixedReplyQueueTests.FixedReplyQueueConfig;
 import weChat.amqp.JavaConfigFixedReplyQueueTests.FixedReplyQueueConfig.PojoListener;
 import weChat.core.metatype.BaseDto;
-import weChat.parameter.impl.RReqParam;
-import weChat.parameter.impl.RRespParam;
+import weChat.parameter.amqp.AmqpReqParam;
+import weChat.parameter.amqp.AmqpRespParam;
 
 /**
  * <b>NOTE:</b> This class is referenced in the reference documentation; if it
@@ -74,14 +74,14 @@ public class JavaConfigFixedReplyQueueTests {
 	 */
 	@Test
 	public void test() {
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ007");
 		param.setCompanycode("00111");
 		param.setWechatpubinfoid(1);
 		BaseDto dto = new BaseDto();
 		dto.put("cardnum", "5000028");
 		param.setParams(dto);
-		RRespParam resp = (RRespParam) rabbitTemplate.convertSendAndReceive(param,(message) -> {
+		AmqpRespParam resp = (AmqpRespParam) rabbitTemplate.convertSendAndReceive(param,(message) -> {
 			MessageProperties properities = message.getMessageProperties();
 			String corrId = UUID.randomUUID().toString();
 			properities.setCorrelationId(corrId.getBytes());
@@ -215,10 +215,10 @@ public class JavaConfigFixedReplyQueueTests {
 		 */
 		public static class PojoListener {
 
-			public RRespParam handleMessage(RReqParam param)
+			public AmqpRespParam handleMessage(AmqpReqParam param)
 					throws InterruptedException {
 				// Thread.sleep(100000);
-				RRespParam resp = new RRespParam();
+				AmqpRespParam resp = new AmqpRespParam();
 				resp.setCmdid("1111");
 				resp.setMsg("测试");
 				resp.setRet(0);

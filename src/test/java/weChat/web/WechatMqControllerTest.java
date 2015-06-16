@@ -11,9 +11,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import weChat.core.metatype.BaseDto;
 import weChat.core.utils.HttpClientUtils;
 import weChat.json.PostJsonUtils;
-import weChat.parameter.impl.CommonParam;
-import weChat.parameter.impl.RReqParam;
-import weChat.parameter.impl.RRespParam;
+import weChat.parameter.amqp.AmqpReqParam;
+import weChat.parameter.amqp.AmqpRespParam;
+import weChat.parameter.common.CommonParam;
 
 public class WechatMqControllerTest {
 
@@ -22,7 +22,7 @@ public class WechatMqControllerTest {
 	@Test
 	public void testController() throws JsonGenerationException, JsonMappingException, IOException{
 		String actionPath ="/RabbitmqRpc";
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ007");
 		//param.setCompanycode("06375"); 
 		param.setCompanycode("01103");
@@ -37,7 +37,7 @@ public class WechatMqControllerTest {
 	public void testHttp() throws JsonGenerationException, JsonMappingException, IOException{
 		PostJsonUtils.ip ="http://192.168.82.67:3002";
 		String actionPath ="";
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ007");
 		param.setCompanycode("06375"); 
 		//param.setCompanycode("01197");
@@ -51,7 +51,7 @@ public class WechatMqControllerTest {
 	@Test
 	public void testWJ001() throws Exception{
 		String actionPath ="/RabbitmqRpc";
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ001");
 		param.setCompanycode("01103");
 		param.setWechatpubinfoid(1);
@@ -59,14 +59,14 @@ public class WechatMqControllerTest {
 		dto.put("cardnum", "5000028");
 		dto.put("memberid", "20000021");
 		param.setParams(dto);
-		 RRespParam resp = HttpClientUtils.post(ip + actionPath,param, RRespParam.class);
+		 AmqpRespParam resp = HttpClientUtils.post(ip + actionPath,param, AmqpRespParam.class);
 		 System.out.println("返回参数是： "  + resp);
 	}
 	
 	@Test
 	public void testWJ002() throws Exception{
 		String actionPath ="/RabbitmqRpc";
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ002");
 		param.setCompanycode("01103");
 		param.setWechatpubinfoid(1);
@@ -83,7 +83,7 @@ public class WechatMqControllerTest {
 	@Test
 	public void testWJ005() throws Exception{
 		String actionPath ="/RabbitmqRpc";
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ005");
 		param.setCompanycode("01103");
 		param.setWechatpubinfoid(1);
@@ -106,7 +106,7 @@ public class WechatMqControllerTest {
 	@Test
 	public void testWJ008() throws Exception{
 		String actionPath ="/RabbitmqRpc";
-		RReqParam param = new RReqParam();
+		AmqpReqParam param = new AmqpReqParam();
 		param.setCmdid("WJ008");
 		param.setCompanycode("01103");
 		param.setWechatpubinfoid(1);

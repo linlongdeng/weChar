@@ -5,7 +5,10 @@ import static weChat.utils.AppConstants.*;
 
 import java.util.Map;
 
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
+
+import weChat.core.exception.ArgumentEmptyException;
 
 public abstract class ValidationUtils {
 
@@ -58,5 +61,19 @@ public abstract class ValidationUtils {
 	 */
 	public static void rejectParamError(String paramName, Errors e){
 		e.reject(ARGUMENT_NOT_VALID, new Object[] { paramName }, null);
+	}
+	/**
+	 * 如果对象为空抛出，参数异常
+	 * @param argus
+	 * @param argusName
+	 */
+	public static void  rejectEmpty(Object[] argus, String[] arguNames){
+		Assert.isTrue(argus.length == arguNames.length, "两边参数不一致");
+		for(int i = 0; i < argus.length;i++){
+			if(CommonUtils.isEmpty(argus[i])){
+				throw new ArgumentEmptyException(arguNames[i]);
+			}
+		}
+		
 	}
 }

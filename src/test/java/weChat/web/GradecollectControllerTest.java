@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import weChat.core.metatype.BaseDto;
 import weChat.json.PostJsonUtils;
-import weChat.parameter.impl.MReqParam;
+import weChat.parameter.manager.MReqParam;
 
 public class GradecollectControllerTest {
 

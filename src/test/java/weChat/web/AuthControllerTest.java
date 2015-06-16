@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import weChat.core.metatype.BaseDto;
 import weChat.core.utils.HttpClientUtils;
-import weChat.parameter.impl.DtoParam;
-import weChat.parameter.impl.KAuthReqParam;
+import weChat.parameter.common.AuthReqParam;
+import weChat.parameter.common.DtoParam;
 
 
 public class AuthControllerTest {
@@ -18,7 +18,7 @@ public class AuthControllerTest {
 	public void testGetAccessToken() throws Exception{
 		String actionPath = "/Auth/getAccessToken";
 		
-		KAuthReqParam param = new KAuthReqParam();
+		AuthReqParam param = new AuthReqParam();
 		param.setAppkey("8s320e48a3sfsfd32047a9fcdadbfs");
 		param.setCompanycode("00127");
 		param.setGranttype("manageclient");

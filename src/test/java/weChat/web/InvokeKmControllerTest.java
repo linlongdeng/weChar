@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import weChat.core.metatype.BaseDto;
 import weChat.core.utils.HttpClientUtils;
-import weChat.parameter.impl.KSmsReqParam;
+import weChat.parameter.km.KSmsReqParam;
 
 public class InvokeKmControllerTest {
 	private String ip = "http://192.168.82.119:8080";
