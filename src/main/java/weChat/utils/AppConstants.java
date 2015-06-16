@@ -58,5 +58,12 @@ public class AppConstants {
 	/**微+与K米其他的cache**/
 	public static final String CACHE_WJ_KM="WJ_KM_CACHE";
 	
+	/**其他参数**/
+	public static final String OTHER_PARAM ="OTHER_PARAM";
+	/**K米的授权类型**/
+	public static final String GRANT_TYPE_KM="kmapp";
+	/**管理系统的授权类型**/
+	public static final String GRANT_TYPE_MANAGE="manageclient";
+	
 	
 }

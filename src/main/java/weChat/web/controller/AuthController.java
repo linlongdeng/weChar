@@ -37,7 +37,9 @@ public class AuthController {
 	 */
 	@RequestMapping("/getAccessToken")
 	public IRespParam getAccessToken(@RequestBody @Valid KAuthReqParam param) {
-		return authService.getAccessToken(param);
+		logger.debug("开始获取token,参数是{}", param);
+		IRespParam accessToken = authService.getAccessToken(param);
+		return accessToken;
 	}
 
 	/**

@@ -139,5 +139,21 @@ public class RespService {
 	public IRespParam serverError(String arg){
 		return newRespParam("SERVER", "SERVER_INFO", arg);
 	}
+	/**
+	 * 商家会员信息验证失败
+	 * @param arg
+	 * @return
+	 */
+	public IRespParam noMember(String arg){
+		return newRespParam("NO_MEMBER", "NO_MEMBER_INFO", arg);
+	}
+	/**
+	 * 参数错误
+	 * @param msg
+	 * @return
+	 */
+	public IRespParam IllegalArgument(String msg){
+		return newRespParam("ARGUMENT_NOT_VALID","ARGUMENT_NOT_VALID_INFO",msg);
+	}
 
 }

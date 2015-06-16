@@ -19,9 +19,9 @@ public class AuthControllerTest {
 		String actionPath = "/Auth/getAccessToken";
 		
 		KAuthReqParam param = new KAuthReqParam();
-		param.setAppkey("8930ec48a3fsfd32047a9fcda127db");
-		param.setAppid(90000001);
-		param.setGranttype("kmapp");
+		param.setAppkey("8s320e48a3sfsfd32047a9fcdadbfs");
+		param.setCompanycode("00127");
+		param.setGranttype("manageclient");
 		BaseDto pDto = HttpClientUtils.post(ip + actionPath, param,
 				BaseDto.class);
 		System.out.println("返回参数是：" + pDto );

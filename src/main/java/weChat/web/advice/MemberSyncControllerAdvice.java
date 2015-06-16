@@ -24,9 +24,9 @@ public class MemberSyncControllerAdvice {
 	@ModelAttribute
 	public void populateModel(@RequestBody @Valid MReqParam param, Model model){
 		String companycode = param.getCompanycode();
-		String companypsw = param.getCompanypsw();
+		String accessToken = param.getAccess_token();
 		int wechatpubinfoid = param.getWechatpubinfoid();
-		companyService.validateCompany(companycode, companypsw, wechatpubinfoid, model);
+		companyService.validateCompany(companycode, accessToken, wechatpubinfoid, model);
 		model.addAttribute(AppConstants.DATA, param.getData());
 		
 		

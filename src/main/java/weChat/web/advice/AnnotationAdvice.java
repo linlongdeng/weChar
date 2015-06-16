@@ -81,6 +81,13 @@ public class AnnotationAdvice {
 		IRespParam parameterError = respService.parameterError(ex);
 		return handleExceptionInternal(parameterError);
 	}
+	@ExceptionHandler(value = { IllegalArgumentException.class })
+	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
+		String message = ex.getMessage();
+		IRespParam illegalArgument = respService.IllegalArgument(message);
+		return handleExceptionInternal(illegalArgument);
+		
+	}
 	protected ResponseEntity<Object> handleExceptionInternal(Object body) {
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<Object>(body, headers, HttpStatus.OK);

@@ -3,6 +3,9 @@ package weChat.parameter.impl;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * K米APP获取授权码请求参数
  * 
@@ -11,14 +14,16 @@ import javax.validation.constraints.Pattern;
  * @version 1.0.0
  */
 public class KAuthReqParam {
-
+	private static ObjectMapper mapper = new ObjectMapper();
 	@NotNull
-	@Pattern(regexp = "^kmapp$", message = "granttype参数值非法")
+	@Pattern(regexp = "^(kmapp)|(manageclient)$", message = "granttype参数值非法")
 	private String granttype;
-	@NotNull
+	
 	private Integer appid;
 	@NotNull
 	private String appkey;
+	
+	private String companycode;
 
 	public String getGranttype() {
 		return granttype;
@@ -42,6 +47,24 @@ public class KAuthReqParam {
 
 	public void setAppid(Integer appid) {
 		this.appid = appid;
+	}
+
+	public String getCompanycode() {
+		return companycode;
+	}
+
+	public void setCompanycode(String companycode) {
+		this.companycode = companycode;
+	}
+	
+	@Override
+	public String toString() {
+		try {
+			String string = mapper.writeValueAsString(this);
+			return string;
+		} catch (JsonProcessingException e) {
+		}
+		return super.toString();
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 
+import org.springframework.validation.Errors;
+
 public class CommonUtils {
 	/**UTF-8**/
 	public static final String UTF_8="utf-8";
@@ -54,6 +56,7 @@ public class CommonUtils {
 		}
 		return false;
 	}
+	
 
 	/**
 	 * 判断对象是否为NotEmpty(!null或元素>0)<br>

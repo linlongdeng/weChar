@@ -26,7 +26,7 @@ public class MReqParam implements IReqParam{
 	private String companycode;
 	/**场所密码**/
 	  @NotNull
-	private String companypsw;
+	private String access_token;
 	
 	/**场所服务号ID**/
 	  @NotNull
@@ -43,13 +43,7 @@ public class MReqParam implements IReqParam{
 		this.companycode = companycode;
 	}
 
-	public String getCompanypsw() {
-		return companypsw;
-	}
 
-	public void setCompanypsw(String companypsw) {
-		this.companypsw = companypsw;
-	}
 
 
 
@@ -67,6 +61,14 @@ public class MReqParam implements IReqParam{
 
 	public void setWechatpubinfoid(int wechatpubinfoid) {
 		this.wechatpubinfoid = wechatpubinfoid;
+	}
+
+	public String getAccess_token() {
+		return access_token;
+	}
+
+	public void setAccess_token(String access_token) {
+		this.access_token = access_token;
 	}
 
 

@@ -24,7 +24,7 @@ public class GradecollectControllerTest {
 		String actionPath ="/Membersync/member_level";
 		MReqParam param = new MReqParam();
 		param.setCompanycode("00127");
-		param.setCompanypsw("25d55ad283aa400af464c76d713c07ad");
+		param.setAccess_token("25d55ad283aa400af464c76d713c07ad");
 		param.setWechatpubinfoid(43243243);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();
@@ -43,7 +43,7 @@ public class GradecollectControllerTest {
 		String actionPath ="/Membersync/member_info";
 		MReqParam param = new MReqParam();
 		param.setCompanycode("00127");
-		param.setCompanypsw("25d55ad283aa400af464c76d713c07ad");
+		param.setAccess_token("25d55ad283aa400af464c76d713c07ad");
 		param.setWechatpubinfoid(43243243);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();

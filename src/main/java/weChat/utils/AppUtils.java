@@ -5,9 +5,11 @@ import org.springframework.util.Assert;
 import weChat.core.metatype.Dto;
 import weChat.core.utils.CommonUtils;
 import weChat.domain.primary.Company;
+import weChat.domain.primary.Companywechatpub;
 import weChat.domain.primary.Interfacecheck;
 import weChat.domain.primary.Wechatpubinfo;
 import static weChat.utils.AppConstants.*;
+
 /**
  * 一些方法集合
  * 
@@ -61,7 +63,7 @@ public abstract class AppUtils {
 		if (CommonUtils.isEmpty(errcode)) {
 			return true;
 		} else {
-			//如果errcode，则看一下是否等于0
+			// 如果errcode，则看一下是否等于0
 			if (WEIXIN_SUCCESS == errcode) {
 				return true;
 			} else {
@@ -69,9 +71,19 @@ public abstract class AppUtils {
 			}
 		}
 	}
-	
-	public static void assertInterfacecheckNotNull(Interfacecheck interfacecheck){
+
+	public static void assertInterfacecheckNotNull(Interfacecheck interfacecheck) {
 		Assert.notNull(interfacecheck, "K米应用授权失败");
+	}
+
+	public static void assertTrueAccess(boolean flag) {
+		Assert.isTrue(flag, "权限验证失败");
+	}
+	
+
+	public static void assertWechatNotNull(Companywechatpub companywechatpub) {
+		Assert.notNull(companywechatpub, "商家公众号信息验证失败");
+
 	}
 	
 
