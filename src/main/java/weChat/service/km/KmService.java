@@ -14,4 +14,11 @@ public interface KmService {
  */
 	public IRespParam bindCardInfo(Company company, Dto otherParam,
 			int wechatpubinfoid) throws Exception;
+	
+	/**
+	 * K米APP批量获取会员信息
+	 * @param customerid
+	 * @return
+	 */
+	public IRespParam memberInfo(int customerid);
 }

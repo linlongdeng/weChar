@@ -1,8 +1,6 @@
 package weChat.web.km.advice;
 
-import static weChat.utils.AppConstants.COMPANY;
-import static weChat.utils.AppConstants.OTHER_PARAM;
-import static weChat.utils.AppConstants.WECHATPUBINFOID;
+import static weChat.utils.AppConstants.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -55,6 +53,10 @@ public class KmControllerAdvice {
 			//数据校验，数据处理
 			handleBindCardInfo(param, model);
 		}
+		//处理.K米APP批量获取会员信息
+		else if(requestURI.lastIndexOf("memberInfo") >= 0){
+			handleMemberInfo(param, model);
+		}
 
 	}
 
@@ -81,5 +83,17 @@ public class KmControllerAdvice {
 				companywechatpub.getWechatPubInfoID());
 		// 其他参数
 		model.addAttribute(OTHER_PARAM, param.any());
+	}
+	/**
+	 * 处理.K米APP批量获取会员信息
+	 * @param param
+	 * @param model
+	 */
+	private void handleMemberInfo(KDynamicReqParam param, Model model){
+		// 校验参数非空
+		ValidationUtils.rejectEmpty(
+				new Object[] { param.get("customerid") },
+				new String[] { "customerid" });
+		model.addAttribute(CUSTOMERID, param.getAsInteger("customerid"));
 	}
 }

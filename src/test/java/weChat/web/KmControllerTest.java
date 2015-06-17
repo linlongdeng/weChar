@@ -3,6 +3,7 @@ package weChat.web;
 import org.junit.Test;
 
 import weChat.core.metatype.BaseDto;
+import weChat.core.metatype.Dto;
 import weChat.core.utils.HttpClientUtils;
 import weChat.parameter.km.KDynamicReqParam;
 
@@ -14,9 +15,34 @@ public class KmControllerTest {
 		KDynamicReqParam param = new KDynamicReqParam();
 		param.setCompanyid(1197);
 		param.setAccess_token("rhu451eqeo05nkmtlhuya97hznr47q");
-		//param.set("cardnum", "5000028");
+		param.set("cardnum", "5000028");
+		BaseDto pDto = HttpClientUtils.postProxy(ip + actionPath, param,
+				BaseDto.class);
+		System.out.println(pDto);
+	}
+	@Test
+	public void testMemberInfo() throws Exception{
+		Dto  param = new BaseDto();
+		String actionPath = "/Km/memberInfo";
+		param.put("access_token", "kde8e636fegbnxlus6y0yoch3ft5ke");
+		param.put("customerid", 1293137);
 		BaseDto pDto = HttpClientUtils.post(ip + actionPath, param,
 				BaseDto.class);
 		System.out.println(pDto);
+		
+	}
+	
+	
+	@Test
+	public void testMemberInfo2() throws Exception{
+		 ip = "http://192.168.74.73:8080";
+		Dto  param = new BaseDto();
+		String actionPath = "/Km/memberInfoByKmID";
+		param.put("access_token", "tujeg8j9jnc0hzleddb6pij1y0j23y");
+		param.put("kmid", "000000022");
+		BaseDto pDto = HttpClientUtils.postProxy(ip + actionPath, param,
+				BaseDto.class);
+		System.out.println(pDto);
+		
 	}
 }

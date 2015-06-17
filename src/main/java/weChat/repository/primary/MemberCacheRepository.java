@@ -1,7 +1,12 @@
 package weChat.repository.primary;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import weChat.core.metatype.BaseDto;
 import weChat.domain.primary.MemberCache;
 
 public interface MemberCacheRepository extends
@@ -27,4 +32,6 @@ public interface MemberCacheRepository extends
 	 */
 	public MemberCache findTopByCardnumAndStatusAndWechatPubInfoID(
 			String cardnum, String status, int wechatPubInfoID);
+
+
 }

@@ -13,4 +13,10 @@ public interface ParameterRepository extends JpaRepository<Parameter, Integer>{
 
 	
 	public Parameter findFirstByCompanyIDAndParameterName(int companyID,String parameterName);
+	/**
+	 * 查找参数
+	 * @param parameterName
+	 * @return
+	 */
+	public Parameter findFirstByParameterName(String parameterName);
 }

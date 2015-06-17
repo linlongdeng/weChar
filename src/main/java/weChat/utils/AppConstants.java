@@ -64,6 +64,10 @@ public class AppConstants {
 	public static final String GRANT_TYPE_KM="kmapp";
 	/**管理系统的授权类型**/
 	public static final String GRANT_TYPE_MANAGE="manageclient";
+	/**K米APP用户ID**/
+	public static final String CUSTOMERID="CUSTOMERID";
+	/**文件下载服务器参数名称**/
+	public static final String FILE_DWONLOAD_PATH ="FileServerDownloadPath";
 	
 	
 }
