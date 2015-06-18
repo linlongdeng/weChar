@@ -95,12 +95,8 @@ public class KmServiceImpl implements KmService {
 
 	@Override
 	public IRespParam memberInfo(int customerid) {
-		String sql = "SELECT mc.KMID, mc.CompanyID, mc.MemberName, mc.birthday, mc.sex, mc.PaperType, mc.PaperNumber, mc.Cardnum, mc.CreateCardTime,"
-				+ " mc.GradeID, mc.`status`, mc.mobile, mc.UseLimitDate, mc.IntegralBalance, mc.AccountBalance, mc.AccountCash, mc.AccountPresent, mc.LastConsumeTime, mc.UpdateTime, "
-				+ "g.GradeName, g.CardPicID FROM wj_tbl_kmbindcard AS kbc INNER JOIN wj_tbl_member_cache AS mc ON kbc.Kmid = mc.KMID AND kbc. STATUS = 1 AND mc. STATUS = '启用' AND kbc.CustomerID = ? LEFT JOIN wj_tbl_gradecollect "
-				+ " AS g ON mc.GradeID = g.GradeID AND mc.CompanyID = g.CompanyID";
 		//采用原生JDBC执行SQL语句
-		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(MemberCacheRepository.MEMBER_INFO_SQL,
 				customerid);
 		List<Map<String, Object>> dataList = new ArrayList<>();
 		if (isNotEmpty(list)) {

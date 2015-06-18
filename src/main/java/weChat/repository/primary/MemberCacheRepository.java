@@ -32,6 +32,14 @@ public interface MemberCacheRepository extends
 	 */
 	public MemberCache findTopByCardnumAndStatusAndWechatPubInfoID(
 			String cardnum, String status, int wechatPubInfoID);
+	
+	/**
+	 * 根据K米会员APP_ID批量获取会员信息
+	 */
+	public final String MEMBER_INFO_SQL= "SELECT mc.KMID, mc.CompanyID, mc.MemberName, mc.birthday, mc.sex, mc.PaperType, mc.PaperNumber, mc.Cardnum, mc.CreateCardTime,"
+			+ " mc.GradeID, mc.`status`, mc.mobile, mc.UseLimitDate, mc.IntegralBalance, mc.AccountBalance, mc.AccountCash, mc.AccountPresent, mc.LastConsumeTime, mc.UpdateTime, "
+			+ "g.GradeName, g.CardPicID FROM wj_tbl_kmbindcard AS kbc INNER JOIN wj_tbl_member_cache AS mc ON kbc.Kmid = mc.KMID AND kbc. STATUS = 1 AND mc. STATUS = '启用' AND kbc.CustomerID = ? LEFT JOIN wj_tbl_gradecollect "
+			+ " AS g ON mc.GradeID = g.GradeID AND mc.CompanyID = g.CompanyID";
 
 
 }
