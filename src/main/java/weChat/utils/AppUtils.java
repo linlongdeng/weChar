@@ -115,6 +115,13 @@ public abstract class AppUtils {
 	public static void assertMemberCacheKmNull(MemberCache memberCache){
 		notNull(memberCache, "KM_BIND","KM_BIND_INFO");
 	}
+	
+	/**
+	 * 查询的参数不存
+	 */
+	public static void paramerNotExist(){
+		 throwArgumentEmptyException("PARAMER", "PARAMEE_INFO", null);
+	}
 
 	private static void notNull(Object object, String ret, String msg,
 			String argu) {

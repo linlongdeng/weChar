@@ -24,7 +24,7 @@ public class KmControllerTest {
 	public void testMemberInfo() throws Exception{
 		Dto  param = new BaseDto();
 		String actionPath = "/Km/memberInfo";
-		param.put("access_token", "kde8e636fegbnxlus6y0yoch3ft5ke");
+		param.put("access_token", "4gns6xtu01g9w62zu1rsi9hzqgear3");
 		param.put("customerid", 1293137);
 		BaseDto pDto = HttpClientUtils.post(ip + actionPath, param,
 				BaseDto.class);

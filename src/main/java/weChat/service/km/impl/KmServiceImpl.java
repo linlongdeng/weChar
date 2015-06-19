@@ -3,7 +3,6 @@ package weChat.service.km.impl;
 import static weChat.core.utils.CommonUtils.isNotEmpty;
 import static weChat.utils.AppConstants.KM_BIND_CARD_SOURCE_KM;
 import static weChat.utils.AppConstants.KM_BIND_CARD_STATUS_BIND;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +41,7 @@ import weChat.utils.AppUtils;
 
 @Service
 public class KmServiceImpl implements KmService {
-
+	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MemberCacheRepository memberCacheRepository;
@@ -60,10 +59,10 @@ public class KmServiceImpl implements KmService {
 	@Autowired
 	private ParameterRepository parameterRepository;
 	@Autowired
-	private CompanyRepository companyRepository;
+	private KmbindcardRepository kmbindcardRepository;
 
 	@Autowired
-	private KmbindcardRepository kmbindcardRepository;
+	private CompanyRepository companyRepository;
 
 	@Override
 	public IRespParam bindCardInfo(Company company, Dto otherParam,
@@ -276,5 +275,91 @@ public class KmServiceImpl implements KmService {
 		// 调用MQ服务
 		CommonParam mqResp = (CommonParam) wj008Service.handle(mqParam);
 		return mqResp;
+	}
+	
+	@Override
+	public IRespParam memberInfoByKmID(String kmid) throws Exception {
+		String sql = "SELECT mec.*,b.cardpicid,b.gradename,b.memberrights from (\n" +
+				"			SELECT a.kmid,a.companyid,a.membername,a.birthday,a.sex,a.papertype,a.papernumber,a.cardnum,a.createcardtime,a.status,a.mobile,a.uselimitdate,\n" +
+				"			a.accountbalance,a.integralbalance,a.accountcash,a.accountpresent,a.lastconsumetime,a.updatetime,a.gradeID\n" +
+				"			from wj_tbl_member_cache a where a.kmid=? and a.Status='启用') as mec\n" +
+				"			LEFT JOIN wj_tbl_gradecollect b ON mec.GradeID = b.GradeID and mec.CompanyID = b.CompanyID";
+		Map<String, Object> res = jdbcTemplate.queryForMap(sql,kmid);
+		//获取文件服务器地址
+		Parameter parameter = parameterRepository.findFirstByParameterName(AppConstants.FILE_DWONLOAD_PATH);
+		String fileDownload = parameter.getParameterValue();
+		
+		Map<String, Object> memberMap = new HashMap<String, Object>();
+		String cardpicurl = "";
+		if (isNotEmpty(res.get("CardPicID"))) {
+			cardpicurl = fileDownload + "?fileid="+ res.get("CardPicID");
+		}
+		memberMap.put("kmid", res.get("kmid"));
+		memberMap.put("companyid", res.get("companyid"));
+		memberMap.put("membername", res.get("membername"));
+		memberMap.put("birthday", res.get("birthday"));
+		memberMap.put("sex", res.get("sex"));
+		memberMap.put("papertype", res.get("papertype"));
+		memberMap.put("papernumber", res.get("papernumber"));
+		memberMap.put("address", "");
+		memberMap.put("cardnum", res.get("cardnum"));
+		memberMap.put("createcardtime", res.get("createcardtime"));
+		memberMap.put("gradename", res.get("gradename"));
+		memberMap.put("cardpicurl", cardpicurl);
+		memberMap.put("memberrights", res.get("memberrights"));
+		memberMap.put("status", res.get("status"));
+		memberMap.put("mobile", res.get("mobile"));
+		memberMap.put("uselimitdate", res.get("uselimitdate"));
+		memberMap.put("cardintegral", res.get("integralbalance"));
+		memberMap.put("accountbalance", res.get("accountbalance"));
+		memberMap.put("accountcash", res.get("accountcash"));
+		memberMap.put("accountpresent", res.get("accountpresent"));
+		memberMap.put("accountoverdraft", 0);
+		memberMap.put("lastconsumetime", res.get("lastconsumetime"));
+		memberMap.put("updatetime", res.get("updatetime"));
+		memberMap.put("note", "");
+		DynamicRespParam resp = new DynamicRespParam();
+		resp.set("data", memberMap);
+		return resp;
+	}
+
+	@Override
+	public IRespParam getParamer(ArrayList<String> paramers) throws Exception {
+		DynamicRespParam resp = new DynamicRespParam();
+		String sql ="SELECT ParameterName,ParameterValue from wj_tbl_parameter where CompanyID = 2 and ParameterName in (";
+		for (String string : paramers) {
+			sql +='"'+ string+'"'+",";
+		}
+		sql=sql.substring(0, sql.length()-1)+")";
+		List<Map<String, Object>> res = jdbcTemplate.queryForList(sql);
+		if (paramers.size()!=res.size()) {
+			 logger.error("参数名错误>>"+sql);
+			 AppUtils.paramerNotExist();
+		}
+		resp.set("data", res);
+		return resp;
+	}
+
+	@Override
+	public IRespParam updateParamer(int companyID,ArrayList<Map<String, String>> paramerEntrys)
+			throws Exception {
+		ArrayList<String> paramNameList = new ArrayList<String>();
+		ArrayList<String> paramValueList = new ArrayList<String>();
+		for (Map<String, String> entry : paramerEntrys) {
+			paramNameList.add(entry.get("parametername"));
+			paramValueList.add(entry.get("parametervalue"));
+		}
+		List<Parameter> parameters = parameterRepository.findByCompanyIDAndParameterNameIn(companyID,paramNameList);
+		if (parameters.size()!=paramNameList.size()) {
+			 logger.error("参数名错误>>"+paramNameList.toString());
+			 AppUtils.paramerNotExist();
+		}
+		for (int i = 0; i < parameters.size(); i++) {
+			int index = paramNameList.indexOf(parameters.get(i).getParameterName());
+			parameters.get(i).setParameterValue(paramValueList.get(index));
+		}
+		DynamicRespParam resp = new DynamicRespParam();
+		resp.set("data", parameters);
+		return resp;
 	}
 }

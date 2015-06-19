@@ -1,7 +1,7 @@
 package weChat.service.km;
 
-
-import static weChat.utils.AppConstants.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +26,28 @@ public interface KmService {
 	 * @return
 	 */
 	public IRespParam memberInfo(int customerid);
+	
+	/**根据电子会员卡（KMID）获取会员信息
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam memberInfoByKmID( String kmid) throws Exception;
+
+	/**获取参数信息
+	 * @param paramers 参数名称
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam getParamer(ArrayList<String> paramers) throws Exception;
+	
+	/**更新参数
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam updateParamer(int companyID,ArrayList<Map<String, String>> paramerEntrys) throws Exception;
+	
+	
 	/**
 	 * K米APP绑卡
 	 * @param wechatpubinfoid
@@ -37,4 +59,5 @@ public interface KmService {
 	public IRespParam bindCard(int wechatpubinfoid,
 			 int customerid,
 		 Dto otherParam)  throws Exception;
+
 }

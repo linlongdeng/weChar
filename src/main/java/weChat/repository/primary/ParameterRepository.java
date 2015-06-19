@@ -1,5 +1,7 @@
 package weChat.repository.primary;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import weChat.domain.primary.Parameter;
@@ -19,4 +21,13 @@ public interface ParameterRepository extends JpaRepository<Parameter, Integer>{
 	 * @return
 	 */
 	public Parameter findFirstByParameterName(String parameterName);
+	
+	/**查找多个参数
+	 * @param companyID
+	 * @param parameterNameList
+	 * @return
+	 */
+	public List<Parameter> findByCompanyIDAndParameterNameIn(int companyID, List<String> parameterNameList);
+	
+	
 }
