@@ -1,6 +1,5 @@
 package weChat.utils;
 
-import org.springframework.util.Assert;
 
 import weChat.core.exception.ArgumentEmptyException;
 import weChat.core.metatype.Dto;

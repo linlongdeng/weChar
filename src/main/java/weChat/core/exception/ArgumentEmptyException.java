@@ -1,5 +1,10 @@
 package weChat.core.exception;
 
+/**参数校验异常类
+ * @author deng
+ * @date 2015年6月19日
+ * @version 1.0.0
+ */
 public class ArgumentEmptyException extends RuntimeException {
 
 	/**
