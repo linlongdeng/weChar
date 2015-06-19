@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import weChat.core.exception.ArgumentEmptyException;
+import weChat.core.metatype.Dto;
 import weChat.core.utils.CommonUtils;
 import weChat.core.utils.ValidationUtils;
 import weChat.domain.primary.Company;
@@ -50,12 +51,16 @@ public class KmControllerAdvice {
 				.getAccess_token()));
 		// K米APP获取绑卡信息
 		if (requestURI.lastIndexOf("bindCardInfo") >= 0) {
-			//数据校验，数据处理
+			// 数据校验，数据处理
 			handleBindCardInfo(param, model);
 		}
-		//处理.K米APP批量获取会员信息
-		else if(requestURI.lastIndexOf("memberInfo") >= 0){
+		// 处理.K米APP批量获取会员信息
+		else if (requestURI.lastIndexOf("memberInfo") >= 0) {
 			handleMemberInfo(param, model);
+		}
+		//处理K米APP绑卡
+		else if(requestURI.lastIndexOf("bindCard") >= 0){
+			handleBindCard(param, model);
 		}
 
 	}
@@ -71,29 +76,95 @@ public class KmControllerAdvice {
 		ValidationUtils.rejectEmpty(
 				new Object[] { param.getCompanyid(), param.get("cardnum") },
 				new String[] { "companyid", "cardnum" });
-		Company company = companyRepository.findOne(param.getCompanyid());
+		// 获取商家信息
+		getCompany(param.getCompanyid(), model);
+		// 获取商家公众号
+		getWechatPubInfoID(param.getCompanyid(), model);
+		// 其他参数
+		getOtherParam(param.any(), model);
+	}
+
+	/**
+	 * 处理.K米APP批量获取会员信息
+	 * 
+	 * @param param
+	 * @param model
+	 */
+	private void handleMemberInfo(KDynamicReqParam param, Model model) {
+		// 校验参数非空
+		ValidationUtils.rejectEmpty(new Object[] { param.get("customerid") },
+				new String[] { "customerid" });
+		//获取K米APP会员ID
+		getCustomerid(param.any(), model);
+	}
+
+	/**
+	 * 处理K米APP绑卡，校验参数，注入商家信息，微信公众号，其他参数
+	 * 
+	 * @param param
+	 * @param model
+	 */
+	private void handleBindCard(KDynamicReqParam param, Model model) {
+		//非空校验
+		ValidationUtils.rejectEmpty(
+				new Object[] { param.getCompanyid(), param.get("customerid"),
+						param.get("cardnum"), param.get("moblie"),
+						 }, new String[] { "companyid",
+						"customerid", "cardnum","moblie" });
+		
+		// 获取商家信息
+		getCompany(param.getCompanyid(), model);
+		// 获取商家公众号
+		getWechatPubInfoID(param.getCompanyid(), model);
+		// 其他参数
+		getOtherParam(param.any(), model);
+		//获取K米APP会员ID
+		getCustomerid(param.any(), model);
+	}
+
+	/**
+	 * 获取商户
+	 * 
+	 * @param companyid
+	 */
+	private void getCompany(int companyid, Model model) {
+		Company company = companyRepository.findOne(companyid);
 		// 商家不能为空
 		AppUtils.assertCompanyNotNull(company);
 		model.addAttribute(COMPANY, company);
+	}
+
+	/**
+	 * 获取微信公众号ID
+	 * 
+	 * @param companyid
+	 * @param model
+	 */
+	private void getWechatPubInfoID(int companyid, Model model) {
 		Companywechatpub companywechatpub = companywechatpubRepository
-				.findFirstByCompanyID(company.getCompanyID());
+				.findFirstByCompanyID(companyid);
 		// 商家公众号
 		AppUtils.assertWechatNotNull(companywechatpub);
 		model.addAttribute(WECHATPUBINFOID,
 				companywechatpub.getWechatPubInfoID());
-		// 其他参数
-		model.addAttribute(OTHER_PARAM, param.any());
 	}
+
 	/**
-	 * 处理.K米APP批量获取会员信息
+	 * 获取其他参数
+	 * 
 	 * @param param
 	 * @param model
 	 */
-	private void handleMemberInfo(KDynamicReqParam param, Model model){
-		// 校验参数非空
-		ValidationUtils.rejectEmpty(
-				new Object[] { param.get("customerid") },
-				new String[] { "customerid" });
+	private void getOtherParam(Dto param, Model model) {
+		// 其他参数
+		model.addAttribute(OTHER_PARAM, param);
+	}
+	/**
+	 * 获取K米APP会员ID
+	 * @param param
+	 * @param model
+	 */
+	private void getCustomerid(Dto param, Model model){
 		model.addAttribute(CUSTOMERID, param.getAsInteger("customerid"));
 	}
 }

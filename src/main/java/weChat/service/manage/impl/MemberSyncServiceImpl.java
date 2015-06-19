@@ -104,6 +104,7 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 					memberCache = new MemberCache();
 					memberCache.setCompanyID(companyID);
 					memberCache.setMemberid(dto.getAsString("memberid"));
+					memberCache.setCreateTime(new Date());
 				}
 				memberCache.setWechatPubInfoID(wechatpubinfoid);
 				//TODO KM id 有问题
@@ -135,7 +136,6 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 				memberCache.setConsumeTimes(dto.getAsInteger("consumetimes"));
 				memberCache.setLastConsumeTime(dto.getAsDate("lastconsumetime",
 						dateFormat));
-				memberCache.setCreateTime(new Date());
 				memberCache.setUpdateTime(new Date());
 				//校验数据，如果出错的话，自动抛出异常，中止数据同步
 				validationService.validate(memberCache, "data");

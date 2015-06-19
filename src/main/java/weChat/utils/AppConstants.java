@@ -40,6 +40,8 @@ public class AppConstants {
 	public static final byte KM_BIND_CARD_STATUS_UNBIND=2;
 	/**K米APP绑卡关系表的绑卡来源，微信绑卡**/
 	public static final byte KM_BIND_CARD_SOURCE_WEIXIN =1;
+	/**K米APP绑卡关系表的绑卡来源，K米绑卡**/
+	public static final byte KM_BIND_CARD_SOURCE_KM=2;
 	/**微信绑卡进程休息时间**/
 	public static final long SLEEP_MILLIS= 3000;
 	/**微信接口调用成功标识**/

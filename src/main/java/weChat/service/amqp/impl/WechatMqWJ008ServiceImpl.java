@@ -47,7 +47,7 @@ public class WechatMqWJ008ServiceImpl extends WechatMqService {
 
 	@Override
 	public IRespParam handle(AmqpReqParam param) throws Exception {
-		//校验数据
+		// 校验数据
 		validate(param);
 		BaseDto pDto = param.getParams();
 		// 生成电子会员卡号
@@ -55,24 +55,33 @@ public class WechatMqWJ008ServiceImpl extends WechatMqService {
 			String cardNumID = createKmCardId();
 			pDto.put("kmid", cardNumID);
 		}
-		//发送MQ消息
+		// 发送MQ消息
 		CommonParam commonParam = (CommonParam) sendMQ(param);
 		Integer ret = commonParam.getAsInteger("ret");
-		//判断线下系统绑定会员卡是否成功
-		if(AppUtils.checkSuccess(ret)){
-			//通知K米，并维护K米关系绑定表
-			asyncService.bindKM(param);
+		// 判断线下系统绑定会员卡是否成功
+		String mobile = pDto.getAsString("mobile");
+
+		Boolean iskm = pDto.getAsBoolean("iskm") != null ? pDto
+				.getAsBoolean("iskm") : false;
+		if (AppUtils.checkSuccess(ret)) {
+			// 是否是K米绑卡，如果是K米绑卡，就不用通知K米了
+			if (CommonUtils.isNotEmpty(mobile) && iskm) {
+				// 通知K米，并维护K米关系绑定表
+				asyncService.bindKM(param);
+			}
 		}
 		return commonParam;
 
-
 	}
+
 	/**
 	 * 生成KM电子会员卡
+	 * 
 	 * @return
 	 */
-	public String createKmCardId(){
-		String randomStr = UUID.randomUUID().toString().replaceAll("-", "").substring(8);
+	public String createKmCardId() {
+		String randomStr = UUID.randomUUID().toString().replaceAll("-", "")
+				.substring(8);
 		Cardnum cardnum = new Cardnum();
 		cardnum.setUniqueCode(randomStr);
 		cardnum.setUpdateDateTime(new Timestamp(System.currentTimeMillis()));
@@ -80,9 +89,8 @@ public class WechatMqWJ008ServiceImpl extends WechatMqService {
 		int cardNumID = cardnum.getCardNumID();
 		String cardnumidstr = String.format("%09d", cardNumID);
 		return cardnumidstr;
-		
+
 	}
-	
 
 	@Override
 	public void validate(Object target, Errors e) {

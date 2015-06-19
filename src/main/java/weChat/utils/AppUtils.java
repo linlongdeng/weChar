@@ -7,6 +7,7 @@ import weChat.core.utils.CommonUtils;
 import weChat.domain.primary.Company;
 import weChat.domain.primary.Companywechatpub;
 import weChat.domain.primary.Interfacecheck;
+import weChat.domain.primary.MemberCache;
 import weChat.domain.primary.Wechatpubinfo;
 import static weChat.utils.AppConstants.*;
 
@@ -84,10 +85,35 @@ public abstract class AppUtils {
 	public static void assertTrueAccess(boolean flag) {
 		isTrue(flag, "ACCESS_TOKEN", "ACCESS_TOKEN_INFO");
 	}
-
+/**
+ * 微信公众号不存在
+ * @param companywechatpub
+ */
 	public static void assertWechatNotNull(Companywechatpub companywechatpub) {
 		notNull(companywechatpub, "WECHATPUB", "WECHATPUB_INFO");
 
+	}
+	/**
+	 * 会员建卡分店信息查询失败
+	 * @param company
+	 */
+	public static void assertBuildCardNull(Company company){
+		notNull(company, "BUILD_CARD","BUILD_CARD_INFO");
+	}
+	
+	/**
+	 * 验证商家会员信息
+	 * @param memberCache
+	 */
+	public static void assertMemberCacheNull(MemberCache memberCache){
+		notNull(memberCache, "NO_MEMBER","NO_MEMBER_INFO");
+	}
+	
+	/**更新KM绑卡时，更新会员信息
+	 * @param memberCache
+	 */
+	public static void assertMemberCacheKmNull(MemberCache memberCache){
+		notNull(memberCache, "KM_BIND","KM_BIND_INFO");
 	}
 
 	private static void notNull(Object object, String ret, String msg,

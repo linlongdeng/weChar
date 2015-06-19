@@ -34,6 +34,14 @@ public interface MemberCacheRepository extends
 			String cardnum, String status, int wechatPubInfoID);
 	
 	/**
+	 * 根据卡号和商家ID查找会员信息
+	 * @param cardnum
+	 * @param companyID
+	 * @return
+	 */
+	public MemberCache findTopByCardnumAndCompanyID(String cardnum, int companyID);
+	
+	/**
 	 * 根据K米会员APP_ID批量获取会员信息
 	 */
 	public final String MEMBER_INFO_SQL= "SELECT mc.KMID, mc.CompanyID, mc.MemberName, mc.birthday, mc.sex, mc.PaperType, mc.PaperNumber, mc.Cardnum, mc.CreateCardTime,"

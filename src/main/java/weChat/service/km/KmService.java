@@ -1,5 +1,10 @@
 package weChat.service.km;
 
+
+import static weChat.utils.AppConstants.*;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import weChat.core.metatype.Dto;
 import weChat.domain.primary.Company;
 import weChat.parameter.IRespParam;
@@ -21,4 +26,15 @@ public interface KmService {
 	 * @return
 	 */
 	public IRespParam memberInfo(int customerid);
+	/**
+	 * K米APP绑卡
+	 * @param wechatpubinfoid
+	 * @param customerid
+	 * @param otherParam
+	 * @return
+	 */
+	@Transactional
+	public IRespParam bindCard(int wechatpubinfoid,
+			 int customerid,
+		 Dto otherParam)  throws Exception;
 }

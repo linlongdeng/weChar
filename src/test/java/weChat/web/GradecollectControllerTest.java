@@ -43,13 +43,13 @@ public class GradecollectControllerTest {
 		String actionPath ="/Membersync/member_info";
 		MReqParam param = new MReqParam();
 		param.setCompanycode("00127");
-		param.setAccess_token("25d55ad283aa400af464c76d713c07ad");
+		param.setAccess_token("mn1dcxfl1o63mcim5tt6lcwc7adl55");
 		param.setWechatpubinfoid(43243243);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();
 		map.put("kmid", "1234567");
 		map.put("gradeid", 0	);
-		map.put("cardnum", "45633333333333333333333333333333");
+		map.put("cardnum", "45699999999999999");
 		map.put("memberid", "123456790");
 		map.put("membername", "张三");
 		map.put("birthday", "1977-01-01");

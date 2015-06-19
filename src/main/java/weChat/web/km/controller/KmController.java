@@ -1,8 +1,6 @@
 package weChat.web.km.controller;
 
-import static weChat.utils.AppConstants.COMPANY;
-import static weChat.utils.AppConstants.CUSTOMERID;
-import static weChat.utils.AppConstants.OTHER_PARAM;
+import static weChat.utils.AppConstants.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,10 +19,17 @@ public class KmController {
 	@Autowired
 	private KmService kmService;
 
+	/**K米APP获取绑卡信息
+	 * @param company
+	 * @param otherParam
+	 * @param wechatpubinfoid
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/bindCardInfo")
 	public IRespParam bindCardInfo(@ModelAttribute(COMPANY) Company company,
 			@ModelAttribute(OTHER_PARAM) Dto otherParam,
-			@ModelAttribute(AppConstants.WECHATPUBINFOID) int wechatpubinfoid)
+			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid)
 			throws Exception {
 		IRespParam resp = kmService.bindCardInfo(company, otherParam,
 				wechatpubinfoid);
@@ -32,10 +37,29 @@ public class KmController {
 
 	}
 
+	/**K米APP批量获取会员信息
+	 * @param customerid
+	 * @return
+	 */
 	@RequestMapping("/memberInfo")
 	public IRespParam memberInfo(@ModelAttribute(CUSTOMERID) int customerid) {
 		IRespParam resp = kmService.memberInfo(customerid);
 		return resp;
+	}
+/**
+ * K米App绑卡
+ * @param wechatpubinfoid
+ * @param customerid
+ * @param otherParam
+ * @return
+ * @throws Exception 
+ */
+	@RequestMapping("/bindCard")
+	public IRespParam bindCard(
+			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid,
+			@ModelAttribute(CUSTOMERID) int customerid,
+			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
+		return kmService.bindCard(wechatpubinfoid, customerid, otherParam);
 	}
 
 }
