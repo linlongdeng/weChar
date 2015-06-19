@@ -2,6 +2,7 @@ package weChat.utils;
 
 import org.springframework.util.Assert;
 
+import weChat.core.exception.ArgumentEmptyException;
 import weChat.core.metatype.Dto;
 import weChat.core.utils.CommonUtils;
 import weChat.domain.primary.Company;
@@ -28,18 +29,13 @@ public abstract class AppUtils {
 		return RespMsgCode.SUCCESS_CODE == code;
 	}
 
-	public static void assertCompanyNotNull(Company company) {
-		Assert.notNull(company, "商家信息不能为空");
-	}
-
 	/**
-	 * 商家密码是否正确
+	 * 商家不能为空
 	 * 
-	 * @param companypsw
 	 * @param company
 	 */
-	public static void assertCompanyPassError(String companypsw, Company company) {
-		Assert.isTrue(company.getCompanyPsw().equals(companypsw), "商家密码错误");
+	public static void assertCompanyNotNull(Company company) {
+		notNull(company, "COMPANY_NULL", "COMPANY_NULL_INFO");
 	}
 
 	/**
@@ -48,7 +44,7 @@ public abstract class AppUtils {
 	 * @param wechatpubinfo
 	 */
 	public static void assertWechatpubinfoNotNull(Wechatpubinfo wechatpubinfo) {
-		Assert.notNull(wechatpubinfo, "微信公众号不存在");
+		notNull(wechatpubinfo, "WECHATPUBINFO_NULL", "WECHATPUBINFO_NULL_INFO");
 	}
 
 	/**
@@ -72,19 +68,74 @@ public abstract class AppUtils {
 		}
 	}
 
+	/**
+	 * 授权失败
+	 * 
+	 * @param interfacecheck
+	 */
 	public static void assertInterfacecheckNotNull(Interfacecheck interfacecheck) {
-		Assert.notNull(interfacecheck, "K米应用授权失败");
+		notNull(interfacecheck, "ACCESS_TOKEN", "ACCESS_TOKEN_INFO");
 	}
 
+	/**
+	 * 授权失败
+	 * 
+	 * @param flag
+	 */
 	public static void assertTrueAccess(boolean flag) {
-		Assert.isTrue(flag, "权限验证失败");
+		isTrue(flag, "ACCESS_TOKEN", "ACCESS_TOKEN_INFO");
 	}
-	
 
 	public static void assertWechatNotNull(Companywechatpub companywechatpub) {
-		Assert.notNull(companywechatpub, "商家公众号信息验证失败");
+		notNull(companywechatpub, "WECHATPUB", "WECHATPUB_INFO");
 
 	}
-	
+
+	private static void notNull(Object object, String ret, String msg,
+			String argu) {
+		if (object == null) {
+			throwArgumentEmptyException(ret, msg, argu);
+		}
+	}
+
+	private static void notNull(Object object, String ret, String msg) {
+		if (object == null) {
+			throwArgumentEmptyException(ret, msg, null);
+		}
+	}
+
+	/**
+	 * 表达是否为真，如果为假抛出异常
+	 * 
+	 * @param expression
+	 * @param ret
+	 * @param msg
+	 * @param argu
+	 */
+	private static void isTrue(boolean expression, String ret, String msg,
+			String argu) {
+		if (!expression) {
+			throwArgumentEmptyException(ret, msg, argu);
+		}
+	}
+
+	private static void isTrue(boolean expression, String ret, String msg) {
+		if (!expression) {
+			throwArgumentEmptyException(ret, msg, null);
+		}
+	}
+
+	/**
+	 * 抛出ArgumentEmptyException
+	 * 
+	 * @param ret
+	 * @param msg
+	 * @param argu
+	 */
+	private static void throwArgumentEmptyException(String ret, String msg,
+			String argu) {
+		ArgumentEmptyException ex = new ArgumentEmptyException(ret, msg, argu);
+		throw ex;
+	}
 
 }

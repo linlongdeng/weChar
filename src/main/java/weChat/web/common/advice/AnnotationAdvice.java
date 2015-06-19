@@ -33,13 +33,13 @@ import weChat.utils.RespMsgCode;
 public class AnnotationAdvice {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	private RespService respService;
-	
+
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<Object> handlerRuntimeException(Exception ex,
 			WebRequest request) {
@@ -48,54 +48,80 @@ public class AnnotationAdvice {
 		IRespParam error = respService.serverError(message);
 		return handleExceptionInternal(error);
 	}
+
 	/**
 	 * 参数校验出错
+	 * 
 	 * @param ex
 	 * @param request
 	 * @return
 	 */
 	@ExceptionHandler(value = { MethodArgumentNotValidException.class })
-	public ResponseEntity<Object> handleValidException(MethodArgumentNotValidException ex, WebRequest request){
+	public ResponseEntity<Object> handleValidException(
+			MethodArgumentNotValidException ex, WebRequest request) {
 		BindingResult bindingResult = ex.getBindingResult();
 		List<ObjectError> errorList = bindingResult.getAllErrors();
 		String msg = "";
-		for(ObjectError objectError : errorList){
-			if(objectError instanceof FieldError){
+		for (ObjectError objectError : errorList) {
+			if (objectError instanceof FieldError) {
 				FieldError fieldError = (FieldError) objectError;
-				msg = fieldError.getField() + ":" + fieldError.getDefaultMessage();
-			}else{
-				msg = objectError.getObjectName() +":" +  objectError.getDefaultMessage();
+				msg = fieldError.getField() + ":"
+						+ fieldError.getDefaultMessage();
+			} else {
+				msg = objectError.getObjectName() + ":"
+						+ objectError.getDefaultMessage();
 			}
 		}
 		IRespParam parameterError = respService.parameterError(msg);
 		return handleExceptionInternal(parameterError);
-		
+
 	}
+
 	/**
 	 * 参数校验不通过
+	 * 
 	 * @param ex
 	 * @param request
 	 * @return
 	 */
-	@ExceptionHandler(value={ValidationErrorException.class})
-	public ResponseEntity<Object> handlerValidationErrorException(ValidationErrorException ex, WebRequest request){
+	@ExceptionHandler(value = { ValidationErrorException.class })
+	public ResponseEntity<Object> handlerValidationErrorException(
+			ValidationErrorException ex, WebRequest request) {
 		IRespParam parameterError = respService.parameterError(ex);
 		return handleExceptionInternal(parameterError);
 	}
+
 	@ExceptionHandler(value = { IllegalArgumentException.class })
-	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
+	public ResponseEntity<Object> handleIllegalArgumentException(
+			IllegalArgumentException ex, WebRequest request) {
 		String message = ex.getMessage();
 		IRespParam illegalArgument = respService.IllegalArgument(message);
 		return handleExceptionInternal(illegalArgument);
-		
+
 	}
+
+	/**
+	 * 参数校验出错处理
+	 * 
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	@ExceptionHandler(value = { ArgumentEmptyException.class })
-	public ResponseEntity<Object> handleArgumentErrorException(ArgumentEmptyException ex,WebRequest request ){
-		String param = ex.getParam();
-		IRespParam resp = respService.argumentEmpty( param);
+	public ResponseEntity<Object> handleArgumentErrorException(
+			ArgumentEmptyException ex, WebRequest request) {
+		IRespParam resp = null;
+		if(ex.getArgument() != null){
+			resp = respService.newRespParam(ex.getRet(),
+					ex.getMsg(), ex.getArgument());			
+		}else{
+			resp =respService.newRespParam(ex.getRet(),
+					ex.getMsg());
+		}
 		return handleExceptionInternal(resp);
-		
+
 	}
+
 	protected ResponseEntity<Object> handleExceptionInternal(Object body) {
 		HttpHeaders headers = new HttpHeaders();
 		return new ResponseEntity<Object>(body, headers, HttpStatus.OK);

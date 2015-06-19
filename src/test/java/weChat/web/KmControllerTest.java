@@ -14,9 +14,9 @@ public class KmControllerTest {
 		String actionPath = "/Km/bindCardInfo";
 		KDynamicReqParam param = new KDynamicReqParam();
 		param.setCompanyid(1197);
-		param.setAccess_token("rhu451eqeo05nkmtlhuya97hznr47q");
+		param.setAccess_token("4gns6xtu01g9w62zu1rsi9hzqgear3");
 		param.set("cardnum", "5000028");
-		BaseDto pDto = HttpClientUtils.postProxy(ip + actionPath, param,
+		BaseDto pDto = HttpClientUtils.post(ip + actionPath, param,
 				BaseDto.class);
 		System.out.println(pDto);
 	}
@@ -43,6 +43,18 @@ public class KmControllerTest {
 		BaseDto pDto = HttpClientUtils.postProxy(ip + actionPath, param,
 				BaseDto.class);
 		System.out.println(pDto);
+		
+	}
+	@Test
+	public void test() throws Exception{
+		String actionPath = "/Km/test";
+		KDynamicReqParam param = new KDynamicReqParam();
+		param.setCompanyid(1197);
+		param.setAccess_token("hftrvo9l2el3pkik0t1cy7gbrt3nqw");
+		BaseDto pDto = HttpClientUtils.post(ip + actionPath, param,
+				BaseDto.class);
+		System.out.println(pDto);
+		
 		
 	}
 }

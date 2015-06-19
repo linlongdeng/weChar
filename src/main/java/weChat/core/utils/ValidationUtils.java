@@ -21,9 +21,9 @@ public abstract class ValidationUtils {
 	 * @param e
 	 * @param paramKey
 	 */
-	public static void rejectIfEmpty(
-			@SuppressWarnings("rawtypes") Map target, String objectName, Errors e, String... keys) {
-		if(rejectIfEmpty(target, objectName,e)){
+	public static void rejectIfEmpty(@SuppressWarnings("rawtypes") Map target,
+			String objectName, Errors e, String... keys) {
+		if (rejectIfEmpty(target, objectName, e)) {
 			if (keys != null) {
 				for (String key : keys) {
 					if (isEmpty(target.get(key))) {
@@ -33,7 +33,6 @@ public abstract class ValidationUtils {
 				}
 			}
 		}
-		
 
 	}
 
@@ -54,26 +53,32 @@ public abstract class ValidationUtils {
 		return true;
 
 	}
+
 	/**
 	 * 参数非法错误
+	 * 
 	 * @param paramName
 	 * @param e
 	 */
-	public static void rejectParamError(String paramName, Errors e){
+	public static void rejectParamError(String paramName, Errors e) {
 		e.reject(ARGUMENT_NOT_VALID, new Object[] { paramName }, null);
 	}
+
 	/**
 	 * 如果对象为空抛出，参数异常
+	 * 
 	 * @param argus
 	 * @param argusName
 	 */
-	public static void  rejectEmpty(Object[] argus, String[] arguNames){
+	public static void rejectEmpty(Object[] argus, String[] arguNames) {
 		Assert.isTrue(argus.length == arguNames.length, "两边参数不一致");
-		for(int i = 0; i < argus.length;i++){
-			if(CommonUtils.isEmpty(argus[i])){
-				throw new ArgumentEmptyException(arguNames[i]);
+		for (int i = 0; i < argus.length; i++) {
+			if (CommonUtils.isEmpty(argus[i])) {
+				//参数不能为空
+				throw new ArgumentEmptyException("ARGUMENT_NOT_EMPTY",
+						"ARGUMENT_NOT_EMPTY_INFO", arguNames[i]);
 			}
 		}
-		
+
 	}
 }
