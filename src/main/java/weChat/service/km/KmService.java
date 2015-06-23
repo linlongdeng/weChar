@@ -32,25 +32,7 @@ public interface KmService {
 	 */
 	public IRespParam memberInfo(int customerid);
 	
-	/**根据电子会员卡（KMID）获取会员信息
-	 * @param otherParam
-	 * @return
-	 * @throws Exception
-	 */
-	public IRespParam memberInfoByKmID( String kmid) throws Exception;
-
-	/**获取参数信息
-	 * @param paramers 参数名称
-	 * @return
-	 * @throws Exception
-	 */
-	public IRespParam getParamer(ArrayList<String> paramers) throws Exception;
 	
-	/**更新参数
-	 * @return
-	 * @throws Exception
-	 */
-	public IRespParam updateParamer(int companyID,ArrayList<Map<String, String>> paramerEntrys) throws Exception;
 	
 	
 	/**
@@ -88,4 +70,52 @@ public interface KmService {
 	@Transactional
 	public IRespParam updateMemberInfo(Company company,
 			int wechatpubinfoid,Dto otherParam) throws Exception;
+	
+	/**根据电子会员卡（KMID）获取会员信息
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam memberInfoByKmID( String kmid) throws Exception;
+
+	/**获取参数信息
+	 * @param paramers 参数名称
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam getParamer(ArrayList<String> paramers) throws Exception;
+	
+	/**更新参数
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam updateParamer(int companyID,ArrayList<Map<String, String>> paramerEntrys) throws Exception;
+	
+	
+	/**商家密码更新
+	 * @param companyID	商家ID
+	 * @param newcompanypsw	新密码
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional
+	public IRespParam updateCompanyPsw(int companyID,String newcompanypsw) throws Exception;
+	
+	
+	/**在线申请会员
+	 * @param company
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional
+	public IRespParam applyForMember(Company company,int wechatPubinfoID,Dto otherParam) throws Exception;
+	
+	
+	/**获取在线申请会员等级
+	 * @param companyID
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam applyMemberLevel(int companyID) throws Exception;
 }

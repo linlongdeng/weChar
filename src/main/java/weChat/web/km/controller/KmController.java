@@ -1,5 +1,6 @@
 package weChat.web.km.controller;
 
+
 import static weChat.utils.AppConstants.COMPANY;
 import static weChat.utils.AppConstants.CUSTOMERID;
 import static weChat.utils.AppConstants.KMID;
@@ -67,7 +68,38 @@ public class KmController {
 			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
 		return kmService.bindCard(wechatpubinfoid, customerid, otherParam);
 	}
-
+	
+	/**
+	 * K米APP获取会员消费记录
+	 * @param wechatpubinfoid
+	 * @param customerid
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/memberConsumeInfo")
+	public IRespParam memberConsumeInfo(
+			@ModelAttribute(COMPANY) Company company,
+			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid,
+			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
+		return kmService.memberConsumeInfo(company, wechatpubinfoid, otherParam);
+	}
+	
+	/**
+	 * K米APP完善会员资料
+	 * @param company
+	 * @param wechatpubinfoid
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/updateMemberInfo")
+	public IRespParam updateMemberInfo(
+			@ModelAttribute(COMPANY) Company company,
+			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid,
+			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
+		return kmService.updateMemberInfo(company, wechatpubinfoid, otherParam);
+	}
 	
 	/**根据电子会员卡（KMID）获取会员信息
 	 * @param kmid
@@ -111,35 +143,38 @@ public class KmController {
 		return resp;
 	}
 	
-	/**
-	 * K米APP获取会员消费记录
-	 * @param wechatpubinfoid
-	 * @param customerid
+	/**更新密码
+	 * @param company
 	 * @param otherParam
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/memberConsumeInfo")
-	public IRespParam memberConsumeInfo(
-			@ModelAttribute(COMPANY) Company company,
-			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid,
-			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
-		return kmService.memberConsumeInfo(company, wechatpubinfoid, otherParam);
+	@RequestMapping("/updateCompanyPsw")
+	public IRespParam updateCompanyPSWD(@ModelAttribute(COMPANY) Company company,@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception{
+		IRespParam resp = kmService.updateCompanyPsw(company.getCompanyID(), (String)otherParam.get("newcompanypsw"));
+		return resp;
 	}
 	
-	/**
-	 * K米APP完善会员资料
+	/**在线会员申请
+	 * @param wechatPubinfoID
 	 * @param company
-	 * @param wechatpubinfoid
 	 * @param otherParam
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/updateMemberInfo")
-	public IRespParam updateMemberInfo(
-			@ModelAttribute(COMPANY) Company company,
-			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid,
-			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
-		return kmService.updateMemberInfo(company, wechatpubinfoid, otherParam);
+	@RequestMapping("/applyForMember")
+	public IRespParam applyForMember(@ModelAttribute(WECHATPUBINFOID) int wechatPubinfoID,@ModelAttribute(COMPANY) Company company,@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception{
+		IRespParam resp = kmService.applyForMember(company, wechatPubinfoID, otherParam);
+		return resp;
+	}
+	
+	/**获取在线申请会员等级
+	 * @param company
+	 * @return
+	 */
+	@RequestMapping("/applyMemberLevel")
+	public IRespParam applyMemberLevel(@ModelAttribute(COMPANY) Company company) throws Exception{
+		IRespParam resp = kmService.applyMemberLevel(company.getCompanyID());
+		return resp;
 	}
 }

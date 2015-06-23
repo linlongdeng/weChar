@@ -1,6 +1,10 @@
 package weChat.web.km.advice;
 
-import static weChat.utils.AppConstants.*;
+import static weChat.utils.AppConstants.COMPANY;
+import static weChat.utils.AppConstants.CUSTOMERID;
+import static weChat.utils.AppConstants.KMID;
+import static weChat.utils.AppConstants.OTHER_PARAM;
+import static weChat.utils.AppConstants.WECHATPUBINFOID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -11,9 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import weChat.core.exception.ArgumentEmptyException;
 import weChat.core.metatype.Dto;
-import weChat.core.utils.CommonUtils;
 import weChat.core.utils.ValidationUtils;
 import weChat.domain.primary.Company;
 import weChat.domain.primary.Companywechatpub;
@@ -62,20 +64,6 @@ public class KmControllerAdvice {
 		else if(requestURI.lastIndexOf("bindCard") >= 0){
 			handleBindCard(param, model);
 		}
-		
-		// 根据电子会员卡号获取会员信息
-		else if (requestURI.lastIndexOf("memberInfoByKmID") >= 0) {
-			handlememberInfoByKmID(param, model);
-		}
-
-		//获取参数
-		else if (requestURI.lastIndexOf("getParamer")>=0){
-			handleGetParamers(param,model);
-		}
-		//更新参数
-		else if (requestURI.lastIndexOf("updateParamer")>=0){
-			handleUpdateParamer(param,model);
-		}
 		//K米APP获取会员消费记录
 		else if(requestURI.lastIndexOf("memberConsumeInfo") >= 0){
 			handleMemberConsumeInfo(param,model);
@@ -84,6 +72,31 @@ public class KmControllerAdvice {
 		else if(requestURI.lastIndexOf("updateMemberInfo") >= 0){
 			handleUpdateMemberInfo(param,model);
 		}
+		// 根据电子会员卡号获取会员信息
+				else if (requestURI.lastIndexOf("memberInfoByKmID") >= 0) {
+					handlememberInfoByKmID(param, model);
+				}
+
+				// 获取参数
+				else if (requestURI.lastIndexOf("getParamer") >= 0) {
+					handleGetParamers(param, model);
+				}
+				// 更新参数
+				else if (requestURI.lastIndexOf("updateParamer") >= 0) {
+					handleUpdateParamer(param, model);
+				}
+				// 商家密码更新
+				else if (requestURI.lastIndexOf("updateCompanyPsw") > 0) {
+					handleUpdateCompanyPSWD(param, model);
+				}
+				// 在线会员申请
+				else if (requestURI.lastIndexOf("applyForMember") > 0) {
+					handleApplyForMember(param, model);
+				}
+				//获取在线申请会员等级
+				else if (requestURI.lastIndexOf("applyMemberLevel")>0) {
+					handleApplyMemberLevel(param, model);
+				}
 
 	}
 
@@ -144,39 +157,11 @@ public class KmControllerAdvice {
 		getCustomerid(param.any(), model);
 	}
 	
-	private void handleUpdateParamer(KDynamicReqParam param, Model model) {
-		// 校验商家信息参数
-		validationCompanyInfo(param,model);
-		// 其他参数信息校验
-		ValidationUtils.rejectEmpty(new Object[]{param.get("data")},new String[]{"data"});
-		// 其他参数
-		model.addAttribute(OTHER_PARAM, param.any());
-	}
 
 
-	/**获取参数值
-	 * @param param
-	 * @param model
-	 */
-	private void handleGetParamers(KDynamicReqParam param, Model model) {
-		// 校验商家信息参数
-		validationCompanyInfo(param,model);
-		// 其他参数信息校验
-		ValidationUtils.rejectEmpty(new Object[]{param.get("data")},new String[]{"data"});
-		// 其他参数
-		model.addAttribute(OTHER_PARAM, param.any());
-	}
-	/**
-	 * 根据电子会员卡id获取会员信息
-	 * 
-	 * @param param
-	 * @param model
-	 */
-	private void handlememberInfoByKmID(KDynamicReqParam param, Model model) {
-		ValidationUtils.rejectEmpty(new Object[] { param.get("kmid") },
-				new String[] { "kmid" });
-		model.addAttribute(KMID, param.get("kmid"));
-	}
+
+	
+	
 	
 	
 	/**
@@ -273,4 +258,91 @@ public class KmControllerAdvice {
 	private void getCustomerid(Dto param, Model model){
 		model.addAttribute(CUSTOMERID, param.getAsInteger("customerid"));
 	}
+	
+	/**
+	 * 参数更新
+	 * 
+	 * @param param
+	 * @param model
+	 */
+	private void handleUpdateParamer(KDynamicReqParam param, Model model) {
+		// 校验商家信息参数
+		validationCompanyInfo(param, model);
+		// 其他参数信息校验
+		ValidationUtils.rejectEmpty(new Object[] { param.get("data") },
+				new String[] { "data" });
+		// 其他参数
+		model.addAttribute(OTHER_PARAM, param.any());
+	}
+
+	/**
+	 * 在线会员申请
+	 * 
+	 * @param param
+	 * @param model
+	 */
+	private void handleApplyForMember(KDynamicReqParam param, Model model) {
+		// 校验商家信息参数
+		validationCompanyInfo(param, model);
+		// 其他参数信息校验
+		ValidationUtils.rejectEmpty(new Object[] { param.getAsInteger("customerid"),param.getAsInteger("gradeid"),param.getAsString("membername"), 
+				param.getAsString("sex"),param.getAsString("mobile"),param.getAsString("birthday")},
+				new String[] { "customerid","gradeid","membername","sex","mobile","birthday"});
+		// 其他参数   param.get("papertype"),param.get("papernumber"),
+		model.addAttribute(OTHER_PARAM, param.any());
+	}
+	
+	/**获取在线申请会员等级
+	 * @param param
+	 * @param model
+	 */
+	private void handleApplyMemberLevel(KDynamicReqParam param, Model model) {
+		// 校验商家信息参数
+		validationCompanyInfo(param, model);
+	}
+	
+	/**
+	 * 商家密码更新
+	 * 
+	 * @param param
+	 * @param model
+	 */
+	private void handleUpdateCompanyPSWD(KDynamicReqParam param, Model model) {
+		// 校验商家信息参数
+		validationCompanyInfo(param, model);
+		// 密码非空校验
+		ValidationUtils.rejectEmpty(
+				new Object[] { param.get("newcompanypsw") },
+				new String[] { "newcompanypsw" });
+		model.addAttribute(OTHER_PARAM, param.any());
+	}
+
+	/**
+	 * 获取参数值
+	 * 
+	 * @param param
+	 * @param model
+	 */
+	private void handleGetParamers(KDynamicReqParam param, Model model) {
+		// 校验商家信息参数
+		validationCompanyInfo(param, model);
+		// 其他参数信息校验
+		ValidationUtils.rejectEmpty(new Object[] { param.get("data") },
+				new String[] { "data" });
+		// 其他参数
+		model.addAttribute(OTHER_PARAM, param.any());
+	}
+
+	/**
+	 * 根据电子会员卡id获取会员信息
+	 * 
+	 * @param param
+	 * @param model
+	 */
+	private void handlememberInfoByKmID(KDynamicReqParam param, Model model) {
+		ValidationUtils.rejectEmpty(new Object[] { param.get("kmid") },
+				new String[] { "kmid" });
+		model.addAttribute(KMID, param.get("kmid"));
+	}
+	
 }

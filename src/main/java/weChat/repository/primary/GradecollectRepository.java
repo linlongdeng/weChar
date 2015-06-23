@@ -13,4 +13,14 @@ public interface GradecollectRepository extends
 	public Gradecollect findFirstByCompanyCodeAndWechatPubInfoIDAndGradeID(
 			String companyCode, int wechatPubInfoID, int gradeID);
 
+	/**
+	 * 获取线上申请等级
+	 * 
+	 * @param companyID
+	 * @param onlineApp
+	 *            是否可在线申请会员 0是 1否
+	 * @return
+	 */
+	public Gradecollect findFirstByCompanyIDAndUseOnlineApp(int companyID,
+			byte useOnlineApp);
 }
