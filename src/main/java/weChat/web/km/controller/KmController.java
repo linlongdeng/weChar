@@ -110,4 +110,36 @@ public class KmController {
 		IRespParam resp = kmService.updateParamer(company.getCompanyID(),paramList);
 		return resp;
 	}
+	
+	/**
+	 * K米APP获取会员消费记录
+	 * @param wechatpubinfoid
+	 * @param customerid
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/memberConsumeInfo")
+	public IRespParam memberConsumeInfo(
+			@ModelAttribute(COMPANY) Company company,
+			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid,
+			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
+		return kmService.memberConsumeInfo(company, wechatpubinfoid, otherParam);
+	}
+	
+	/**
+	 * K米APP完善会员资料
+	 * @param company
+	 * @param wechatpubinfoid
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/updateMemberInfo")
+	public IRespParam updateMemberInfo(
+			@ModelAttribute(COMPANY) Company company,
+			@ModelAttribute(WECHATPUBINFOID) int wechatpubinfoid,
+			@ModelAttribute(OTHER_PARAM) Dto otherParam) throws Exception {
+		return kmService.updateMemberInfo(company, wechatpubinfoid, otherParam);
+	}
 }

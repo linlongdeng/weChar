@@ -41,6 +41,12 @@ public interface MemberCacheRepository extends
 	 */
 	public MemberCache findTopByCardnumAndCompanyID(String cardnum, int companyID);
 	
+	/**根据电子会子卡ID查找会员信息
+	 * @param kmid
+	 * @return
+	 */
+	public MemberCache findTopByKmid(String kmid);
+	
 	/**
 	 * 根据K米会员APP_ID批量获取会员信息
 	 */

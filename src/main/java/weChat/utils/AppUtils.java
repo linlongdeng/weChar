@@ -122,7 +122,15 @@ public abstract class AppUtils {
 	public static void paramerNotExist(){
 		 throwArgumentEmptyException("PARAMER", "PARAMEE_INFO", null);
 	}
-
+/**
+ * 会员信息不存在
+ * @param memberCache
+ * @param kmid
+ */
+	public static void assertMemberNotExits(MemberCache memberCache, String kmid){
+		notNull(memberCache, "MEMBER_NOT_EXIST","MEMBER_NOT_EXIST_INFO",kmid);
+	}
+	
 	private static void notNull(Object object, String ret, String msg,
 			String argu) {
 		if (object == null) {

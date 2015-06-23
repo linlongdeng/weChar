@@ -9,6 +9,11 @@ import weChat.core.metatype.Dto;
 import weChat.domain.primary.Company;
 import weChat.parameter.IRespParam;
 
+/**
+ * @author deng
+ * @date 2015年6月23日
+ * @version 1.0.0
+ */
 public interface KmService {
 /**
  * K米APP获取绑卡信息
@@ -60,4 +65,27 @@ public interface KmService {
 			 int customerid,
 		 Dto otherParam)  throws Exception;
 
+	
+	/**
+	 * K米APP获取会员消费记录
+	 * @param company
+	 * @param wechatpubinfoid
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	public IRespParam memberConsumeInfo(Company company,
+			int wechatpubinfoid,Dto otherParam) throws Exception;
+	
+	
+	/**K米APP完善会员资料
+	 * @param company
+	 * @param wechatpubinfoid
+	 * @param otherParam
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional
+	public IRespParam updateMemberInfo(Company company,
+			int wechatpubinfoid,Dto otherParam) throws Exception;
 }

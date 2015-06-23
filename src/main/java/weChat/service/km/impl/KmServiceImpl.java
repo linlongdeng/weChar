@@ -3,6 +3,7 @@ package weChat.service.km.impl;
 import static weChat.core.utils.CommonUtils.isNotEmpty;
 import static weChat.utils.AppConstants.KM_BIND_CARD_SOURCE_KM;
 import static weChat.utils.AppConstants.KM_BIND_CARD_STATUS_BIND;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,10 +35,12 @@ import weChat.repository.primary.KmbindcardRepository;
 import weChat.repository.primary.MemberCacheRepository;
 import weChat.repository.primary.ParameterRepository;
 import weChat.service.amqp.WechatMqService;
+import weChat.service.amqp.WechatMqUtilsService;
 import weChat.service.common.RespService;
 import weChat.service.km.KmService;
 import weChat.utils.AppConstants;
 import weChat.utils.AppUtils;
+import weChat.utils.RespUtils;
 
 @Service
 public class KmServiceImpl implements KmService {
@@ -47,11 +50,19 @@ public class KmServiceImpl implements KmService {
 	private MemberCacheRepository memberCacheRepository;
 	@Autowired
 	private RespService respService;
+	
+	@Resource(name = "WJ002" + AppConstants.WJMQ_SUFFIX)
+	private WechatMqService wj002Service;
+	
+	
 	@Resource(name = "WJ007" + AppConstants.WJMQ_SUFFIX)
 	private WechatMqService wj007Service;
 
 	@Resource(name = "WJ008" + AppConstants.WJMQ_SUFFIX)
 	private WechatMqService wj008Service;
+	
+	@Autowired
+	private WechatMqUtilsService wechatMqUtilsService;
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
@@ -64,6 +75,9 @@ public class KmServiceImpl implements KmService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	
+
+	
 	@Override
 	public IRespParam bindCardInfo(Company company, Dto otherParam,
 			int wechatpubinfoid) throws Exception {
@@ -79,15 +93,12 @@ public class KmServiceImpl implements KmService {
 		// 会员建卡分店信息查询校验
 		AppUtils.assertCompanyNotNull(memberCompany);
 		// 后面用会员建卡分店的商家信息
-		AmqpReqParam mqParam = new AmqpReqParam();
-		mqParam.setCmdid("WJ007");
-		mqParam.setCompanycode(memberCompany.getCompanyCode());
-		mqParam.setWechatpubinfoid(wechatpubinfoid);
+
+		String cmdid="WJ007";
 		BaseDto mqDto = new BaseDto();
 		mqDto.put("cardnum", cardnum);
-		mqParam.setParams(mqDto);
 		// 调用MQ服务
-		CommonParam mqResp = (CommonParam) wj007Service.handle(mqParam);
+		CommonParam mqResp = wechatMqUtilsService.invokeMqService(cmdid, memberCompany.getCompanyCode(), wechatpubinfoid, mqDto);
 		Integer ret = mqResp.getAsInteger("ret");
 		// 判断请求是否成功
 		if (AppUtils.checkSuccess(ret)) {
@@ -260,10 +271,7 @@ public class KmServiceImpl implements KmService {
 	private CommonParam invokeMQBindCard(String companycode,
 			int wechatpubinfoid, String cardnum, String mobile)
 			throws Exception {
-		AmqpReqParam mqParam = new AmqpReqParam();
-		mqParam.setCmdid("WJ008");
-		mqParam.setCompanycode(companycode);
-		mqParam.setWechatpubinfoid(wechatpubinfoid);
+		String cmdid="WJ008";;
 		BaseDto mqDto = new BaseDto();
 		mqDto.put("cardnum", cardnum);
 		mqDto.put("kmid", "");
@@ -271,9 +279,7 @@ public class KmServiceImpl implements KmService {
 		mqDto.put("mobile", mobile);
 		// 说明是K米绑卡
 		mqDto.put("iskm", true);
-		mqParam.setParams(mqDto);
-		// 调用MQ服务
-		CommonParam mqResp = (CommonParam) wj008Service.handle(mqParam);
+		CommonParam mqResp = wechatMqUtilsService.invokeMqService(cmdid, companycode, wechatpubinfoid, mqDto);
 		return mqResp;
 	}
 	
@@ -362,4 +368,79 @@ public class KmServiceImpl implements KmService {
 		resp.set("data", parameters);
 		return resp;
 	}
+
+	@Override
+	public IRespParam memberConsumeInfo(Company company, int wechatpubinfoid,
+			Dto otherParam) throws Exception {
+		String kmid = otherParam.getAsString("kmid");
+		MemberCache memberCache = memberCacheRepository.findTopByKmid(kmid);
+		AppUtils.assertMemberNotExits(memberCache, kmid);
+		String memberid = memberCache.getMemberid();
+		String cardnum = memberCache.getCardnum();
+		String memberPsw = memberCache.getMemberPsw();
+		BaseDto mqDto = new BaseDto();
+		mqDto.put("memberid", memberid);
+		mqDto.put("cardnum", cardnum);
+		mqDto.put("memberpsw", memberPsw);
+		mqDto.put("begintime", otherParam.getAsString("begintime"));
+		mqDto.put("endtime", otherParam.getAsString("endtime"));
+		CommonParam mqResp = wechatMqUtilsService.invokeMqService("WJ002",company.getCompanyCode(), wechatpubinfoid, mqDto);
+		Integer ret = mqResp.getAsInteger("ret");
+		// 判断请求是否成功
+		if (AppUtils.checkSuccess(ret)) {
+			List data = mqResp.getAsList("data");
+			// 更新会员表的K米ID
+			DynamicRespParam resp = new DynamicRespParam();
+			resp.set("data", data);
+			return resp;
+		}else{
+			return new MRespParam(ret, mqResp.getMsg());
+		}
+	}
+
+	@Override
+	public IRespParam updateMemberInfo(Company company, int wechatpubinfoid,
+			Dto otherParam) throws Exception {
+		String kmid = otherParam.getAsString("kmid");
+		MemberCache memberCache = memberCacheRepository.findTopByKmid(kmid);
+		AppUtils.assertMemberNotExits(memberCache, kmid);
+		String membername = otherParam.getAsString("membername");
+		String sex = otherParam.getAsString("sex");
+		String papernumber = otherParam.getAsString("papernumber");
+		String mobile = otherParam.getAsString("mobile");
+		String birthday = otherParam.getAsString("birthday");
+		String address = otherParam.getAsString("address");
+		String email = otherParam.getAsString("email");
+		BaseDto mqDto = new BaseDto();
+		mqDto.put("membername", membername);
+		mqDto.put("sex", sex);
+		mqDto.put("papernumber", papernumber);
+		mqDto.put("mobile", mobile);
+		mqDto.put("birthday", birthday);
+		mqDto.put("address", address);
+		mqDto.put("email", email);
+		mqDto.put("memberid", memberCache.getMemberid());
+		mqDto.put("cardnum", memberCache.getCardnum());
+		mqDto.put("memberpsw", memberCache.getMemberPsw());
+		String cmdid ="WJ005";
+		CommonParam mqResp = wechatMqUtilsService.invokeMqService(cmdid,company.getCompanyCode(), wechatpubinfoid, mqDto);
+		Integer ret = mqResp.getAsInteger("ret");
+		// 判断请求是否成功
+		if (AppUtils.checkSuccess(ret)) {
+			//线上也直接更新会员，因为K米可能随时查询，线下系统更新可能有延迟
+			memberCache.setMemberName(membername);
+			memberCache.setSex(sex);
+			//非空才写证件号
+			if(CommonUtils.isNotEmpty(papernumber)){
+				memberCache.setPaperNumber(papernumber);				
+			}
+			memberCache.setMobile(mobile);
+			memberCache.setBirthday(otherParam.getAsDate("birthday"));
+			return RespUtils.successMR();
+		}else{
+			return new MRespParam(ret, mqResp.getMsg());
+		}
+		
+	}
+	
 }

@@ -1,7 +1,9 @@
 package weChat.service.amqp.impl;
 
+import static weChat.core.utils.ValidationUtils.rejectIfEmpty;
+import static weChat.core.utils.ValidationUtils.rejectParamError;
+
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,12 @@ import weChat.core.rabbit.RabbitClientConfig;
 import weChat.core.utils.CommonUtils;
 import weChat.core.utils.StringUtils;
 import weChat.domain.primary.Cardnum;
-import static weChat.core.utils.ValidationUtils.*;
 import weChat.parameter.IRespParam;
 import weChat.parameter.amqp.AmqpReqParam;
 import weChat.parameter.common.CommonParam;
 import weChat.repository.primary.CardnumRepository;
 import weChat.service.amqp.WechatMqService;
+import weChat.service.amqp.WechatMqUtilsService;
 import weChat.service.common.ValidationService;
 import weChat.service.km.AsyncService;
 import weChat.utils.AppConstants;
@@ -38,6 +40,8 @@ public class WechatMqWJ008ServiceImpl extends WechatMqService {
 	private CardnumRepository cardnumRepository;
 	@Autowired
 	private AsyncService asyncService;
+	@Autowired
+	private WechatMqUtilsService wechatMqUtilsService;
 
 	@Autowired
 	public WechatMqWJ008ServiceImpl(RabbitClient rabbitClient,
@@ -52,7 +56,7 @@ public class WechatMqWJ008ServiceImpl extends WechatMqService {
 		BaseDto pDto = param.getParams();
 		// 生成电子会员卡号
 		if (CommonUtils.isEmpty(pDto.getAsString("kmid"))) {
-			String cardNumID = createKmCardId();
+			String cardNumID = wechatMqUtilsService.createKmCardId();
 			pDto.put("kmid", cardNumID);
 		}
 		// 发送MQ消息
@@ -65,7 +69,7 @@ public class WechatMqWJ008ServiceImpl extends WechatMqService {
 				.getAsBoolean("iskm") : false;
 		if (AppUtils.checkSuccess(ret)) {
 			// 是否是K米绑卡，如果是K米绑卡，就不用通知K米了
-			if (CommonUtils.isNotEmpty(mobile) && iskm) {
+			if (CommonUtils.isNotEmpty(mobile) && !iskm) {
 				// 通知K米，并维护K米关系绑定表
 				asyncService.bindKM(param);
 			}

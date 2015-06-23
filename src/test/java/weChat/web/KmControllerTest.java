@@ -46,5 +46,34 @@ public class KmControllerTest {
 				BaseDto.class);
 		System.out.println(pDto);
 	}
+	
+	@Test
+	public void testMemberConsumeInfo() throws Exception{
+		String actionPath = "/Km/memberConsumeInfo";
+		KDynamicReqParam param = new KDynamicReqParam();
+		param.setCompanyid(1197);
+		param.setAccess_token("q7372jjwctzx4ha1rgv5jucspitotv");
+		param.set("kmid","111111");
+		param.set("begintime", "2015-01-01 00:00:00");
+		param.set("endtime", "2015-06-23 23:59:59");
+		BaseDto pDto = HttpClientUtils.post(ip + actionPath, param,
+				BaseDto.class);
+		System.out.println(pDto);
+	}
+	@Test
+	public void testUpdateMemberInfo() throws Exception{
+		String actionPath = "/Km/updateMemberInfo";
+		KDynamicReqParam param = new KDynamicReqParam();
+		param.setCompanyid(1197);
+		param.setAccess_token("q7372jjwctzx4ha1rgv5jucspitotv");
+		param.set("kmid","000000023");
+		param.set("membername","林龙灯3");
+		param.set("sex", "男");
+		param.set("birthday", "1988-10-21");
+		param.set("mobile", "18960863890");
+		BaseDto pDto = HttpClientUtils.post(ip + actionPath, param,
+				BaseDto.class);
+		System.out.println(pDto);
+	}
 
 }

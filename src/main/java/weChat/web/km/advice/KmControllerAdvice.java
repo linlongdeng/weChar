@@ -76,6 +76,14 @@ public class KmControllerAdvice {
 		else if (requestURI.lastIndexOf("updateParamer")>=0){
 			handleUpdateParamer(param,model);
 		}
+		//K米APP获取会员消费记录
+		else if(requestURI.lastIndexOf("memberConsumeInfo") >= 0){
+			handleMemberConsumeInfo(param,model);
+		}
+		//K米APP完善会员资料
+		else if(requestURI.lastIndexOf("updateMemberInfo") >= 0){
+			handleUpdateMemberInfo(param,model);
+		}
 
 	}
 
@@ -168,6 +176,43 @@ public class KmControllerAdvice {
 		ValidationUtils.rejectEmpty(new Object[] { param.get("kmid") },
 				new String[] { "kmid" });
 		model.addAttribute(KMID, param.get("kmid"));
+	}
+	
+	
+	/**
+	 * K米APP获取会员消费记录
+	 * @param param
+	 * @param model
+	 */
+	private void handleMemberConsumeInfo(KDynamicReqParam param, Model model){
+		// 校验参数非空
+				ValidationUtils.rejectEmpty(
+						new Object[] { param.getCompanyid(), param.get("kmid"), param.get("begintime"), param.get("endtime") },
+						new String[] { "companyid", "kmid","begintime","endtime" });
+				// 获取商家信息
+				getCompany(param.getCompanyid(), model);
+				// 获取商家公众号
+				getWechatPubInfoID(param.getCompanyid(), model);
+				// 其他参数
+				getOtherParam(param.any(), model);
+		
+	}
+	
+	/**K米APP完善会员资料
+	 * @param param
+	 * @param model
+	 */
+	private void handleUpdateMemberInfo(KDynamicReqParam param, Model model){
+		ValidationUtils.rejectEmpty(
+				new Object[] { param.getCompanyid(), param.get("kmid"), param.get("membername"), 
+						param.get("sex"),param.get("mobile"),param.get("birthday") },
+				new String[] { "companyid", "kmid","membername","sex","mobile","birthday" });
+		// 获取商家信息
+		getCompany(param.getCompanyid(), model);
+		// 获取商家公众号
+		getWechatPubInfoID(param.getCompanyid(), model);
+		// 其他参数
+		getOtherParam(param.any(), model);
 	}
 	
 	/**商家信息校验及参数填充
