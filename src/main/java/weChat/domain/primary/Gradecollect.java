@@ -39,6 +39,12 @@ public class Gradecollect implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateTime;
 
+	private byte useIntegral;
+
+	private byte useOnlineApp;
+
+	private byte useStorage;
+
 	private int wechatPubInfoID;
 
 	public Gradecollect() {
@@ -122,6 +128,30 @@ public class Gradecollect implements Serializable {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public byte getUseIntegral() {
+		return this.useIntegral;
+	}
+
+	public void setUseIntegral(byte useIntegral) {
+		this.useIntegral = useIntegral;
+	}
+
+	public byte getUseOnlineApp() {
+		return this.useOnlineApp;
+	}
+
+	public void setUseOnlineApp(byte useOnlineApp) {
+		this.useOnlineApp = useOnlineApp;
+	}
+
+	public byte getUseStorage() {
+		return this.useStorage;
+	}
+
+	public void setUseStorage(byte useStorage) {
+		this.useStorage = useStorage;
 	}
 
 	public int getWechatPubInfoID() {
