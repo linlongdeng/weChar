@@ -19,7 +19,7 @@ public class Gradecollect implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int gradeCollectID;
 
-	private int cardPicID;
+	private Integer cardPicID;
 
 	private int companyID;
 
@@ -58,11 +58,11 @@ public class Gradecollect implements Serializable {
 		this.gradeCollectID = gradeCollectID;
 	}
 
-	public int getCardPicID() {
+	public Integer getCardPicID() {
 		return this.cardPicID;
 	}
 
-	public void setCardPicID(int cardPicID) {
+	public void setCardPicID(Integer cardPicID) {
 		this.cardPicID = cardPicID;
 	}
 
