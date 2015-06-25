@@ -20,7 +20,7 @@ public class PostJsonUtils {
 		System.setProperty("http.proxyPort", "8888");
 	}
 	
-	public static String  ip ="http://127.0.0.1:8080";
+	public static String  ip ="http://127.0.0.1:3003";
 	/**
 	 * 发送HttpPost请求
 	 * 
@@ -59,6 +59,7 @@ public class PostJsonUtils {
 			connection.setRequestMethod("POST"); // 设置请求方式
 			connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
 			connection.setRequestProperty("Content-Type","application/json;charset=UTF-8"); 
+			//connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
 			//connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8"); 
 			connection.setRequestProperty("user-agent",
 					"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");

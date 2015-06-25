@@ -94,7 +94,7 @@ public class InvokeKmController {
  * @return
  * @throws Exception
  */
-	@RequestMapping("/sendsms")
+	@RequestMapping("/sendSms")
 	public IRespParam sendsms(@RequestBody @Valid KSmsReqParam param)
 			throws Exception {
 		return invokeKmService.sendsms(param);

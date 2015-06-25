@@ -1,5 +1,7 @@
 package weChat.service.weixin;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import weChat.core.metatype.Dto;
 import weChat.domain.primary.Wechatpubinfo;
 import weChat.parameter.IRespParam;
@@ -13,6 +15,7 @@ public interface WeixinInfoService {
 	 * @param param
 	 * @return
 	 */
+	@Transactional
 	public IRespParam getAccessToken(Wechatpubinfo wechatpubinfo)  throws Exception;
 
 	/**

@@ -27,6 +27,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import weChat.core.metatype.BaseDto;
 import weChat.core.metatype.Dto;
+import weChat.core.utils.CommonUtils;
 import weChat.domain.primary.Company;
 import weChat.domain.primary.Gradecollect;
 import weChat.domain.primary.MemberCache;
@@ -82,6 +83,11 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 				gradecollect.setGradeName(gradename);
 				gradecollect.setStatus(status.byteValue());
 				gradecollect.setUpdateTime(new Date());
+				//新增可以储值、可以积分、是否可以在线申请会员
+				gradecollect.setUseStorage(dto.getAsByte("usestorage"));
+				gradecollect.setUseIntegral(dto.getAsByte("useintegral"));
+				//是否可以在线申请会员线下还没有开发，暂时屏蔽
+				//gradecollect.setUseOnlineApp(dto.getAsByte("useonlineapp"));
 				gradecollectRepository.save(gradecollect);
 			}
 		}
@@ -96,50 +102,71 @@ public class MemberSyncServiceImpl implements MemberSyncService {
 		if (data != null) {
 			List<MemberCache> list = new ArrayList<MemberCache>();
 			for (Dto dto : data) {
-				String kmid = dto.getAsString("kmid");
+				//TODO KM id 有问题,作兼容
+				String kmid = dto.containsKey("KmID") ?  dto.getAsString("KmID") : dto.getAsString("kmid");
 				String memberid = dto.getAsString("memberid");
 				MemberCache memberCache = memberCacheRepository
 						.findTopByCompanyIDAndMemberid(companyID, memberid);
-				if (memberCache == null) {
-					memberCache = new MemberCache();
-					memberCache.setCompanyID(companyID);
-					memberCache.setMemberid(dto.getAsString("memberid"));
-					memberCache.setCreateTime(new Date());
+				String status = dto.getAsString("status");
+				//只有删除状态的数据只更新状态
+				if("删除".equals(status)){
+					//非启用状态的数据只有存在才更新，不存在不更新
+					if(memberCache != null){
+						memberCache.setStatus(status);
+						memberCache.setUpdateTime(new Date());
+						//会员创建时间如果有空，要设置，因为该字段不能为空
+						if(memberCache.getCreateTime() == null){
+							memberCache.setCreateTime(new Date());
+						}
+						list.add(memberCache);
+					}
+				}else{
+					if (memberCache == null) {
+						memberCache = new MemberCache();
+						memberCache.setCompanyID(companyID);
+						memberCache.setMemberid(dto.getAsString("memberid"));
+						memberCache.setCreateTime(new Date());
+					}
+					memberCache.setWechatPubInfoID(wechatpubinfoid);
+					//会员创建时间如果有空，要设置，因为该字段不能为空
+					if(memberCache.getCreateTime() == null){
+						memberCache.setCreateTime(new Date());
+					}
+
+					memberCache.setKmid(kmid);
+					memberCache.setGradeID(dto.getAsInteger("gradeid"));
+					memberCache.setCardnum(dto.getAsString("cardnum"));
+					memberCache.setMemberName(dto.getAsString("membername"));
+					memberCache.setBirthday(dto.getAsDate("birthday"));
+					memberCache.setSex(dto.getAsString("sex"));
+					memberCache.setPaperType(dto.getAsString("papertype"));
+					memberCache.setPaperNumber(dto.getAsString("papernumber"));
+					memberCache.setCreateCardTime(dto.getAsDate("createcardtime",
+							dateFormat));
+					memberCache.setMemberPsw(dto.getAsString("memberpsw"));
+					memberCache.setStatus(dto.getAsString("status"));
+					memberCache.setMobile(dto.getAsString("mobile"));
+					memberCache.setUseLimitDate(dto.getAsDate("useLimitdate"));
+					memberCache.setAccountCash(dto.getAsBigDecimal("accountcash"));
+					memberCache.setAccountPresent(dto
+							.getAsBigDecimal("accountpresent"));
+					memberCache.setIntegralBalance(dto
+							.getAsBigDecimal("integralbalance"));
+					memberCache
+							.setConsumeTotal(dto.getAsBigDecimal("consumetotal"));
+					memberCache.setAccountBalance(dto
+							.getAsBigDecimal("accountbalance"));
+					memberCache.setIntegralBalance(dto
+							.getAsBigDecimal("integralbalance"));
+					memberCache.setConsumeTimes(dto.getAsInteger("consumetimes"));
+					memberCache.setLastConsumeTime(dto.getAsDate("lastconsumetime",
+							dateFormat));
+					memberCache.setUpdateTime(new Date());
+					//校验数据，如果出错的话，自动抛出异常，中止数据同步
+					validationService.validate(memberCache, "data");
+					list.add(memberCache);
 				}
-				memberCache.setWechatPubInfoID(wechatpubinfoid);
-				//TODO KM id 有问题
-				memberCache.setKmid(dto.getAsString("KmID"));
-				memberCache.setGradeID(dto.getAsInteger("gradeid"));
-				memberCache.setCardnum(dto.getAsString("cardnum"));
-				memberCache.setMemberName(dto.getAsString("membername"));
-				memberCache.setBirthday(dto.getAsDate("birthday"));
-				memberCache.setSex(dto.getAsString("sex"));
-				memberCache.setPaperType(dto.getAsString("papertype"));
-				memberCache.setPaperNumber(dto.getAsString("papernumber"));
-				memberCache.setCreateCardTime(dto.getAsDate("createcardtime",
-						dateFormat));
-				memberCache.setMemberPsw(dto.getAsString("memberpsw"));
-				memberCache.setStatus(dto.getAsString("status"));
-				memberCache.setMobile(dto.getAsString("mobile"));
-				memberCache.setUseLimitDate(dto.getAsDate("useLimitdate"));
-				memberCache.setAccountCash(dto.getAsBigDecimal("accountcash"));
-				memberCache.setAccountPresent(dto
-						.getAsBigDecimal("accountpresent"));
-				memberCache.setIntegralBalance(dto
-						.getAsBigDecimal("integralbalance"));
-				memberCache
-						.setConsumeTotal(dto.getAsBigDecimal("consumetotal"));
-				memberCache.setAccountBalance(dto
-						.getAsBigDecimal("accountbalance"));
-				memberCache.setIntegralBalance(dto
-						.getAsBigDecimal("integralbalance"));
-				memberCache.setConsumeTimes(dto.getAsInteger("consumetimes"));
-				memberCache.setLastConsumeTime(dto.getAsDate("lastconsumetime",
-						dateFormat));
-				memberCache.setUpdateTime(new Date());
-				//校验数据，如果出错的话，自动抛出异常，中止数据同步
-				validationService.validate(memberCache, "data");
-				list.add(memberCache);
+			
 			}
 			// 保存信息
 			memberCacheRepository.save(list);

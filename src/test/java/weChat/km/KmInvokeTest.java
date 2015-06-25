@@ -30,7 +30,7 @@ public class KmInvokeTest {
 	}
 	@Test
 	public void testGetKmAuth() throws Exception{
-		String ip ="http://127.0.0.1:8080/weChat";
+		String ip ="http://127.0.0.1:8080/3003";
 		String actionPath="/getKmAuth";
 		Dto dto = new BaseDto();
 		DynamicRespParam resp = HttpClientUtils.post(ip + actionPath, dto, DynamicRespParam.class);

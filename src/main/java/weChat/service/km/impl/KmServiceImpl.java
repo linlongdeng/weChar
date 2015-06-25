@@ -70,9 +70,6 @@ public class KmServiceImpl implements KmService {
 
 	@Autowired
 	private GradecollectRepository gradecollectRepository;
-
-	@Resource(name = "WJ009" + AppConstants.WJMQ_SUFFIX)
-	private WechatMqService wj009Service;
 	
 	@Override
 	public IRespParam bindCardInfo(Company company, Dto otherParam,
@@ -459,10 +456,6 @@ public class KmServiceImpl implements KmService {
 	@Override
 	public IRespParam applyForMember(Company company,int wechatPubinfoID, Dto otherParam)
 			throws Exception {
-		AmqpReqParam mqParam = new AmqpReqParam();
-		mqParam.setCmdid("WJ009");
-		mqParam.setCompanycode(company.getCompanyCode());
-		mqParam.setWechatpubinfoid(wechatPubinfoID);
 		BaseDto params = new BaseDto();
 		String kmID = wechatMqUtilsService.createKmCardId();
 		params.put("gradeid", otherParam.getAsInteger("gradeid"));
@@ -477,9 +470,8 @@ public class KmServiceImpl implements KmService {
 		params.put("birthday", otherParam.getAsString("birthday"));
 		params.put("address", otherParam.getAsString("address"));
 		params.put("email", otherParam.getAsString("email"));
-		mqParam.setParams(params);		
-		// 调用MQ服务
-		CommonParam mqResp = (CommonParam) wj009Service.handle(mqParam);
+		String cmdid="WJ009";
+		CommonParam mqResp = wechatMqUtilsService.invokeMqService(cmdid, company.getCompanyCode(), wechatPubinfoID, params);
 		int ret = mqResp.getAsInteger("ret");
 		if (AppUtils.checkSuccess(ret)) {
 			//申请成功后更新关系表

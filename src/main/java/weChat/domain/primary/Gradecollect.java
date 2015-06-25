@@ -19,6 +19,7 @@ public class Gradecollect implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int gradeCollectID;
 
+	/**图片ID默认为空，所以必须是Integer**/
 	private Integer cardPicID;
 
 	private int companyID;

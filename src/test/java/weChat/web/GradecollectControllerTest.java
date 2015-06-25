@@ -24,7 +24,7 @@ public class GradecollectControllerTest {
 		String actionPath ="/Membersync/member_level";
 		MReqParam param = new MReqParam();
 		param.setCompanycode("00127");
-		param.setAccess_token("25d55ad283aa400af464c76d713c07ad");
+		param.setAccess_token("e24df12a81fd814017980d0c1fb2f968");
 		param.setWechatpubinfoid(43243243);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();
@@ -32,6 +32,8 @@ public class GradecollectControllerTest {
 		map.put("gradecode", "4324343");
 		map.put("gradename", "林龙灯123");
 		map.put("status", 0);
+		map.put("usestorage", 1);
+		map.put("useintegral", 1);
 		list.add(map);
 		param.setData(list);
 		Map<String, Object> result = PostJsonUtils.postObject(actionPath, param);
@@ -42,15 +44,15 @@ public class GradecollectControllerTest {
 	public void testMemberInfo() throws JsonGenerationException, JsonMappingException, IOException{
 		String actionPath ="/Membersync/member_info";
 		MReqParam param = new MReqParam();
-		param.setCompanycode("00127");
-		param.setAccess_token("mn1dcxfl1o63mcim5tt6lcwc7adl55");
-		param.setWechatpubinfoid(43243243);
+		param.setCompanycode("01113");
+		param.setAccess_token("e24df12a81fd814017980d0c1fb2f968");
+		param.setWechatpubinfoid(1);
 		List<BaseDto> list = new ArrayList<>();
 		BaseDto map = new BaseDto();
 		map.put("kmid", "1234567");
 		map.put("gradeid", 0	);
-		map.put("cardnum", "45699999999999999");
-		map.put("memberid", "123456790");
+		map.put("cardnum", "2");
+		map.put("memberid", "2");
 		map.put("membername", "张三");
 		map.put("birthday", "1977-01-01");
 		map.put("sex", "男");
@@ -58,7 +60,7 @@ public class GradecollectControllerTest {
 		map.put("papernumber", "350101011001010");
 		map.put("createcardtime", "2010-01-01 11:00:00");
 		map.put("memberpsw", "");
-		map.put("status", "启用");
+		map.put("status", "删除");
 		map.put("mobile", "13500001111");
 		map.put("useLimitdate", "2014-01-01");
 		map.put("accountbalance", 200.23);

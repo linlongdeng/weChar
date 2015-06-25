@@ -10,4 +10,8 @@ public class FilterConfig {
 	public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
 		return new MyHiddenHttpMethodFilter();
 	}
+	@Bean
+	public MyRequestLogFilter myRequestLogFilter(){
+		return new MyRequestLogFilter();
+	}
 }

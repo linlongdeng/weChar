@@ -212,4 +212,18 @@ public interface Dto extends Map<String, Object> {
 	 */
 	public Date getAsDate(String pStr, String format);
 	
+	/**
+	 * 以Byte 类型返回键值
+	 * @author deng
+	 * @param pStr
+	 * @return
+	 */
+	public Byte getAsByte(String pStr);
+	
+
+/**
+ * 往对象里头添加数据，并返回自身，以实现fluent build风格的编程
+ */
+	public Dto put(String key, Object value);
+	
 }

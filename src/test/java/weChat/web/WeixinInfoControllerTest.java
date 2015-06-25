@@ -8,13 +8,13 @@ import weChat.parameter.weixin.WReqParam;
 
 public class WeixinInfoControllerTest {
 
-	private String ip = "http://192.168.82.119:8080";
+	private String ip = "http://192.168.82.119:3003";
 
 	@Test
 	public void testGetAccessToken() throws Exception {
 		String actionPath = "/WeixinInfo/getAccessToken";
 		WReqParam param = new WReqParam();
-		param.setWechatpubinfoid(5);
+		param.setWechatpubinfoid(3);
 		long startTime = System.currentTimeMillis();
 		for (int i = 0; i < 1; i++) {
 			long currentTime = System.currentTimeMillis();

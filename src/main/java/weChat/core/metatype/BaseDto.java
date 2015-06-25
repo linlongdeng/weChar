@@ -315,4 +315,16 @@ public class BaseDto extends HashMap<String, Object> implements Dto, Serializabl
 		else
 			return null;
 	}
+
+	@Override
+	public Byte getAsByte(String pStr) {
+		//先转换成Integer
+		Integer integerValue = getAsInteger(pStr);
+		return integerValue != null ? integerValue.byteValue():null;
+	}
+	@Override
+	 public Dto put(String key, Object value){
+		super.put(key, value);
+		return this;		 
+	 }
 }
